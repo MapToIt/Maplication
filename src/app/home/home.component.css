@@ -5,3 +5,7 @@
 .opaque{
     background-color: rgba(255,255,255,0.7);
 }
+
+.opaque .display-4{
+    text-align: center;
+}

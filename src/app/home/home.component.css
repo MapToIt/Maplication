@@ -1,0 +1,7 @@
+.jumbotron{
+    background-image: url("../../assets/career_fair.jpg");
+}
+
+.opaque{
+    background-color: rgba(255,255,255,0.7);
+}

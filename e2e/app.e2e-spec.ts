@@ -1,4 +1,5 @@
 import { AppPage } from './app.po';
+import {} from 'jasmine';
 
 describe('maplication App', () => {
   let page: AppPage;

@@ -1,10 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
+@import url('https://fonts.googleapis.com/css?family=Arimo|Lobster');
 
 body {
     padding-top: 80px; 
+    font-family: 'Arimo', sans-serif;
  }
  .starter-template {
      padding: 3rem 1.5rem;
      text-align: center;
  }
+
+ button{
+    font-family: 'Arimo', sans-serif;
+ }
+
+ h1 {
+    font-family: 'Lobster', cursive;
+    font-weight: 300;
+    line-height: 46px;
+    font-size: 46px;
+    margin: 0 0 23px 0;
+    }
+h2 {
+    font-family: 'Arimo', sans-serif;
+    font-weight: normal;
+    font-size: 31px;
+    line-height: 23px;
+    margin: 0 0 23px 0;
+    }
+p {
+    font-family: 'Arimo', sans-serif;
+    font-size: 16px;
+    line-height: 23px;
+    margin: 0 0 23px 0;
+    }

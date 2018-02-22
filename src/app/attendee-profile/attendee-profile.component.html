@@ -1,3 +1,35 @@
-<p>
-  attendee-profile works!
-</p>
+<div name="old" class="container" ng-disabled="false">
+  <div class="row imgContainer justify-content-center">
+    <img id="profileImg" src="..\assets\placeholder.png">
+    <span class="center">Get started by adding an image!</span>
+  </div>
+  <div class="row justify-content-center">
+    <input class ="s40" type="text" placeholder="Name" required ng-bind="user.name">
+  </div>
+  <div class="row justify-content-center">
+    <input class ="s40" type="text" placeholder="Email" required ng-bind="user.email">
+  </div>
+  <div class="row justify-content-center">
+    <input class ="s40" type="text" placeholder="Street Number" required ng-bind="user.streetNumber">
+  </div>
+  <div id="address" class="row justify-content-center">
+    <div>
+      <input type="text" placeholder="City" required ng-bind="user.city">
+    </div>
+    <div>
+      <input type="text" placeholder="State" required ng-bind="user.state">
+    </div>
+    <div>
+      <input type="text" placeholder="Zip" required ng-bind="user.zip">
+    </div>
+  </div>
+  <div class="row justify-content-center">
+      <input class="s40" type="text" placeholder="Phone Number" required ng-bind="user.phoneNumber">
+  </div>
+  <div>
+    
+  </div>
+
+  <button onclick="debug()">Debug Me</button>
+
+</div>

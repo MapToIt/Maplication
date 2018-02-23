@@ -1,35 +1,48 @@
-<div name="old" class="container" ng-disabled="false">
-  <div class="row imgContainer justify-content-center">
+<div id="cont" class="modal-body row">
+  <div class="col-lg-8">
+    <div class="container">
+      <h1 class="row justify-content-center">Let's Get Started With Your Profile!</h1>
+    </div>
+    <br>
+    <div class="row justify-content-center">
+      <div class="col-lg-5">
+        <input type="text" placeholder="Name">
+      </div>
+      <div class="col-lg-5">
+        <input type="text" placeholder="Email">
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-5">
+        <input type="text" placeholder="Street Number">
+      </div>
+      <div class="col-lg-5">
+        <input type="text" placeholder="Street Name">
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-3">
+        <input class="addr" type="text" placeholder="City">
+      </div>
+      <div class="col-lg-3">
+        <input class="addr" type="text" placeholder="State">
+      </div>
+      <div class="col-lg-3">
+        <input class="addr" type="text" placeholder="Zip">
+      </div>
+    </div>
+    <br>
+  </div>
+
+
+  <div class="col-lg-2 imgContainer justify-content-center">
     <img id="profileImg" src="..\assets\placeholder.png">
-    <span class="center">Get started by adding an image!</span>
+    <h5 id="imgDesc">Get started by adding an image!</h5>
   </div>
-  <div class="row justify-content-center">
-    <input class ="s40" type="text" placeholder="Name" required ng-bind="user.name">
-  </div>
-  <div class="row justify-content-center">
-    <input class ="s40" type="text" placeholder="Email" required ng-bind="user.email">
-  </div>
-  <div class="row justify-content-center">
-    <input class ="s40" type="text" placeholder="Street Number" required ng-bind="user.streetNumber">
-  </div>
-  <div id="address" class="row justify-content-center">
-    <div>
-      <input type="text" placeholder="City" required ng-bind="user.city">
-    </div>
-    <div>
-      <input type="text" placeholder="State" required ng-bind="user.state">
-    </div>
-    <div>
-      <input type="text" placeholder="Zip" required ng-bind="user.zip">
-    </div>
-  </div>
-  <div class="row justify-content-center">
-      <input class="s40" type="text" placeholder="Phone Number" required ng-bind="user.phoneNumber">
-  </div>
-  <div>
-    
-  </div>
-
-  <button onclick="debug()">Debug Me</button>
-
 </div>
+
+
+
+
+  
+

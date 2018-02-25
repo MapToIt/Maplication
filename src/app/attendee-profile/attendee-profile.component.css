@@ -1,56 +1,104 @@
 input[type=text]{
-
     height: 45px;
     margin-bottom: 30px;
-    margin-inline-end: 0px;
-    background-color: rgb(37, 54, 54);
     color: white;
     border-radius: 5px;
     border: 0;
-    width: 370px;
+    width: 18vw;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-indent: 10px;
 }
 
 input[type=text]:focus {
-    background-color: rgb(52, 77, 77);;
+    background-color: #212529a9;
 }
 
 input.addr{
-    width: auto;
+    width: 8vw;
 }
 
-#cont{
-    background:linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+input[type="file"] {
+    display: none;
 }
 
 
-div[class=container]{
+
+.custom-file-upload {
     background-color: rgba(76,77,142,0.7);
-    height: 100px;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    width:100%;
+    height:40px;
+    text-align: center;
+}
+.custom-file-upload-resume {
+    background-color: rgba(76,77,142,0.7);
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    width:100%;
+    height:40px;
+    text-align: center;
+}
+
+div[class=header]{
+    background-color: rgba(76,77,142,0.7);
+    padding-bottom: 10px;
     padding-top: 25px;
     margin-bottom: 100px;
+    text-align: center;
 }
 
 #profileImg{
     margin-top: 30px;
-    width: 500px;
-    height: auto; 
-    opacity: 0.5;
-    filter: alpha(opacity=50);
+    width: 100vw;
+    height: 50vh; 
 }
-
-.imgContainer {
-    position: relative;
-}
-
-h5{
-    width: 150%;
-    padding-left: 115px;
-    text-align: center;
-}
-
 
 ::placeholder{
     color:white;
     text-align: center;
 }
+
+.tag{
+    background-color: rgba(76,77,142,0.7);
+    padding: 5px 10px;
+    margin: 10px 10px;
+
+}
+.tag:hover {
+    cursor: pointer;
+}
+
+textarea.custom{
+    color: white;
+}
+
+.comments-wrapper .comment-body p, .comments-wrapper .squarespace-comments .new-comment-area .input form.comment-form textarea {
+    color: white;
+ }
+
+textarea::-webkit-input-placeholder {
+    color: white;
+    text-align: center;
+}
+
+textarea:-moz-placeholder { /* Firefox 18- */
+    color: white;
+    text-align: center; 
+}
+
+textarea::-moz-placeholder {  /* Firefox 19+ */
+    color: white; 
+    text-align: center; 
+}
+
+textarea:-ms-input-placeholder {
+    color: white;  
+    text-align: center;
+}
+
+textarea::selection {color:white; }
+::-moz-selection { color:white; }
+::-webkit-selection {color:white; }

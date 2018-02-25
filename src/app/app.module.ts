@@ -9,12 +9,14 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from './../../environments/environment';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
+import { FileUploadService } from './file-upload-service.service';
 
 const appRoutes: Routes = [
   {
@@ -38,9 +40,12 @@ const appRoutes: Routes = [
     AngularFireAuthModule,
     NgbModule.forRoot(),
     RouterModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    FileUploadService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

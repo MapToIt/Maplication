@@ -1,43 +1,81 @@
 <div id="cont" class="modal-body row">
   <div class="col-lg-8">
-    <div class="container">
+    <div class="header">
       <h1 class="row justify-content-center">Let's Get Started With Your Profile!</h1>
     </div>
     <br>
-    <div class="row justify-content-center">
-      <div class="col-lg-5">
-        <input type="text" placeholder="Name">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-4">
+          <input type="text" placeholder="Name" class="bg-dark" [(ngModel)]="user.name">
+        </div>
+        <div class="col-lg-4">
+          <input type="text" placeholder="Email" class="bg-dark" [(ngModel)]="user.email">
+        </div>
       </div>
-      <div class="col-lg-5">
-        <input type="text" placeholder="Email">
+      <div class="row justify-content-center">
+        <div class="col-lg-4">
+          <input type="text" placeholder="Street Number" class="bg-dark" [(ngModel)]="user.streetNumber">
+        </div>
+        <div class="col-lg-4">
+          <input type="text" placeholder="Street Name" class="bg-dark" [(ngModel)]="user.streetName">
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-2">
+          <input class="addr bg-dark" type="text" placeholder="City" [(ngModel)]="user.city">
+        </div>
+        <div class="col-lg-2">
+          <input class="addr bg-dark" type="text" placeholder="State" [(ngModel)]="user.state">
+        </div>
+        <div class="col-lg-2">
+          <input class="addr bg-dark" type="text" placeholder="Zip" [(ngModel)]="user.zip">
+        </div>
+      </div>
+      <div class="row justify-content-center">
+          <input type="text" placeholder="Phone Number" class="bg-dark" [(ngModel)]="user.phoneNumber">
       </div>
     </div>
     <div class="row justify-content-center">
-      <div class="col-lg-5">
-        <input type="text" placeholder="Street Number">
-      </div>
-      <div class="col-lg-5">
-        <input type="text" placeholder="Street Name">
-      </div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col-lg-3">
-        <input class="addr" type="text" placeholder="City">
-      </div>
-      <div class="col-lg-3">
-        <input class="addr" type="text" placeholder="State">
-      </div>
-      <div class="col-lg-3">
-        <input class="addr" type="text" placeholder="Zip">
-      </div>
+        <div class="col-lg-3 col-lg-offset-2">
+            <textarea class="form-control bg-dark custom" rows="3" id="motto" placeholder="{{mottoPlaceholder}}" [(ngModel)]="user.motto"></textarea>
+        </div>
+        <div class="col-lg-5">
+            <textarea class="form-control bg-dark custom" rows="3" id="bio" placeholder={{bioPlaceholder}} [(ngModel)]="user.bio"></textarea>
+        </div>
     </div>
     <br>
+    <div class="row justify-content-center">
+      <h6>Click tags to add them to your profile</h6>
+    </div>
+    <div class="row justify-content-center">
+        <div *ngFor="let tag of fieldTags">
+          <div class="col">
+            <span id="{{tag}}" class="tag" (click)="addTag(tag)" unselectable="on"
+            onselectstart="return false;" 
+            onmousedown="return false;">{{tag}}</span>
+          </div>
+        </div>
+
+    </div>
+    
   </div>
 
-
-  <div class="col-lg-2 imgContainer justify-content-center">
-    <img id="profileImg" src="..\assets\placeholder.png">
-    <h5 id="imgDesc">Get started by adding an image!</h5>
+  <div class="col-lg-4">
+    <div class="row justify-content-center">
+      <img id="profileImg" src="{{profileImg}}">
+      <label for="imgFile" class="custom-file-upload"><h3>Upload Your Profile Picture</h3></label>
+      <input type="file"
+              id="imgFile"
+              (change)="handleFileInput($event.target.files)" class="inputfile">
+    </div>
+    <div class="row justify-content-center">
+      <label for="resumeFile" class="custom-file-upload-resume"><h3>Upload Your Resume</h3></label>
+      <input type="file"
+              id="resumeFile"
+              (change)="handleFileInput($event.target.files)" class="inputfile">
+    </div>
+    <button (click)="debug()">DEBUG ME</button>
   </div>
 </div>
 

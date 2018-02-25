@@ -1,6 +1,8 @@
 export class Attendee {
+    id = "";
     name = "";
     email = "";
+    streetName = "";
     streetNumber = "";
     city = "";
     state = "";
@@ -10,5 +12,10 @@ export class Attendee {
     bio = "";
     imgLink = "";
     resumeLink = "";
+    tags = [];
+    
+    constructor(id){
+        this.id = id;
+    }
 
 }

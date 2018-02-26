@@ -97,8 +97,7 @@ export class AttendeeProfileComponent implements OnInit {
 
           document.getElementById(tag).className = "tagAdded";
         }
-      });
-      document.getElementById("Marketing").className = "tagAdded";
+      })
       this.debug();
     }
     

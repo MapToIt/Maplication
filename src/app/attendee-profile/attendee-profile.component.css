@@ -50,7 +50,7 @@ div[class=header]{
 #profileImg{
     margin-top: 30px;
     width: 100vw;
-    height: 50vh; 
+    height: auto;
 }
 
 ::placeholder{
@@ -65,7 +65,14 @@ div[class=header]{
     margin: 5px 0px;
 
 }
-.tag:hover {
+
+.tagAdded{
+    display: block;
+    background-color: rgba(3, 61, 250, 0.7);
+    padding: 4px 10px;
+    margin: 5px 0px;
+}
+.tag .tagAdded :hover {
     cursor: pointer;
 }
 

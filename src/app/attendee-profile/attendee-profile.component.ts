@@ -54,11 +54,11 @@ export class AttendeeProfileComponent implements OnInit {
     if(this.viewMode){
       if(!this.user.tags.includes(tag)){
         this.user.tags.push(tag);
-        document.getElementById(tag).style.backgroundColor = "rgba(3, 61, 250, 0.7)";
+        document.getElementById(tag).className = "tagAdded";
       }else{
         var index = this.user.tags.indexOf(tag);
         this.user.tags.splice(index, 1);
-        document.getElementById(tag).style.backgroundColor = "rgba(76,77,142,0.7)";
+        document.getElementById(tag).className = "tag";
       }
     }
   }
@@ -79,6 +79,8 @@ export class AttendeeProfileComponent implements OnInit {
   submit(){
     //submit to database
     //submit images
+    //switch to view mode
+    this.switchMode();
   }
 
   switchMode(){
@@ -88,12 +90,31 @@ export class AttendeeProfileComponent implements OnInit {
       this.viewMode = false;
     }else{
       this.viewMode = true;
+      //show which tags have already been selected
+      this.fieldTags.forEach(tag => {
+        if(this.user.tags.includes(tag)){
+          console.log(tag);
+
+          document.getElementById(tag).className = "tagAdded";
+        }
+      });
+      document.getElementById("Marketing").className = "tagAdded";
+      this.debug();
     }
     
   }
 
   debug(){
     console.log(this.user);
+  }
+  
+
+  checkTag(tag){
+    if(!this.user.tags.includes(tag)){
+      return "tagAdded";
+    }else{
+      return "tag";
+    }
   }
 
 }

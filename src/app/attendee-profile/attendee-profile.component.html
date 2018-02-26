@@ -4,7 +4,7 @@
       <h1 class="row justify-content-center">{{greeting}}</h1>
     </div>
     <div>
-      <h6 *ngIf="!viewMode" class="row justify-content-center">Here's a look at your profile. press the button below to switch to edit mode.</h6>
+      <h6 *ngIf="!viewMode" class="row justify-content-center">Here's a look at your profile. Press the edit button to switch to edit mode.</h6>
     </div>
     <form>
       <div class="form-row justify-content-center">
@@ -55,7 +55,7 @@
     <div *ngIf="viewMode" class="row justify-content-center">
       <div *ngFor="let tag of fieldTags">
         <div class="col">
-          <span id="{{tag}}" class="tag" (click)="addTag(tag)" unselectable="on"
+          <span id="{{tag}}" [ngClass]="checkTag(tag)" (click)="addTag(tag)" unselectable="on"
           onselectstart="return false;" 
           onmousedown="return false;">{{tag}}</span>
         </div>
@@ -77,7 +77,7 @@
   <div class="col-lg-4">
     <div class="row justify-content-center">
       <img id="profileImg" src="{{profileImg}}">
-      <label *ngIf="viewMode" for="imgFile" class="custom-file-upload"><h3>Upload Your Profile Picture</h3></label>
+      <label *ngIf="viewMode" for="imgFile" class="custom-file-upload"><h3>Upload Your Picture</h3></label>
       <input *ngIf="viewMode" type="file"
               id="imgFile"
               (change)="handleFileInput($event.target.files)" class="inputfile">
@@ -90,7 +90,7 @@
     </div>
     <div class="container">
       <div class="row justify-content-center">
-        <button *ngIf="viewMode" id="submitButton" class="btn btn-primary btn-lg m-3" (click)="switchMode()">Submit Changes</button>
+        <button *ngIf="viewMode" id="submitButton" class="btn btn-primary btn-lg m-3" (click)="submit()">Submit Changes</button>
       </div>
       <div class="row justify-content-center">
         <button *ngIf="!viewMode" id="editButton" class="btn btn-primary btn-lg m-3" (click)="switchMode()">Edit Mode</button>

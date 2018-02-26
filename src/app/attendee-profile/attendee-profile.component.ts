@@ -20,7 +20,7 @@ export class AttendeeProfileComponent implements OnInit {
   profileImgFile: File;
 
   //career field tags
-  fieldTags = ["Business", "Art", "Science", "Technology", "Software"]
+  fieldTags = ["Business", "Art", "Science", "Technology", "Software", "Architecture", "Design", "Management", "Marketing", "Accounting"]
 
   user: Attendee = new Attendee("testID");
 
@@ -60,7 +60,7 @@ export class AttendeeProfileComponent implements OnInit {
     }
     
   }
-  
+
   debug(){
     console.log(this.user);
   }

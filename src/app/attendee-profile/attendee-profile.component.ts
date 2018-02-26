@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Attendee } from './attendee';
 import { logger } from '@firebase/database/dist/esm/src/core/util/util';
-import { FileUploadService} from '../file-upload-service.service';
 
 @Component({
   selector: 'app-attendee-profile',
@@ -12,7 +11,6 @@ export class AttendeeProfileComponent implements OnInit {
 
   bioPlaceholder: string = "Tell us a bit about your background, your experience, and your goals.";
   mottoPlaceholder: string = "Sum yourself up in one sentence.";
-  fileUploadService = FileUploadService;
 
   isLoggedIn: boolean = false;
   

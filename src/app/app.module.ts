@@ -16,7 +16,6 @@ import { HomeComponent } from './home/home.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
-import { FileUploadService } from './file-upload-service.service';
 
 const appRoutes: Routes = [
   {
@@ -44,7 +43,6 @@ const appRoutes: Routes = [
     FormsModule
   ],
   providers: [
-    FileUploadService
   ],
   bootstrap: [AppComponent]
 })

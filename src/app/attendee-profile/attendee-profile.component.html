@@ -4,47 +4,49 @@
       <h1 class="row justify-content-center">Let's Get Started With Your Profile!</h1>
     </div>
 
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-4">
-          <input type="text" placeholder="Name" class="bg-dark" [(ngModel)]="user.name">
+    <form>
+      <div class="form-row justify-content-center">
+        <div class="col">
+          <input type="text" placeholder="Name" class="form-control bg-dark" [(ngModel)]="user.name" [ngModelOptions]="{standalone: true}">
         </div>
-        <div class="col-lg-4">
-          <input type="text" placeholder="Email" class="bg-dark" [(ngModel)]="user.email">
+        <div class="col">
+          <input type="text" placeholder="Email" class="form-control bg-dark" [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}">
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col">
+          <input type="text" placeholder="Street Number" class="form-control bg-dark" [(ngModel)]="user.streetNumber" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col">
+          <input type="text" placeholder="Street Name" class="form-control bg-dark" [(ngModel)]="user.streetName" [ngModelOptions]="{standalone: true}">
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col">
+          <input class="form-control bg-dark" type="text" placeholder="City" [(ngModel)]="user.city" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col">
+          <input class="form-control bg-dark" type="text" placeholder="State" [(ngModel)]="user.state" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col">
+          <input class="form-control bg-dark" type="text" placeholder="Zip" [(ngModel)]="user.zip" [ngModelOptions]="{standalone: true}">
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-lg-6">
+          <input type="text" placeholder="Phone Number" class="form-control bg-dark" [(ngModel)]="user.phoneNumber" [ngModelOptions]="{standalone: true}">
         </div>
       </div>
       <div class="row justify-content-center">
-        <div class="col-lg-4">
-          <input type="text" placeholder="Street Number" class="bg-dark" [(ngModel)]="user.streetNumber">
-        </div>
-        <div class="col-lg-4">
-          <input type="text" placeholder="Street Name" class="bg-dark" [(ngModel)]="user.streetName">
-        </div>
+          <div class="col-lg-3 col-lg-offset-2">
+              <textarea class="form-control bg-dark custom" rows="3" id="motto" placeholder="{{mottoPlaceholder}}" [(ngModel)]="user.motto" [ngModelOptions]="{standalone: true}"></textarea>
+          </div>
+          <div class="col-lg-5">
+              <textarea class="form-control bg-dark custom" rows="3" id="bio" placeholder={{bioPlaceholder}} [(ngModel)]="user.bio" [ngModelOptions]="{standalone: true}"></textarea>
+          </div>
       </div>
-      <div class="row justify-content-center">
-        <div class="col-lg-2">
-          <input class="addr bg-dark" type="text" placeholder="City" [(ngModel)]="user.city">
-        </div>
-        <div class="col-lg-2">
-          <input class="addr bg-dark" type="text" placeholder="State" [(ngModel)]="user.state">
-        </div>
-        <div class="col-lg-2">
-          <input class="addr bg-dark" type="text" placeholder="Zip" [(ngModel)]="user.zip">
-        </div>
-      </div>
-      <div class="row justify-content-center">
-          <input type="text" placeholder="Phone Number" class="bg-dark" [(ngModel)]="user.phoneNumber">
-      </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-lg-3 col-lg-offset-2">
-            <textarea class="form-control bg-dark custom" rows="3" id="motto" placeholder="{{mottoPlaceholder}}" [(ngModel)]="user.motto"></textarea>
-        </div>
-        <div class="col-lg-5">
-            <textarea class="form-control bg-dark custom" rows="3" id="bio" placeholder={{bioPlaceholder}} [(ngModel)]="user.bio"></textarea>
-        </div>
-    </div>
-    <br>
+      <br>
+    </form>
     <div class="row justify-content-center">
       <h6>Click tags to add them to your profile</h6>
     </div>

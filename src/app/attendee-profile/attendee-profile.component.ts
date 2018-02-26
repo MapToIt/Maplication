@@ -12,7 +12,7 @@ export class AttendeeProfileComponent implements OnInit {
   bioPlaceholder: string = "Tell us a bit about your background, your experience, and your goals.";
   mottoPlaceholder: string = "Sum yourself up in one sentence.";
 
-  isLoggedIn: boolean = false;
+  viewMode: boolean = false;
   
   profileImg: string = "/assets/placeholder.png";
   profileImgFile: File;
@@ -20,7 +20,7 @@ export class AttendeeProfileComponent implements OnInit {
   //career field tags
   fieldTags = ["Business", "Art", "Science", "Technology", "Software", "Architecture", "Design", "Management", "Marketing", "Accounting"]
 
-  user: Attendee = new Attendee("none");
+  user: Attendee = new Attendee("testID");    //change to testID to view logged-in
 
   
 
@@ -28,12 +28,12 @@ export class AttendeeProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.getCurrentID() == this.user.id){
+    if(this.viewMode){
       this.getProfile(this.getCurrentID());
-      this.user.name = "Chris";
-      this.isLoggedIn = true;
+      this.user.name = "Chris";   //for debugging
       this.greeting = "Welcome Back, ".concat(this.user.name);
     }
+
   }
 
   handleFileInput(files: FileList) {
@@ -51,15 +51,16 @@ export class AttendeeProfileComponent implements OnInit {
   }
 
   addTag(tag){
-    if(!this.user.tags.includes(tag)){
-      this.user.tags.push(tag);
-      document.getElementById(tag).style.backgroundColor = "rgba(3, 61, 250, 0.7)";
-    }else{
-      var index = this.user.tags.indexOf(tag);
-      this.user.tags.splice(index, 1);
-      document.getElementById(tag).style.backgroundColor = "rgba(76,77,142,0.7)";
+    if(this.viewMode){
+      if(!this.user.tags.includes(tag)){
+        this.user.tags.push(tag);
+        document.getElementById(tag).style.backgroundColor = "rgba(3, 61, 250, 0.7)";
+      }else{
+        var index = this.user.tags.indexOf(tag);
+        this.user.tags.splice(index, 1);
+        document.getElementById(tag).style.backgroundColor = "rgba(76,77,142,0.7)";
+      }
     }
-    
   }
   //get database info
   getProfile(id){
@@ -73,6 +74,22 @@ export class AttendeeProfileComponent implements OnInit {
   getCurrentID(){
     var id = "testID";
     return id;
+  }
+
+  submit(){
+    //submit to database
+    //submit images
+  }
+
+  switchMode(){
+    if(this.viewMode){
+      this.getProfile(this.getCurrentID());
+      this.greeting = "Welcome Back, ".concat(this.user.name);
+      this.viewMode = false;
+    }else{
+      this.viewMode = true;
+    }
+    
   }
 
   debug(){

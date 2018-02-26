@@ -13,9 +13,6 @@ input[type=text]:focus {
     background-color: #212529a9;
 }
 
-input.addr{
-    
-}
 
 input[type="file"] {
     display: none;

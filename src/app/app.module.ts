@@ -9,12 +9,14 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from './../../environments/environment';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { AboutComponent } from './about/about.component';
+import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
 
 const appRoutes: Routes = [
   {
@@ -29,7 +31,8 @@ const appRoutes: Routes = [
     AppComponent,
     HomeComponent,
     AppNavbarComponent,
-    AboutComponent
+    AboutComponent,
+    AttendeeProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -38,9 +41,11 @@ const appRoutes: Routes = [
     AngularFireAuthModule,
     NgbModule.forRoot(),
     RouterModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

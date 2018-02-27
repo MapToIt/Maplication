@@ -75,13 +75,12 @@ import { LoginComponent } from './login/login.component';
     NgbModule.forRoot(),
     RouterModule,
     AppRoutingModule,
-    FormsModule
-  ],
-  providers: [
+    FormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

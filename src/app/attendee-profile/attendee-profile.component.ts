@@ -194,6 +194,7 @@ export class AttendeeProfileComponent implements OnInit {
     }
   }
 
+  //debug user object
   debug(){
     console.log(this.user);
   }

@@ -5,31 +5,75 @@ import { RouterModule, Routes } from '@angular/router';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import {
+  AuthMethods,
+  AuthProvider,
+  AuthProviderWithCustomConfig,
+  CredentialHelper,
+  FirebaseUIAuthConfig,
+  FirebaseUIModule
+} from 'firebaseui-angular';
+
+const facebookCustomConfig: AuthProviderWithCustomConfig = {
+  provider: AuthProvider.Facebook,
+  customConfig: {
+    scopes: [
+      'public_profile',
+      'email',
+      'user_likes',
+      'user_friends'
+    ],
+    customParameters: {
+      // Forces password re-entry.
+      auth_type: 'reauthenticate'
+    }
+  }
+};
+
+const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
+  providers: [
+    AuthProvider.Google,
+    facebookCustomConfig,
+    AuthProvider.Twitter,
+    AuthProvider.Github,
+    AuthProvider.Password,
+    AuthProvider.Phone
+  ],
+  method: AuthMethods.Popup,
+  tos: '<your-tos-link>',
+  credentialHelper: CredentialHelper.AccountChooser
+};
 
 import { environment } from './../../environments/environment';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
+<<<<<<< HEAD
 import { CoordHomeComponent } from './coord-home/coord-home.component';
+=======
+import { AboutComponent } from './about/about.component';
+import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
+>>>>>>> ab372ab85c1261151d47092e50c45048f688756d
 
-const appRoutes: Routes = [
-  {
-    path: 'home',
-    component: HomeComponent,
-    data: { title: 'Home' }
-  },
-];
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     AppNavbarComponent,
+<<<<<<< HEAD
     CoordHomeComponent
+=======
+    AboutComponent,
+    AttendeeProfileComponent,
+    LoginComponent,
+>>>>>>> ab372ab85c1261151d47092e50c45048f688756d
   ],
   imports: [
     BrowserModule,
@@ -38,7 +82,11 @@ const appRoutes: Routes = [
     AngularFireAuthModule,
     NgbModule.forRoot(),
     RouterModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
+    FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -6,8 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app-navbar.component.css']
 })
 export class AppNavbarComponent implements OnInit {
+  
+  isUser = false;
 
-  constructor() { }
+  constructor() {
+   }
 
   ngOnInit() {
   }

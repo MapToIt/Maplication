@@ -1,0 +1,106 @@
+<div id="cont" class="modal-body row">
+  <div class="col-lg-8">
+    <div class="header">
+      <h1 class="row justify-content-center">{{greeting}}</h1>
+    </div>
+    <div>
+      <h6 *ngIf="!viewMode" class="row justify-content-center">Here's a look at your profile. Press the edit button to switch to edit mode.</h6>
+    </div>
+    <form>
+      <div class="form-row justify-content-center">
+        <div class="col">
+          <input type="text" placeholder="Name" class="form-control bg-dark" [(ngModel)]="user.name" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+        </div>
+        <div class="col">
+          <input type="text" placeholder="Email" class="form-control bg-dark" [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col">
+          <input type="text" placeholder="Street Number" class="form-control bg-dark" [(ngModel)]="user.streetNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+        </div>
+        <div class="col">
+          <input type="text" placeholder="Street Name" class="form-control bg-dark" [(ngModel)]="user.streetName" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col">
+          <input class="form-control bg-dark" type="text" placeholder="City" [(ngModel)]="user.city" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+        </div>
+        <div class="col">
+          <input class="form-control bg-dark" type="text" placeholder="State" [(ngModel)]="user.state" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+        </div>
+        <div class="col">
+          <input class="form-control bg-dark" type="text" placeholder="Zip" [(ngModel)]="user.zip" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-lg-6">
+          <input type="text" placeholder="Phone Number" class="form-control bg-dark" [(ngModel)]="user.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+        </div>
+      </div>
+      <div class="row justify-content-center">
+          <div class="col-lg-3 col-lg-offset-2">
+              <textarea class="form-control bg-dark custom" rows="3" id="motto" placeholder="{{mottoPlaceholder}}" [(ngModel)]="user.motto" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode"></textarea>
+          </div>
+          <div class="col-lg-5">
+              <textarea class="form-control bg-dark custom" rows="3" id="bio" placeholder={{bioPlaceholder}} [(ngModel)]="user.bio" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode"></textarea>
+          </div>
+      </div>
+      <br>
+    </form>
+    <div *ngIf="viewMode" class="row justify-content-center">
+      <h6>Click tags to add them to your profile</h6>
+    </div>
+    <div *ngIf="viewMode" class="row justify-content-center">
+      <div *ngFor="let tag of fieldTags">
+        <div class="col">
+          <span id="{{tag}}" [ngClass]="checkTag(tag)" (click)="addTag(tag)" unselectable="on"
+          onselectstart="return false;" 
+          onmousedown="return false;">{{tag}}</span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!viewMode" class="row justify-content-center">
+      <div *ngFor="let tag of user.tags">
+        <div class="col">
+          <span id="{{tag}}" class="tag" unselectable="on"
+          onselectstart="return false;" 
+          onmousedown="return false;">{{tag}}</span>
+        </div>
+      </div>
+    </div>
+    
+    
+  </div>
+
+  <div class="col-lg-4">
+    <div class="row justify-content-center">
+      <img id="profileImg" src="{{profileImg}}">
+      <label *ngIf="viewMode" for="imgFile" class="custom-file-upload"><h3>Upload Your Picture</h3></label>
+      <input *ngIf="viewMode" type="file"
+              id="imgFile"
+              (change)="handleFileInput($event.target.files)" class="inputfile">
+    </div>
+    <div class="row justify-content-center">
+      <label *ngIf="viewMode" for="resumeFile" class="custom-file-upload-resume"><h3>Upload Your Resume</h3></label>
+      <input *ngIf="viewMode" type="file"
+              id="resumeFile"
+              (change)="handleFileInput($event.target.files)" class="inputfile">
+    </div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <button *ngIf="viewMode" id="submitButton" class="btn btn-primary btn-lg m-3" (click)="submit()">Submit Changes</button>
+      </div>
+      <div class="row justify-content-center">
+        <button *ngIf="!viewMode" id="editButton" class="btn btn-primary btn-lg m-3" (click)="switchMode()">Edit Mode</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+  
+

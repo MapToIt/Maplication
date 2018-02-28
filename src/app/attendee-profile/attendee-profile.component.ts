@@ -30,7 +30,6 @@ export class AttendeeProfileComponent implements OnInit {
   ngOnInit() {
     if(this.viewMode){
       this.getProfile(this.getCurrentID());
-      this.user.name = "Chris";   //for debugging
       this.greeting = "Welcome Back, ".concat(this.user.name);
     }
 
@@ -62,11 +61,13 @@ export class AttendeeProfileComponent implements OnInit {
       }
     }
   }
+
   //get database info
   getProfile(id){
 
     //assign to new attendee
     var user = new Attendee(id);
+    //do setup of user object
     return user;
   }
 
@@ -76,6 +77,7 @@ export class AttendeeProfileComponent implements OnInit {
     return id;
   }
 
+  //work with database services
   submit(){
     //submit to database
     //submit images
@@ -83,6 +85,7 @@ export class AttendeeProfileComponent implements OnInit {
     this.switchMode();
   }
 
+  //switch between edit and view modes
   switchMode(){
     if(this.viewMode){
       this.getProfile(this.getCurrentID());
@@ -103,11 +106,12 @@ export class AttendeeProfileComponent implements OnInit {
     
   }
 
+  //debug user object
   debug(){
     console.log(this.user);
   }
   
-
+  //function for interacting with and changing colors of career tags
   checkTag(tag){
     if(!this.user.tags.includes(tag)){
       return "tagAdded";

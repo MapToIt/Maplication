@@ -34,36 +34,41 @@ export class AttendeeProfileComponent implements OnInit {
   //career field tags
   fieldTags = ["Business", "Art", "Science", "Technology", "Software", "Architecture", "Design", "Management", "Marketing", "Accounting"]
   //debug object
-  user: User = new User("testID");    //change to testID to view logged-in
-  
+  user: User = new User("");    //change to testID to view logged-in
+  profile: User = new User("");
   
 
   constructor() {
   }
 
   ngOnInit() {
+    //Load in page info from db
+    this.profile = this.getProfile(this.getCurrentPageID());
     //Load in user
-    this.user.type = "company";   //debug!!!
-    this.user = this.getProfile(this.getCurrentID());
-    //set greeting
-    if(this.viewMode){
-      this.greeting = "Welcome Back, ".concat(this.user.name);
+    this.user = this.getUser(this.getCurrentID());
+    //get user type
+    this.profile.type = this.getType(this.profile.id);
+    this.user.type = this.getType(this.user.id);
+
+    /*DEBUGGING*/
+    this.profile.id = "same";
+    this.user.id = "same";
+    this.profile.type = "attendee";
+    /*END DEBUGGING*/
+    
+    //check validity
+    if (this.profile.id == this.user.id){
+      this.isValid = true;
+    }else{
+      this.isValid = false;
     }
+    this.UICheck();
 
   }
 
   handleFileInput(files: FileList) {
     this.profileImgFile = files.item(0);
     
-  }
-
-  uploadFileToActivity() {
-  //   this.fileUploadService.postFile(this.profileImgFile).subscribe(data => {
-  //     // do something, if upload success
-  //     }, error => {
-  //       console.log(error);
-  //     });
-    console.log("upload file");
   }
 
   //add career tag to user
@@ -80,49 +85,37 @@ export class AttendeeProfileComponent implements OnInit {
     }
   }
 
-  //get database info
-  getProfile(id){
-
+  //get user info from url 
+  getUser(id){
     //assign to new attendee
     var user = new User(id);
     //setup user for view
-    //check user type
-    if(user.type == "attendee"){
-      this.isAttendee = true;
-      //set UI to reflect attendee
-      this.namePlaceholder = "Name";
-      this.emailPlaceholder = "Email";
-      this.phonePlaceholder = "Phone Number";
-      this.tagText = "Click tags to add them to your profile";
-      this.uploadImgText = "Upload Your Picture";
-      this.tagDescription = "I am interested in: ";
-      if(this.isValid){
-        this.descriptionText = "Here's a look at your profile. Press the edit button to switch to edit mode.";
-      }else{
-        this.descriptionText = "Here's a look at " + this.user.name + "'s profile.";
-      }
-    }else{
-      //set UI to reflect company
-      this.isAttendee = false;
-      this.namePlaceholder = "Company Name";
-      this.emailPlaceholder = "Contact Email";
-      this.phonePlaceholder = "Contact Phone Number"
-      this.tagText = "Click tags which your company is interested in";
-      this.uploadImgText = "Upload Company Picture";
-      this.tagDescription = this.user.name + " is interested in: ";
-      if(this.isValid){
-        this.descriptionText = "Here's a look at your company profile. Press the edit button to switch to edit mode.";
-      }else{
-        this.descriptionText = "Here's a look at " + this.user.name + "'s profile.";
-      }
-    }
+
+    
     return user;
+  }
+
+  getProfile(id){
+    var profile = new User("id");
+    //load in from db and assign to profile
+    return profile;
   }
 
   //get id from OAuth
   getCurrentID(){
     var id = "testID";
     return id;
+  }
+
+  //get passed id of profile to view
+  getCurrentPageID(){
+    var id = "testID";
+    return id;
+  }
+  //get user type
+  getType(id){
+    var type= "attendee"
+    return type;
   }
 
   submit(){
@@ -139,7 +132,7 @@ export class AttendeeProfileComponent implements OnInit {
     
     if(this.isValid){
       if(this.viewMode){
-        this.getProfile(this.getCurrentID());
+        this.getUser(this.getCurrentID());
         this.greeting = "Welcome Back, ".concat(this.user.name);
         this.viewMode = false;
       }else{
@@ -153,6 +146,51 @@ export class AttendeeProfileComponent implements OnInit {
           }
         })
       }
+    }
+  }
+
+  UICheck(){
+    //check user type
+    if(this.profile.type == "attendee"){
+      this.isAttendee = true;
+      //set UI to reflect attendee
+      this.namePlaceholder = "Name";
+      this.emailPlaceholder = "Email";
+      this.phonePlaceholder = "Phone Number";
+      if (this.isValid){
+        this.tagText = "Click tags to add them to your profile";
+        this.uploadImgText = "Upload Your Picture";
+        this.tagDescription = "I am interested in: ";
+        this.descriptionText = "Here's a look at your profile. Press the edit button to switch to edit mode.";
+      }else{
+        this.descriptionText = "";
+        this.greeting = "Here's a look at " + this.user.name + "'s profile.";
+      }
+    }else if(this.profile.type == "company"){
+      //set UI to reflect company
+      this.isAttendee = false;
+      this.namePlaceholder = "Company Name";
+      this.emailPlaceholder = "Contact Email";
+      this.phonePlaceholder = "Contact Phone Number"
+      if (this.isValid){
+        this.tagText = "Click tags which your company is interested in";
+        this.uploadImgText = "Upload Company Picture";
+        this.tagDescription = this.user.name + " is interested in: ";
+        this.descriptionText = "Here's a look at your company profile. Press the edit button to switch to edit mode.";
+      }else{
+        this.descriptionText = "";
+        this.greeting = "Here's a look at " + this.user.name + "'s profile.";
+      }
+      
+    }
+    //set greeting
+    if(this.viewMode){
+      if(this.isValid){
+        this.greeting = "Welcome Back, ".concat(this.user.name);
+      }else{
+        this.descriptionText = "";
+        this.greeting = "Here's a look at " + this.user.name + "'s profile.";
+      } 
     }
   }
 

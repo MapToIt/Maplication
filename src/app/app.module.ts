@@ -53,8 +53,12 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
+<<<<<<< HEAD
+import { CoordHomeComponent } from './coord-home/coord-home.component';
+=======
 import { AboutComponent } from './about/about.component';
 import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
+>>>>>>> ab372ab85c1261151d47092e50c45048f688756d
 
 import { LoginComponent } from './login/login.component';
 
@@ -63,9 +67,13 @@ import { LoginComponent } from './login/login.component';
     AppComponent,
     HomeComponent,
     AppNavbarComponent,
+<<<<<<< HEAD
+    CoordHomeComponent
+=======
     AboutComponent,
     AttendeeProfileComponent,
     LoginComponent,
+>>>>>>> ab372ab85c1261151d47092e50c45048f688756d
   ],
   imports: [
     BrowserModule,

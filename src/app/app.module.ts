@@ -57,6 +57,7 @@ import { AboutComponent } from './about/about.component';
 import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
 
 import { LoginComponent } from './login/login.component';
+import { CoordHomeComponent } from './coord-home/coord-home.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { LoginComponent } from './login/login.component';
     AboutComponent,
     AttendeeProfileComponent,
     LoginComponent,
+    CoordHomeComponent,
   ],
   imports: [
     BrowserModule,

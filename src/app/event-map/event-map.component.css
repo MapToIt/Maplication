@@ -1,8 +1,9 @@
-svg :hover{
-  cursor: crosshair;
+p {
+  color: blue;
 }
 
-.unselectable {
+:host ::ng-deep .unselectable {
+  cursor: crosshair;
   user-drag: none;
   user-select: none;
   -moz-user-select: none;

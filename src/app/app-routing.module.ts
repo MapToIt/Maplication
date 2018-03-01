@@ -5,7 +5,8 @@ import { EventMapComponent } from './event-map/event-map.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'eventmap', component: EventMapComponent },
+  { path: 'event', component:EventMapComponent },
+  { path: 'event/:id', component: EventMapComponent },
   { path: '**', redirectTo: 'home'}
 ];
 

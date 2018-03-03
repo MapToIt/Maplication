@@ -1,7 +1,3 @@
-p {
-  color: blue;
-}
-
 :host ::ng-deep .unselectable {
   cursor: crosshair;
   user-drag: none;

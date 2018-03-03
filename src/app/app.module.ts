@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { EventMapComponent } from './event-map/event-map.component';
+import { EditMapComponent } from './edit-map/edit-map.component';
 
 const appRoutes: Routes = [
   {
@@ -29,7 +30,8 @@ const appRoutes: Routes = [
     AppComponent,
     HomeComponent,
     AppNavbarComponent,
-    EventMapComponent
+    EventMapComponent,
+    EditMapComponent
   ],
   imports: [
     BrowserModule,

@@ -23,6 +23,7 @@ export class Table {
     this.y = y;
     this.width = width;
     this.height = height;
+    this.tableSVG = null;
   }
 
   DrawTable(svg: any){

@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -55,7 +54,7 @@ import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { AboutComponent } from './about/about.component';
 import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
-
+import { NgxPaginationModule } from 'ngx-pagination';
 import { LoginComponent } from './login/login.component';
 import { CoordHomeComponent } from './coord-home/coord-home.component';
 
@@ -71,6 +70,7 @@ import { CoordHomeComponent } from './coord-home/coord-home.component';
   ],
   imports: [
     BrowserModule,
+    NgxPaginationModule,
     AngularFireModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,

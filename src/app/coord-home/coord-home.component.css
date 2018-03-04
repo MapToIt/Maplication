@@ -3,3 +3,20 @@
     align-items: center;
     justify-content: center;
   }
+h3{
+    text-align: center;
+    margin: 0px 50px;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+input{
+  text-align: center;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+h1{
+  text-align: center;
+  margin: 0px 50px;
+  margin-bottom: 10px;
+  padding: 25px;
+}

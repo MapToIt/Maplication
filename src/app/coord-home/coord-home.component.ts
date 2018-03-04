@@ -1,10 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { NgModule} from '@angular/core';
+import { Component, OnInit } from '@angular/core'; 
+import { Pipe, PipeTransform} from '@angular/core';
+
+
 
 @Component({
   selector: 'app-coord-home',
   templateUrl: './coord-home.component.html',
   styleUrls: ['./coord-home.component.css']
+
+  
 })
+
 export class CoordHomeComponent implements OnInit {
    public index = 0;
   futures = [
@@ -22,6 +29,9 @@ export class CoordHomeComponent implements OnInit {
   ]
   myPast = this.pasts[0];
   myFuture = this.futures[0];
+  totalRec : number;
+  page: number = 1;
+  
   constructor() {    
    }
     public next(){
@@ -30,5 +40,5 @@ export class CoordHomeComponent implements OnInit {
   ngOnInit() {
     
   }
-
+  
 }

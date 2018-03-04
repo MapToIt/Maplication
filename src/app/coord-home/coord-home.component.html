@@ -17,7 +17,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let past of (pasts | filter:pastDt | paginate: { id: 'ppast', itemsPerPage: 5, currentPage: p})">
-                <td>{{past.date}}</td>
+                <td><a href="#">{{past.date}}</a></td>
                 <td>{{past.name}}</td>
               </tr>
             </tbody>
@@ -37,7 +37,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let future of (futures | filter:futureDt | paginate: { id: 'ffuture', itemsPerPage: 5, currentPage: f})">
-            <td>{{future.date}}</td>
+            <td><a href="#">{{future.date}}</a></td>
             <td>{{future.name}}</td>
           </tr>
         </tbody>

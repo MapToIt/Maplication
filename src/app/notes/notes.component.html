@@ -1,5 +1,5 @@
-<button type="button" class="btn btn-primary m-2" (click)="toggleAddNote()">Add Note</button>
-<div class="card p-3" *ngIf="addNote">
+<button type="button" class="btn btn-primary m-2" (click)="toggleAddNote()" *ngIf="!addNote">Add Note</button>
+<div class="card p-3 m-3" *ngIf="addNote">
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">Name</span>
@@ -27,7 +27,7 @@
     <button type="button" class="btn btn-primary m-2" (click)="submitNote()">Submit</button>
 </div>
 
-<div class="card p-3">
+<div class="card p-3 m-3">
     <div class="table-responsive-md">
         <table class="table table-striped sortStable">
             <thead>

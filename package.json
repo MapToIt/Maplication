@@ -29,6 +29,7 @@
     "firebaseui": "^2.6.1",
     "firebaseui-angular": "^2.6.1",
     "jquery": "^3.2.1",
+    "ng2-search-filter": "^0.4.7",
     "ngx-pagination": "^3.1.0",
     "popper.js": "^1.12.5",
     "rxjs": "^5.4.2",

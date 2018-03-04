@@ -1,9 +1,26 @@
+.container {
+  background:#e2e2e2;
+  padding: 3em;
+  font-family: 'Raleway', 'Arial';
+  color: black;
+}
+h1{
+  background:#384d48; 
+  padding: 3em;
+  color: white;
+}
+input{
+  background:#a5d8ff; 
+  padding: 3em;
+  color: black;
+}
 .Center {
     display: flex;
     align-items: center;
     justify-content: center;
   }
 h3{
+    background:#acad94;
     text-align: center;
     margin: 0px 50px;
     margin-bottom: 10px;
@@ -19,4 +36,10 @@ h1{
   margin: 0px 50px;
   margin-bottom: 10px;
   padding: 25px;
+}
+body {
+    background:#2E9CE6;
+    padding: 3em;
+    font-family: 'Raleway', 'Arial';
+    color:#fff;
 }

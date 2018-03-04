@@ -47,7 +47,7 @@ import { environment } from './../../environments/environment';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
@@ -71,6 +71,7 @@ import { CoordHomeComponent } from './coord-home/coord-home.component';
   imports: [
     BrowserModule,
     NgxPaginationModule,
+    Ng2SearchPipeModule,
     AngularFireModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,

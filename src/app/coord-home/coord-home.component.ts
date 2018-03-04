@@ -15,11 +15,16 @@ import { Pipe, PipeTransform} from '@angular/core';
 export class CoordHomeComponent implements OnInit {
    public index = 0;
   futures = [
-    {date: '05/01/2018', name: 'Kent Recruiters'},
+    {date: '05/01/2018', name: 'Kent Recruitment'},
     {date: '05/30/2018', name: 'Portage County Recruitment'},
-    {date: '06/01/2018', name: 'IBM Recruitment'}
+    {date: '06/01/2018', name: 'IBM Recruitment'},
+    {date: '06/15/2018', name: 'Stark County Recruitment'},
+    {date: '06/30/2018', name: 'Medical Recruitment'},
+    {date: '07/01/2018', name: 'Google Recruitment'}
   ]
   pasts = [
+    {date: '9/01/2017', name: 'Web Developer Recruitment'},
+    {date: '9/15/2017', name: 'Educational Recruitment'},
     {date: '10/01/2017', name: 'Cleveland Recruitment'},
     {date: '10/30/2017', name: 'Engineering Recruitment'},
     {date: '11/01/2017', name: 'Network Recruitment'},

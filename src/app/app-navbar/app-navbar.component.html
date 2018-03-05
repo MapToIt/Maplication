@@ -18,8 +18,16 @@
         <a class="nav-link" href="attendee-profile">Attendee</a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0"  *ngIf="!isUser">
-      <button class="btn btn-primary my-2 my-sm-0" ng-click="login">Log In</button>
+    <form class="form-inline my-2 my-lg-0 m-2"  *ngIf="!isUser">
+        <li class="nav-item dropdown" ngbDropdown>
+            <button class="btn btn-primary my-2 my-sm-0 m-2 dropdown-toggle" id="dropdown01" ngbDropdownToggle>Register</button>
+            <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
+              <a class="dropdown-item" href="#">Attendee</a>
+              <a class="dropdown-item" href="#">Company</a>
+              <a class="dropdown-item" href="#">Coordinator</a>
+            </div>
+          </li>
+      <button class="btn btn-primary my-2 my-sm-0 m-2" ng-click="login">Log In</button>
     </form>
     <form class="form-inline my-2 my-lg-0" *ngIf="isUser">
       <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">

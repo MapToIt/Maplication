@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -72,6 +72,7 @@ import { LoginComponent } from './login/login.component';
     AngularFireModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    AngularFontAwesomeModule,
     NgbModule.forRoot(),
     RouterModule,
     AppRoutingModule,

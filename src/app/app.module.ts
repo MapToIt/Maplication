@@ -58,7 +58,6 @@ import { LoginComponent } from './login/login.component';
 import { EventListViewComponent } from './event-list-view/event-list-view.component';
 import { EventFilterPipe } from './common/event-filter.pipe'
 import { NgxPaginationModule } from 'ngx-pagination';
-import { LoginComponent } from './login/login.component';
 import { CoordHomeComponent } from './coord-home/coord-home.component';
 
 @NgModule({

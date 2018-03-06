@@ -3,6 +3,7 @@ import { Time } from '@angular/common';
 
 import { Event } from '../common/event';
 import { EVENTSLIST } from './mock-events';
+import { EventFilterPipe } from '../common/event-filter.pipe'
 
 @Component({
   selector: 'app-event-list-view',

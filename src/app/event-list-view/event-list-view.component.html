@@ -1,5 +1,6 @@
+<input [(ngModel)]="searchText" placeholder="search text goes here">
 <div class="d-flex justify-content-start flex-wrap">
-    <div *ngFor="let event of events" class="card" style="width: 15rem">
+    <div *ngFor="let event of events | eventFilter: searchText" class="card" style="width: 15rem">
       <a href="http://www.google.com/">
         <img class="card-img-top" src={{event.eventPic}} alt="Event Picture">
       </a>

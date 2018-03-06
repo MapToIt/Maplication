@@ -59,6 +59,7 @@ import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.co
 
 import { LoginComponent } from './login/login.component';
 import { EventListViewComponent } from './event-list-view/event-list-view.component';
+import { EventFilterPipe } from './common/event-filter.pipe'
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { EventListViewComponent } from './event-list-view/event-list-view.compon
     AboutComponent,
     AttendeeProfileComponent,
     LoginComponent,
+    EventFilterPipe,
     EventListViewComponent,
   ],
   imports: [

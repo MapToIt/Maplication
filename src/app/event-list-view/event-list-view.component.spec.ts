@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { EventFilterPipe } from '../common/event-filter.pipe'
 import { EventListViewComponent } from './event-list-view.component';
 import { Event } from '../common/event';
 

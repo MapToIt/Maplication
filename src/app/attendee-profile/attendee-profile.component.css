@@ -1,0 +1,119 @@
+input[type=text]{
+    height: 45px;
+    margin-bottom: 30px;
+    color: white;
+    border-radius: 5px;
+    border: 0;
+ 
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-indent: 10px;
+}
+
+input[type=text]:focus {
+    background-color: #212529a9;
+}
+
+
+input[type="file"] {
+    display: none;
+}
+
+
+
+.custom-file-upload {
+    background-color: rgba(76,77,142,0.7);
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    width:100%;
+    height:40px;
+    text-align: center;
+}
+.custom-file-upload-resume {
+    background-color: rgba(76,77,142,0.7);
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    width:100%;
+    height:40px;
+    text-align: center;
+}
+
+div[class=header]{
+    background-color: rgba(76,77,142,0.7);
+    padding-bottom: 10px;
+    padding-top: 25px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+#profileImg{
+    margin-top: 30px;
+    width: 100vw;
+    height: 50vh;
+}
+
+::placeholder{
+    color:white;
+    text-align: center;
+}
+
+.tag{
+    display: block;
+    background-color: rgba(76,77,142,0.7);
+    padding: 4px 10px;
+    margin: 5px 0px;
+
+}
+
+.tagAdded{
+    display: block;
+    background-color: rgba(3, 61, 250, 0.7);
+    padding: 4px 10px;
+    margin: 5px 0px;
+}
+.tag:hover {
+    cursor: pointer;
+}
+
+.tagAdded:hover{
+    cursor: pointer;
+}
+
+h6{
+    text-align: center;
+    margin: 0px 50px;
+    margin-bottom: 10px;
+}
+
+textarea.custom{
+    color: white;
+}
+
+.comments-wrapper .comment-body p, .comments-wrapper .squarespace-comments .new-comment-area .input form.comment-form textarea {
+    color: white;
+ }
+
+textarea::-webkit-input-placeholder {
+    color: white;
+    text-align: center;
+}
+
+textarea:-moz-placeholder { /* Firefox 18- */
+    color: white;
+    text-align: center; 
+}
+
+textarea::-moz-placeholder {  /* Firefox 19+ */
+    color: white; 
+    text-align: center; 
+}
+
+textarea:-ms-input-placeholder {
+    color: white;  
+    text-align: center;
+}
+
+textarea::selection {color:white; }
+::-moz-selection { color:white; }
+::-webkit-selection {color:white; }

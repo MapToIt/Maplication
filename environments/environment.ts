@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    firebase: {
+    firebaseConfig: {
         apiKey: "AIzaSyDG4byzwgZFbsIdCE-BJGkP4HnZBn7PD1I",
         authDomain: "maptoit-cece3.firebaseapp.com",
         databaseURL: "https://maptoit-cece3.firebaseio.com",

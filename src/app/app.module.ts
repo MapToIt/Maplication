@@ -54,6 +54,9 @@ import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { AboutComponent } from './about/about.component';
 import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
+import { LoginComponent } from './login/login.component';
+import { EventListViewComponent } from './event-list-view/event-list-view.component';
+import { EventFilterPipe } from './common/event-filter.pipe'
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LoginComponent } from './login/login.component';
 import { CoordHomeComponent } from './coord-home/coord-home.component';
@@ -66,6 +69,8 @@ import { CoordHomeComponent } from './coord-home/coord-home.component';
     AboutComponent,
     AttendeeProfileComponent,
     LoginComponent,
+    EventFilterPipe,
+    EventListViewComponent,
     CoordHomeComponent,
   ],
   imports: [
@@ -81,7 +86,8 @@ import { CoordHomeComponent } from './coord-home/coord-home.component';
     FormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
-    FirebaseUIModule.forRoot(firebaseUiAuthConfig)
+    FirebaseUIModule.forRoot(firebaseUiAuthConfig),
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

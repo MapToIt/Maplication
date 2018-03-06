@@ -8,6 +8,10 @@
   -ms-user-select: none;
 }
 
+.heading{
+  justify-content: center;
+}
+
 button {
   height: 20vh;
   width: 20vh;

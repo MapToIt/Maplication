@@ -56,7 +56,9 @@ import { AppRoutingModule } from './/app-routing.module';
 import { AboutComponent } from './about/about.component';
 import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
 
+
 import { LoginComponent } from './login/login.component';
+import { EventListViewComponent } from './event-list-view/event-list-view.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,7 @@ import { LoginComponent } from './login/login.component';
     AboutComponent,
     AttendeeProfileComponent,
     LoginComponent,
+    EventListViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,7 +81,8 @@ import { LoginComponent } from './login/login.component';
     FormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
-    FirebaseUIModule.forRoot(firebaseUiAuthConfig)
+    FirebaseUIModule.forRoot(firebaseUiAuthConfig),
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

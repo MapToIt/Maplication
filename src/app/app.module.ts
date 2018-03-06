@@ -52,6 +52,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
+import { EventMapComponent } from './event-map/event-map.component';
 import { AboutComponent } from './about/about.component';
 import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
 import { LoginComponent } from './login/login.component';
@@ -65,6 +66,7 @@ import { CoordHomeComponent } from './coord-home/coord-home.component';
     AppComponent,
     HomeComponent,
     AppNavbarComponent,
+    EventMapComponent,
     AboutComponent,
     AttendeeProfileComponent,
     LoginComponent,

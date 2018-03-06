@@ -26,13 +26,13 @@ export class Table {
     this.tableSVG = null;
   }
 
-  DrawTable(svg: any){
+  DrawTable(svg: any, imgWidth: number, imgHeight:number){
     let tempColor = '';
     if (this.company != null){
       tempColor = tableColor.OCCUPIED;
     } else {
       tempColor = tableColor.AVAILABLE;
     }
-    this.tableSVG = svg.rect(this.width, this.height).fill(tempColor).opacity(.5).move(this.x, this.y);
+    this.tableSVG = svg.rect(this.width*imgWidth, this.height*imgHeight).fill(tempColor).opacity(.5).move(this.x*imgWidth, this.y*imgHeight);
   }
 }

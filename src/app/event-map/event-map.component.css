@@ -7,3 +7,10 @@
   -webkit-user-select: none;
   -ms-user-select: none;
 }
+
+button {
+  height: 20vh;
+  width: 20vh;
+  justify-content: center;
+  margin-top: 15vh;
+}

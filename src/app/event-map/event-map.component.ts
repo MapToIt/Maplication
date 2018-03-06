@@ -12,8 +12,8 @@ import * as SVG from 'svg.js';
 })
 export class EventMapComponent implements OnInit {
   imagePath:string = '../../assets/SampleMap.png';
-  imageHeight:number = 1000;
-  imageWidth:number = 1000;
+  imageHeight:number = 600;
+  imageWidth:number = 600;
   tables: Table[];
   eventTables: Table[];
   events: Event[];
@@ -31,22 +31,22 @@ export class EventMapComponent implements OnInit {
     this.buttonClass = "btn btn-success";
     this.tables = [
       //Table(id, event, company, x, y, width, height)
-      new Table(0, 1, 0, 44, 258, 87, 42),
-      new Table(1, 1, 20, 158, 258, 87, 42),
-      new Table(2, 1, null, 272, 258, 87, 42),
-      new Table(3, 1, 11, 386, 258, 87, 42),
-      new Table(4, 1, null, 500, 258, 87, 42),
-      new Table(5, 1, null, 614, 258, 87, 42),
-      new Table(6, 1, 9, 728, 258, 87, 42),
-      new Table(7, 1, null, 842, 258, 87, 42),
-      new Table(8, 2, null, 44, 258, 87, 42),
-      new Table(9, 2, 5, 158, 258, 87, 42),
-      new Table(10, 2, 2, 272, 258, 87, 42),
-      new Table(11, 2, 11, 386, 258, 87, 42),
-      new Table(12, 2, 1, 500, 258, 87, 42),
-      new Table(13, 2, 4, 614, 258, 87, 42),
-      new Table(14, 2, null, 728, 258, 87, 42),
-      new Table(15, 2, null, 842, 258, 87, 42),
+      new Table(0, 1, 0, .044, .258, .087, .042),
+      new Table(1, 1, 20, .158, .258, .087, .042),
+      new Table(2, 1, null, .272, .258, .087, .042),
+      new Table(3, 1, 11, .386, .258, .087, .042),
+      new Table(4, 1, null, .500, .258, .087, .042),
+      new Table(5, 1, null, .614, .258, .087, .042),
+      new Table(6, 1, 9, .728, .258, .087, .042),
+      new Table(7, 1, null, .842, .258, .087, .042),
+      new Table(8, 2, null, .044, .258, .087, .042),
+      new Table(9, 2, 5, .158, .258, .087, .042),
+      new Table(10, 2, 2, .272, .258, .087, .042),
+      new Table(11, 2, 11, .386, .258, .087, .042),
+      new Table(12, 2, 1, .500, .258, .087, .042),
+      new Table(13, 2, 4, .614, .258, .087, .042),
+      new Table(14, 2, null, .728, .258, .087, .042),
+      new Table(15, 2, null, .842, .258, .087, .042),
     ];
     console.log("tables instantiated");
     this.events = [
@@ -82,10 +82,8 @@ export class EventMapComponent implements OnInit {
     let image = this.draw.image(this.imagePath).size(this.imageWidth, this.imageHeight);
     let rect = this.draw.rect(this.imageWidth, this.imageHeight).opacity(0).attr({'class': 'unselectable', 'draggable':false});
     rect.id('drawLayer');
-    //document.getElementById('drawLayer').addEventListener("mousedown", this.AddPointOne);
-    //document.getElementById('drawLayer').addEventListener("mouseup", this.AddPointTwo);
     for (let table of this.eventTables){
-      table.DrawTable(this.draw);
+      table.DrawTable(this.draw, this.imageWidth, this.imageHeight);
     }
   }
 
@@ -136,8 +134,12 @@ export class EventMapComponent implements OnInit {
     width = Math.abs(this.tempPoint.x1 - this.tempPoint.x2);
     height = Math.abs(this.tempPoint.y1 - this.tempPoint.y2);
     console.log(x, y, width, height);
+    x /= this.imageWidth;
+    y /= this.imageHeight;
+    width /= this.imageWidth;
+    height /= this.imageHeight;
     this.eventTables.push(new Table(0, this.eventId, 0, x, y, width, height));
-    this.eventTables[this.eventTables.length-1].DrawTable(this.draw);
+    this.eventTables[this.eventTables.length-1].DrawTable(this.draw, this.imageWidth, this.imageHeight);
     console.log('here');
   }
 

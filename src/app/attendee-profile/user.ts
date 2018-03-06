@@ -1,5 +1,7 @@
-export class Attendee {
+
+export class User {
     id = "";
+    type ="";
     name = "";
     email = "";
     streetName = "";

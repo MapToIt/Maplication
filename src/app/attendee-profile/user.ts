@@ -10,10 +10,11 @@ export class User {
     state = "";
     zip = "";
     phoneNumber = "";
-    motto = "";
-    bio = "";
     imgLink = "";
     resumeLink = "";
+    url = "";
+    college = "";
+    degree = "";
     tags = [];
     
     constructor(id){

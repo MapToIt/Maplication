@@ -17,6 +17,7 @@ export class AttendeeProfileComponent implements OnInit {
   namePlaceholder: string = "Name";
   emailPlaceholder: string = "Email";
   phonePlaceholder: string = "Phone Number";
+  urlPlaceholder: string = "Company Website URL";
   tagText: string = "Click tags to add them to your profile";
   uploadImgText: string = "Upload Your Picture";
   tagDescription: string = "I am interested in: ";
@@ -33,15 +34,18 @@ export class AttendeeProfileComponent implements OnInit {
 
   //career field tags
   fieldTags = ["Business", "Art", "Science", "Technology", "Software", "Architecture", "Design", "Management", "Marketing", "Accounting"]
-  //debug object
+  currTag: string;
+  states = [];
   user: User = new User("");    //change to testID to view logged-in
   profile: User = new User("");
   
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit() {
+    //load in states
+    this.states = this.getStates();
+
     //Load in page info from db
     this.profile = this.getProfile(this.getCurrentPageID());
     //Load in user
@@ -52,8 +56,8 @@ export class AttendeeProfileComponent implements OnInit {
 
     /*DEBUGGING*/
     this.profile.id = "same";
-    this.user.id = "same";
-    this.profile.type = "attendee";
+    this.user.id = "diff";
+    this.profile.type = "company";
     /*END DEBUGGING*/
     
     //check validity
@@ -71,19 +75,7 @@ export class AttendeeProfileComponent implements OnInit {
     
   }
 
-  //add career tag to user
-  addTag(tag){
-    if(this.viewMode){
-      if(!this.user.tags.includes(tag)){
-        this.user.tags.push(tag);
-        document.getElementById(tag).className = "tagAdded";
-      }else{
-        var index = this.user.tags.indexOf(tag);
-        this.user.tags.splice(index, 1);
-        document.getElementById(tag).className = "tag";
-      }
-    }
-  }
+
 
   //get user info from url 
   getUser(id){
@@ -117,6 +109,10 @@ export class AttendeeProfileComponent implements OnInit {
     var type= "attendee"
     return type;
   }
+  //get states from db
+  getStates(){
+    return ["Alabama", "Alaska", "Arizona", "Ohio", "Michigan", "Florida"]
+  }
 
   submit(){
     //submit to database
@@ -137,14 +133,6 @@ export class AttendeeProfileComponent implements OnInit {
         this.viewMode = false;
       }else{
         this.viewMode = true;
-        //show which tags have already been selected
-        this.fieldTags.forEach(tag => {
-          if(this.user.tags.includes(tag)){
-            console.log(tag);
-
-            document.getElementById(tag).className = "tagAdded";
-          }
-        })
       }
     }
   }
@@ -158,7 +146,7 @@ export class AttendeeProfileComponent implements OnInit {
       this.emailPlaceholder = "Email";
       this.phonePlaceholder = "Phone Number";
       if (this.isValid){
-        this.tagText = "Click tags to add them to your profile";
+        this.tagText = "You are interested in these fields:";
         this.uploadImgText = "Upload Your Picture";
         this.tagDescription = "I am interested in: ";
         this.descriptionText = "Here's a look at your profile. Press the edit button to switch to edit mode.";
@@ -171,9 +159,10 @@ export class AttendeeProfileComponent implements OnInit {
       this.isAttendee = false;
       this.namePlaceholder = "Company Name";
       this.emailPlaceholder = "Contact Email";
-      this.phonePlaceholder = "Contact Phone Number"
+      this.phonePlaceholder = "Contact Phone Number";
+      this.urlPlaceholder = "Your Company Url";
       if (this.isValid){
-        this.tagText = "Click tags which your company is interested in";
+        this.tagText = "Tags which your company is interested in (click to remove)";
         this.uploadImgText = "Upload Company Picture";
         this.tagDescription = this.user.name + " is interested in: ";
         this.descriptionText = "Here's a look at your company profile. Press the edit button to switch to edit mode.";
@@ -198,18 +187,29 @@ export class AttendeeProfileComponent implements OnInit {
   debug(){
     console.log(this.user);
   }
-  
-  //helper function to change style of selected vs unselected tags
-  checkTag(tag){
-    if(!this.user.tags.includes(tag)){
-      return "tagAdded";
-    }else{
-      return "tag";
-    }
-  }
 
   hasTags(){
     return (this.user.tags.length != 0)
+  }
+
+
+
+  //add career tag to user
+  addTag(){
+    var tag = this.currTag;
+    console.log(tag);
+    if(this.viewMode){
+      if(!this.user.tags.includes(tag)){
+         this.user.tags.push(tag);
+      }
+    }
+  }
+
+  removeTag(tag: string){
+    if(this.viewMode){
+      this.user.tags.splice(this.user.tags.findIndex((index) => { return index == tag}), 1)
+      document.getElementById(tag).remove
+    }
   }
 
 }

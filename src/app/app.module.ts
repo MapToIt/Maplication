@@ -60,6 +60,7 @@ import { EventListViewComponent } from './event-list-view/event-list-view.compon
 import { EventFilterPipe } from './common/event-filter.pipe'
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CoordHomeComponent } from './coord-home/coord-home.component';
+import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { CoordHomeComponent } from './coord-home/coord-home.component';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     FirebaseUIModule.forRoot(firebaseUiAuthConfig),
+    Ng2AutoCompleteModule,
     
   ],
   providers: [],

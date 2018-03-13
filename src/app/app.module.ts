@@ -54,7 +54,6 @@ import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { AboutComponent } from './about/about.component';
 import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
-import { LoginComponent } from './login/login.component';
 import { EventListViewComponent } from './event-list-view/event-list-view.component';
 import { EventFilterPipe } from './common/event-filter.pipe'
 import { NgxPaginationModule } from 'ngx-pagination';

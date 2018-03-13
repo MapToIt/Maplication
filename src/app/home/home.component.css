@@ -2,7 +2,6 @@
 .site-wrapper {
   display: table;
   width: 100%;
-  height: 600px;
   background-image: url("../../assets/jobSearch.jpg");
   background-size: cover;
   height:90vh;

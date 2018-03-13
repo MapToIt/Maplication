@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Time } from '@angular/common';
 
-import { Event } from '../common/event';
+import { Event } from '../shared/domain-model/event';
 import { EVENTSLIST } from './mock-events';
-import { EventFilterPipe } from '../common/event-filter.pipe'
+import { EventFilterPipe } from '../shared/pipes/event-filter.pipe'
 
 @Component({
   selector: 'app-event-list-view',
@@ -14,6 +14,8 @@ import { EventFilterPipe } from '../common/event-filter.pipe'
 export class EventListViewComponent implements OnInit {
 
   events = EVENTSLIST;
+
+  searchText = "";
 
   selectedEvent: Event;
 

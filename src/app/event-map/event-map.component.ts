@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-import { Table } from "../domain-model/table";
-import { Event } from "../domain-model/event";
+import { Table } from "../shared/domain-model/table";
+import { Event } from "../shared/domain-model/event";
 
 import * as SVG from 'svg.js';
 
@@ -50,9 +50,12 @@ export class EventMapComponent implements OnInit {
     ];
     console.log("tables instantiated");
     this.events = [
-      //Event(id, name, coordinator, startime, endtime)
-      new Event(1, 'White House Meet and Greet', 'Barack Obama', new Date(14, 4, 24, 11, 30, 0, 0), new Date(14, 4, 24, 14, 30, 0 ,0)),
-      new Event(2, 'Rig the Election', 'Vladimir Putin', new Date(16, 8, 24, 12, 0, 0, 0), new Date(16, 9, 24, 12, 0, 0 ,0)),
+      //(eventId:number, eventTitle:string, coordinator:string, eventStartTime:Date, eventEndTime:Date, 
+      //description:string, streetNumber:Int32Array, street:string, city:string, stateId: Int32Array, zipcode:Int32Array)
+      new Event(1, 'White House Meet and Greet', 'Barack Obama', new Date(14, 4, 24, 11, 30, 0, 0), new Date(14, 4, 24, 14, 30, 0 ,0), 
+        'White House Meet and Greet', 1600, 'Pennsylvania Ave', 'Washington', 2, 20500),
+      new Event(2, 'Rig the Election', 'Vladimir Putin', new Date(16, 8, 24, 12, 0, 0, 0), new Date(16, 9, 24, 12, 0, 0 ,0),
+        'Rig the Election', 123, 'Russia Ave', "Russia", 1, 12345),
     ];
     console.log("events instantiated");
     for (let event of this.events){

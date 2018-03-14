@@ -17,22 +17,9 @@ import {
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularBasicModalModule } from 'angular-basic-modal';
-import { environment } from './../../environments/environment';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { AppNavbarComponent } from './app-navbar/app-navbar.component';
-import { AppRoutingModule } from './/app-routing.module';
-import { AboutComponent } from './about/about.component';
-import { LoginComponent } from './login/login.component';
-import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
-import { EventMapComponent } from './event-map/event-map.component';
-import { EventListViewComponent } from './event-list-view/event-list-view.component';
-import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { SharedModule } from './shared/shared.module';
 
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
+
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
   customConfig: {
@@ -66,7 +53,6 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
 import { environment } from './../../environments/environment';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -78,8 +64,6 @@ import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.co
 import { LoginComponent } from './login/login.component';
 import { NotesComponent } from './notes/notes.component';
 import { EventListViewComponent } from './event-list-view/event-list-view.component';
-import { EventFilterPipe } from './common/event-filter.pipe'
-import { NgxPaginationModule } from 'ngx-pagination';
 import { CoordHomeComponent } from './coord-home/coord-home.component';
 
 @NgModule({
@@ -92,7 +76,6 @@ import { CoordHomeComponent } from './coord-home/coord-home.component';
     AttendeeProfileComponent,
     EventMapComponent,
     NotesComponent,
-    EventFilterPipe,
     EventListViewComponent,
     CoordHomeComponent,
   ],

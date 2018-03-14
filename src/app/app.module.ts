@@ -32,7 +32,7 @@ import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { SharedModule } from './shared/shared.module';
 
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { EventFilterPipe } from './common/event-filter.pipe'
+import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
   customConfig: {

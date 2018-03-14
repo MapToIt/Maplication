@@ -30,6 +30,9 @@ import { EventMapComponent } from './event-map/event-map.component';
 import { EventListViewComponent } from './event-list-view/event-list-view.component';
 import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { SharedModule } from './shared/shared.module';
+
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { EventFilterPipe } from './common/event-filter.pipe'
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
   customConfig: {
@@ -59,6 +62,7 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
   tos: '<your-tos-link>',
   credentialHelper: CredentialHelper.AccountChooser
 };
+
 
 @NgModule({
   declarations: [

@@ -6,15 +6,15 @@
   <div class="card-group">
       <div class="card text-center">
           <h3><strong>Coordinator Info</strong></h3>
-            <div>
-             <input class = "form-control" type= "text" placeholder = "Enter First Name" [(ngModel)]="Coord.FirstName">
+            <div class = "px-2">
+             <input class = "form-control" type= "text" placeholder = "Enter First Name">
              <input class = "form-control" type= "text" placeholder = "Enter Last Name">
              <input class = "form-control" type= "text" placeholder = "Enter Email Address">
              <input class = "form-control" type= "text" placeholder = "Enter Phone Number"> 
               <a type = "submit" class="btn btn-outline-primary btn-block center-block">Submit</a>
             </div>
             <br>
-            <div class="card text-center">
+            <div class="card text-center px-2">
                 <h3><strong>Create Event</strong></h3>
                   <div>
                     <p class="card-text">Click the button to create a new event</p>
@@ -24,7 +24,7 @@
               </div>
         </div>
    
-    <div class="card text-center">
+    <div class="card text-center px-2">
         <h3><strong>Past Event</strong></h3> 
         <div><input class = "form-control" type="text" placeholder = "Enter Search Date" [(ngModel)] = "pastDt"/>
         </div>
@@ -44,7 +44,7 @@
           </table>
           <pagination-controls id = "ppast" (pageChange)="p = $event"></pagination-controls>
     </div>
-    <div class="card text-center">
+    <div class="card text-center px-2">
       <h3><strong>Future Event</strong></h3> 
       <div><input class = "form-control" type="text" placeholder = "Enter Search Date" [(ngModel)] = "futureDt">
       </div> 

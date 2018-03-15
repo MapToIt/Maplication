@@ -1,8 +1,7 @@
 import { NgModule} from '@angular/core';
 import { Component, OnInit } from '@angular/core'; 
 import { Pipe, PipeTransform} from '@angular/core';
-
-
+import { Coord } from './coord';
 
 @Component({
   selector: 'app-coord-home',
@@ -11,7 +10,7 @@ import { Pipe, PipeTransform} from '@angular/core';
 
   
 })
-
+ 
 export class CoordHomeComponent implements OnInit {
    public index = 0;
   futures = [

@@ -1,9 +1,29 @@
-<!-- 
+
 
 <div class = "container">
    
   <h1 class="text-center"><strong>Welcome to the Coordinator Page</strong></h1>
   <div class="card-group">
+      <div class="card text-center">
+          <h3><strong>Coordinator Info</strong></h3>
+            <div>
+             <input class = "form-control" type= "text" placeholder = "Enter First Name" [(ngModel)]="Coord.FirstName">
+             <input class = "form-control" type= "text" placeholder = "Enter Last Name">
+             <input class = "form-control" type= "text" placeholder = "Enter Email Address">
+             <input class = "form-control" type= "text" placeholder = "Enter Phone Number"> 
+              <a type = "submit" class="btn btn-outline-primary btn-block center-block">Submit</a>
+            </div>
+            <br>
+            <div class="card text-center">
+                <h3><strong>Create Event</strong></h3>
+                  <div>
+                    <p class="card-text">Click the button to create a new event</p>
+                    
+                    <a href="#" type = "submit" class="btn btn-link btn-outline-primary btn-block center-block">Create Event</a>
+                  </div>
+              </div>
+        </div>
+   
     <div class="card text-center">
         <h3><strong>Past Event</strong></h3> 
         <div><input class = "form-control" type="text" placeholder = "Enter Search Date" [(ngModel)] = "pastDt"/>
@@ -18,7 +38,7 @@
             <tbody>
               <tr *ngFor="let past of (pasts | filter:pastDt | paginate: { id: 'ppast', itemsPerPage: 5, currentPage: p})">
                 <td>{{past.date}}</td>
-                <td><a href="../event-list-view">{{past.name}}</a></td>
+                <td><a href = "#">{{past.name}}</a></td>
               </tr>
             </tbody>
           </table>
@@ -38,23 +58,15 @@
         <tbody>
           <tr *ngFor="let future of (futures | filter:futureDt | paginate: { id: 'ffuture', itemsPerPage: 5, currentPage: f})">
             <td>{{future.date}}</td>
-            <td><a href="../event-list-view">{{future.name}}</a></td>
+            <td><a href="#">{{future.name}}</a></td>
           </tr>
         </tbody>
       </table>
       <pagination-controls id = "ffuture" (pageChange)="f = $event"></pagination-controls>
     </div>
-    <div class="card text-center">
-      <h3><strong>Create Event</strong></h3>
-      <div>
-        <p class="card-text">Click the button to create a new event</p>
-      
-        <a href="#" type = "submit" class="btn btn-link btn-outline-primary btn-block center-block">Create Event</a>
-      </div>
-    </div>
-
-    </div>
+    
+  </div>
   
  
 </div>
- -->
+

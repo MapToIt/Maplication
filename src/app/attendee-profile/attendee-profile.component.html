@@ -1,5 +1,4 @@
 <div *ngIf="afAuth.authState | async as user; else showLogin">
-  <button (click)="debug()">DEBUG ME CAPTAIN</button>
   {{regUser(user.uid)}}
 </div>
 <div id="cont" class="modal-body row">

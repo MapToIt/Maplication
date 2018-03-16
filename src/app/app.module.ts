@@ -31,7 +31,8 @@ import { EventListViewComponent } from './event-list-view/event-list-view.compon
 import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { SharedModule } from './shared/shared.module';
 import {Ng2AutoCompleteModule} from 'ng2-auto-complete';
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
@@ -62,6 +63,7 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
   tos: '<your-tos-link>',
   credentialHelper: CredentialHelper.AccountChooser
 };
+
 
 @NgModule({
   declarations: [

@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from './user';
+import {Attendee} from '../shared/domain-model/attendee'
 import { logger } from '@firebase/database/dist/esm/src/core/util/util';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AnonymousSubscription } from 'rxjs/Subscription';
+import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
+import * as firebase from 'firebase/app';
+import { ChangeDetectorRef } from '@angular/core';
+import { NgModule } from '@angular/core/src/metadata/ng_module';
 
 @Component({
   selector: 'app-attendee-profile',
@@ -9,6 +17,8 @@ import { logger } from '@firebase/database/dist/esm/src/core/util/util';
 })
 export class AttendeeProfileComponent implements OnInit { 
 
+  //debug
+  myUID: string = "1XZbEmGQfJPAVwLh1KjzgMchiUd2";
 
   //string for ui
   greeting: string = "Let's Get Started With Your Profile!";
@@ -26,7 +36,7 @@ export class AttendeeProfileComponent implements OnInit {
   //page controls
   viewMode: boolean = false;
   isAttendee: boolean = true;
-  isValid: boolean = true;
+  isValid: boolean = false;
   
   //profile image setup
   profileImg: string = "/assets/placeholder.png";
@@ -36,32 +46,35 @@ export class AttendeeProfileComponent implements OnInit {
   fieldTags = ["Business", "Art", "Science", "Technology", "Software", "Architecture", "Design", "Management", "Marketing", "Accounting"]
   currTag: string;
   states = [];
-  user: User = new User("");    //change to testID to view logged-in
+  UIUser = new User("none");
   profile: User = new User("");
   
 
-  constructor() {}
+  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, private cdr: ChangeDetectorRef) {
+
+  }
 
   ngOnInit() {
+    
     //load in states
     this.states = this.getStates();
 
     //Load in page info from db
     this.profile = this.getProfile(this.getCurrentPageID());
-    //Load in user
-    this.user = this.getUser(this.getCurrentID());
+
+
     //get user type
     this.profile.type = this.getType(this.profile.id);
-    this.user.type = this.getType(this.user.id);
+    this.UIUser.type = this.getType(this.UIUser.id);
 
     /*DEBUGGING*/
-    this.profile.id = "same";
-    this.user.id = "diff";
-    this.profile.type = "company";
+    this.profile.id = this.myUID;
+   // this.profile.id = "NOT MY ID";
+    this.profile.type = "attendee";
     /*END DEBUGGING*/
     
     //check validity
-    if (this.profile.id == this.user.id){
+    if (this.profile.id == this.UIUser.id){
       this.isValid = true;
     }else{
       this.isValid = false;
@@ -94,9 +107,17 @@ export class AttendeeProfileComponent implements OnInit {
   }
 
   //get id from OAuth
-  getCurrentID(){
-    var id = "testID";
-    return id;
+  regUser(id: string){
+    this.UIUser.id = id;
+    //reload page
+    //check validity
+    if (this.profile.id == this.UIUser.id) {
+      this.isValid = true;
+    } else {
+      this.isValid = false;
+    }
+    this.UICheck();
+    
   }
 
   //get passed id of profile to view
@@ -125,16 +146,17 @@ export class AttendeeProfileComponent implements OnInit {
   //switch views based on controls
   switchMode(){
     //check validation
-    
-    if(this.isValid){
-      if(this.viewMode){
-        this.getUser(this.getCurrentID());
-        this.greeting = "Welcome Back, ".concat(this.user.name);
-        this.viewMode = false;
-      }else{
-        this.viewMode = true;
+    //var err = this.authentication()
+
+      if(this.isValid){
+        if(this.viewMode){
+          this.greeting = "Welcome Back, ".concat(this.UIUser.name);
+          this.viewMode = false;
+        }else{
+          this.viewMode = true;
+        }
       }
-    }
+  
   }
 
   UICheck(){
@@ -152,11 +174,12 @@ export class AttendeeProfileComponent implements OnInit {
         this.descriptionText = "Here's a look at your profile. Press the edit button to switch to edit mode.";
       }else{
         this.descriptionText = "";
-        this.greeting = "Here's a look at " + this.user.name + "'s profile.";
+        this.greeting = "Here's a look at " + this.profile.name + "'s profile.";
       }
     }else if(this.profile.type == "company"){
       //set UI to reflect company
       this.isAttendee = false;
+      this.greeting = "Welcome Back, ".concat(this.UIUser.name);
       this.namePlaceholder = "Company Name";
       this.emailPlaceholder = "Contact Email";
       this.phonePlaceholder = "Contact Phone Number";
@@ -164,32 +187,55 @@ export class AttendeeProfileComponent implements OnInit {
       if (this.isValid){
         this.tagText = "Tags which your company is interested in (click to remove)";
         this.uploadImgText = "Upload Company Picture";
-        this.tagDescription = this.user.name + " is interested in: ";
+        this.tagDescription = this.UIUser.name + " is interested in: ";
         this.descriptionText = "Here's a look at your company profile. Press the edit button to switch to edit mode.";
       }else{
         this.descriptionText = "";
-        this.greeting = "Here's a look at " + this.user.name + "'s profile.";
+        this.greeting = "Here's a look at " + this.profile.name + "'s profile.";
       }
       
     }
     //set greeting
     if(this.viewMode){
       if(this.isValid){
-        this.greeting = "Welcome Back, ".concat(this.user.name);
+        this.greeting = "Welcome Back, ".concat(this.UIUser.name);
+
       }else{
         this.descriptionText = "";
-        this.greeting = "Here's a look at " + this.user.name + "'s profile.";
+        this.greeting = "Here's a look at " + this.profile.name + "'s profile.";
       } 
+    }else{
+      if (this.isValid && this.profile.name != "") {
+        this.greeting = "Welcome Back, ".concat(this.UIUser.name);
+
+      } else {
+        this.greeting = "Lets get started with your profile!";
+      }
     }
+  }
+
+  //form authentication
+  authentication(){
+    var prof = this.profile;
+    if(prof.type == "attendee"){    //check for attendee type
+      if (
+        prof.name || prof.email || prof.phoneNumber || prof.degree || prof.college == ""
+      ){
+        return "Please fill out all fields!"
+      }
+      if (prof.imgLink || prof.resumeLink == "" ){ return "Please upload a profile picture and resume!"}
+      if (prof.tags.length == 0){ return "Please add some tags to your profile!"}
+    }
+    return "";
   }
 
   //debug user object
   debug(){
-    console.log(this.user);
+    console.log(this.UIUser, this.profile);
   }
 
   hasTags(){
-    return (this.user.tags.length != 0)
+    return (this.UIUser.tags.length != 0)
   }
 
 
@@ -199,15 +245,15 @@ export class AttendeeProfileComponent implements OnInit {
     var tag = this.currTag;
     console.log(tag);
     if(this.viewMode){
-      if(!this.user.tags.includes(tag)){
-         this.user.tags.push(tag);
+      if (!this.UIUser.tags.includes(tag)){
+        this.UIUser.tags.push(tag);
       }
     }
   }
 
   removeTag(tag: string){
     if(this.viewMode){
-      this.user.tags.splice(this.user.tags.findIndex((index) => { return index == tag}), 1)
+      this.UIUser.tags.splice(this.UIUser.tags.findIndex((index) => { return index == tag}), 1)
       document.getElementById(tag).remove
     }
   }

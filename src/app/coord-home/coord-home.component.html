@@ -7,11 +7,11 @@
       <div class="card text-center">
           <h3><strong>Coordinator Info</strong></h3>
             <div class = "px-2">
-             <input class = "form-control" type= "text" placeholder = "Enter First Name">
-             <input class = "form-control" type= "text" placeholder = "Enter Last Name">
-             <input class = "form-control" type= "text" placeholder = "Enter Email Address">
-             <input class = "form-control" type= "text" placeholder = "Enter Phone Number"> 
-              <a type = "submit" class="btn btn-outline-primary btn-block center-block">Submit</a>
+             <input #fname class = "form-control" type= "text" placeholder = "Enter First Name">
+             <input #lname class = "form-control" type= "text" placeholder = "Enter Last Name">
+             <input #email class = "form-control" type= "email" placeholder = "someone@mail.com" pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+             <input #phone class = "form-control" type= "text" placeholder = "Enter Phone Number"> 
+             <button (click)="addCoord(fname.value,lname.value,email.value,phone.value)">Add Coordinator</button>
             </div>
             <br>
             <div class="card text-center px-2">
@@ -21,6 +21,7 @@
                     
                     <a href="#" type = "submit" class="btn btn-link btn-outline-primary btn-block center-block">Create Event</a>
                   </div>
+                  <br>
               </div>
         </div>
    
@@ -36,9 +37,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let past of (pasts | filter:pastDt | paginate: { id: 'ppast', itemsPerPage: 5, currentPage: p})">
-                <td>{{past.date}}</td>
-                <td><a href = "#">{{past.name}}</a></td>
+              <tr *ngFor="let past of (evts | filter:pastDt | paginate: { id: 'ppast', itemsPerPage: 5, currentPage: p})">
+                <td ngIf = "{{past.date}} < now">{{past.date}}</td>
+                <td><a href = "./event/{{past.id}}">{{past.name}}</a></td>
               </tr>
             </tbody>
           </table>
@@ -58,7 +59,7 @@
         <tbody>
           <tr *ngFor="let future of (futures | filter:futureDt | paginate: { id: 'ffuture', itemsPerPage: 5, currentPage: f})">
             <td>{{future.date}}</td>
-            <td><a href="#">{{future.name}}</a></td>
+            <td><a href = "./event/{{future.id}}">{{future.name}}</a></td>
           </tr>
         </tbody>
       </table>

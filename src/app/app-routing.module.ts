@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'attendee-profile', component: AttendeeProfileComponent },
   { path: 'login', component: LoginComponent },
   { path: 'event-list-view', component: EventListViewComponent},
-  { path: 'coord-home', component: CoordHomeComponent },
+  { path: 'coord-home/:id', component: CoordHomeComponent },
   { path: '**', redirectTo: 'home'}
 ];
 

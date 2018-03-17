@@ -1,13 +1,18 @@
 export class Coord {
-    CoordinatorId = "";
-    FirstName = "";
-    LastName = "";
-    UserId = "";
-    Email = "";
-    PhoneNumber = "";
-        
-    constructor(id){
+    CoordinatorId: number;
+    FirstName: string;
+    LastName: string;
+    UserId: string;
+    Email: string;
+    PhoneNumber: string;
+
+   constructor(id, FirstName, LastName, UserId, Email, PhoneNumber){
         this.CoordinatorId = id;
+        this.FirstName = FirstName;
+        this.LastName = LastName;
+        this.UserId = UserId;
+        this.Email = Email;
+        this.PhoneNumber = PhoneNumber;
     }
 
 }

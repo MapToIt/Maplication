@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core'; 
 import { Pipe, PipeTransform} from '@angular/core';
 import { Coord } from './coord';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Table } from "../shared/domain-model/table";
 import { logger } from '@firebase/database/dist/esm/src/core/util/util';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
@@ -21,7 +22,7 @@ export class CoordHomeComponent implements OnInit {
    public now: Date = new Date();
    cId: number = 0;
    uId: string;
-   coords: Coord[];
+   coords: Coord[] = new Array();
    cIdHold: number;
    
   futures = [
@@ -33,10 +34,10 @@ export class CoordHomeComponent implements OnInit {
     {id: 1, coord: 1, date: '07/01/2018', name: 'Google Recruitment'}
   ]
   pasts = [
-    {id: 2, coord: 2, date: '9/01/2017', name: 'Web Developer Recruitment'},
-    {id: 1, coord: 1, date: '9/15/2017', name: 'Educational Recruitment'},
-    {id: 1, coord: 1, date: '10/01/2017', name: 'Cleveland Recruitment'},
-    {id: 1, coord: 1, date: '10/30/2017', name: 'Engineering Recruitment'},
+    {id: 2, coord: 2, date: '9/01/2017 00:00', name: 'Web Developer Recruitment'},
+    {id: 1, coord: 1, date: '9/15/2017 00:00', name: 'Educational Recruitment'},
+    {id: 1, coord: 1, date: '10/01/2017 00:00', name: 'Cleveland Recruitment'},
+    {id: 1, coord: 1, date: '10/30/2017 00:00', name: 'Engineering Recruitment'},
     {id: 1, coord: 1, date: '11/01/2017', name: 'Network Recruitment'},
     {id: 1, coord: 1, date: '12/01/2017', name: 'Tech Recruitment'},
     {id: 1, coord: 1, date: '01/25/2018', name: 'RN Recruitment'},
@@ -72,7 +73,7 @@ export class CoordHomeComponent implements OnInit {
    
    addCoord(firstName,lastName,email,phone){
     let coord = new Coord("",firstName,lastName,this.uId,email,phone);
-   // this.coords.push(coord);
+    this.coords.push(coord);
     console.log("Coordinator Added");
   }
   ngOnInit() {

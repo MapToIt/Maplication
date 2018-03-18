@@ -5,14 +5,16 @@
   <h1 class="text-center"><strong>Welcome to the Coordinator Page</strong></h1>
   <div class="card-group">
       <div class="card text-center">
+        <form>
           <h3><strong>Coordinator Info</strong></h3>
             <div class = "px-2">
              <input #fname class = "form-control" type= "text" placeholder = "Enter First Name">
-             <input #lname class = "form-control" type= "text" placeholder = "Enter Last Name">
+             <input #lname class = "form-control" type= "text" placeholder = "Enter Last Name" >
              <input #email class = "form-control" type= "email" placeholder = "someone@mail.com" pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
              <input #phone class = "form-control" type= "text" placeholder = "Enter Phone Number"> 
-             <button (click)="addCoord(fname.value,lname.value,email.value,phone.value)">Add Coordinator</button>
+             <button (click)="addCoord(fname.value,lname.value,email.value,phone.value)">Save</button>
             </div>
+        </form> 
             <br>
             <div class="card text-center px-2">
                 <h3><strong>Create Event</strong></h3>
@@ -37,8 +39,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let past of (evts | filter:pastDt | paginate: { id: 'ppast', itemsPerPage: 5, currentPage: p})">
-                <td ngIf = "{{past.date}} < now">{{past.date}}</td>
+              <tr *ngFor="let past of (pasts | filter:pastDt | paginate: { id: 'ppast', itemsPerPage: 5, currentPage: p})">
+               <!-- <td ngIf = "{{past.date}} < now">{{past.date}}</td>-->
+                <td>{{past.date}}</td>
                 <td><a href = "./event/{{past.id}}">{{past.name}}</a></td>
               </tr>
             </tbody>

@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
 import { ChangeDetectorRef } from '@angular/core';
 import { NgModule } from '@angular/core/src/metadata/ng_module';
+import { StateService, stateObj } from '../services/state.service';
 
 @Component({
   selector: 'app-attendee-profile',
@@ -45,12 +46,13 @@ export class AttendeeProfileComponent implements OnInit {
   //career field tags
   fieldTags = ["Business", "Art", "Science", "Technology", "Software", "Architecture", "Design", "Management", "Marketing", "Accounting"]
   currTag: string;
-  states = [];
+  stateObjs: stateObj[];
+  states: string[];
   UIUser = new User("none");
   profile: User = new User("");
   
 
-  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, private cdr: ChangeDetectorRef) {
+  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, private cdr: ChangeDetectorRef, private stateService: StateService) {
 
   }
 
@@ -70,7 +72,7 @@ export class AttendeeProfileComponent implements OnInit {
     /*DEBUGGING*/
     this.profile.id = this.myUID;
    // this.profile.id = "NOT MY ID";
-    this.profile.type = "attendee";
+    this.profile.type = "company";
     /*END DEBUGGING*/
     
     //check validity
@@ -132,9 +134,18 @@ export class AttendeeProfileComponent implements OnInit {
   }
   //get states from db
   getStates(){
-    return ["Alabama", "Alaska", "Arizona", "Ohio", "Michigan", "Florida"]
+    var states: string[] = [];
+    this.stateService.getStates().subscribe((data) => {
+      this.stateObjs = data;
+      //convert from objects to a string of state names
+      this.stateObjs.forEach(state => {
+        states.push(state.stateName);
+      });
+    }), err => { console.log(err)}
+    
+    return states;
   }
-
+  
   submit(){
     //submit to database
     //submit images

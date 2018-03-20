@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModel } from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { RouterModule, Routes } from '@angular/router';
@@ -30,9 +31,10 @@ import { EventMapComponent } from './event-map/event-map.component';
 import { EventListViewComponent } from './event-list-view/event-list-view.component';
 import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { SharedModule } from './shared/shared.module';
-
+import { Globals } from './shared/globals';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
+import { UserService } from './services/user-service/user.service';
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
   customConfig: {
@@ -80,6 +82,7 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     FirebaseUIModule.forRoot(firebaseUiAuthConfig),
@@ -91,7 +94,10 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     SharedModule,
     NgxPaginationModule
   ],
-  providers: [],
+  providers: [
+    Globals,
+    UserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

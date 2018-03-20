@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { NotesComponent } from './notes/notes.component';
 import { EventListViewComponent } from './event-list-view/event-list-view.component';
 import { CoordHomeComponent } from './coord-home/coord-home.component';
+import { RegistrationComponent } from './registration/registration.component'
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'notes', component: NotesComponent },
   { path: 'event-list-view', component: EventListViewComponent},
   { path: 'coord-home', component: CoordHomeComponent },
+  { path: 'registration', component: RegistrationComponent },
   { path: '**', redirectTo: 'home'}
 ];
 

@@ -1,11 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import {AngularFireAuth} from 'angularfire2/auth';
-import {FirebaseUISignInSuccess} from 'firebaseui-angular';
+import { Component, OnInit, state } from '@angular/core';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { FirebaseUISignInSuccess } from 'firebaseui-angular';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
 import { UserService } from '../services/user-service/user.service';
 
+export class AuthService {
+  private currentUser: firebase.User = null;
+  isLoggedIn() {
+    if (this.currentUser == null) {
+      return false;
+    }
+    return true;
+  }
+}
 
 @Component({
   selector: 'app-login',
@@ -15,24 +25,71 @@ import { UserService } from '../services/user-service/user.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, private _UserService: UserService) { 
+  private currentUser: firebase.User = null;
+  
+
+  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
+              private _UserService: UserService, private route: ActivatedRoute, 
+              private router: Router) 
+  { 
     
   }
 
-  ngOnInit() {
+  ngOnInit() 
+  {
+    this.afAuth.authState.subscribe((response) => this.firebaseAuthChangeListener(response));
   }
 
-  successCallback(data: FirebaseUISignInSuccess) {
-    console.log('successCallback', data);
-    console.log('uid', data.currentUser.uid);
-    this._UserService.getUserType(data.currentUser.uid).subscribe((userData) => {
-      var userType = userData;
-      console.log("User Type:", userType);
-    });
+  firebaseAuthChangeListener(response) 
+  {
+    if (this.currentUser){
+      if (response == null)
+      {
+        console.log('Logged out :(');
+        this.router.navigate(['*']);
+      }
+
+    }
+    else
+    {
+      this.currentUser = response;
+      if (response) {
+        this._UserService.getUserType(response.uid).subscribe((userType) => {
+              if(userType != null)
+              {
+                if(userType.toLowerCase() == "company" || userType.toLowerCase() == "attendee")
+                {
+                  this.router.navigate(['event-list-view']);
+                }
+                else if (userType.toLowerCase() == "coordinator")
+                {
+                  this.router.navigate(['coord-home', {id: response.uid}]);
+                }
+                else
+                {
+                  this.router.navigate(['*']);
+                }
+              } 
+              else 
+              {
+                this.router.navigate(['registration']);
+              }      
+            });
+      } 
+    }
   }
 
-  logout() {
+  isLoggedIn() {
+    if (this.currentUser == null) {
+      return false;
+    }
+    return true;
+  }
+
+  logout() 
+  {
     this.afAuth.auth.signOut();
+    this.router.navigate(['*']);
   }
 
 }

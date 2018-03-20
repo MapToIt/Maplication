@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModel } from '@angular/forms';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import {
@@ -57,7 +57,6 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
 import { environment } from './../../environments/environment';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
@@ -69,6 +68,7 @@ import { LoginComponent } from './login/login.component';
 import { NotesComponent } from './notes/notes.component';
 import { EventListViewComponent } from './event-list-view/event-list-view.component';
 import { CoordHomeComponent } from './coord-home/coord-home.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +82,7 @@ import { CoordHomeComponent } from './coord-home/coord-home.component';
     NotesComponent,
     EventListViewComponent,
     CoordHomeComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,

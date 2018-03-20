@@ -24,6 +24,8 @@ export class CoordHomeComponent implements OnInit {
    uId: string;
    coords: Coord[] = new Array();
    cIdHold: number;
+   pastEvents = [];
+   futureEvents = [];
    
   futures = [
     {id: 1, coord: 1, date: '05/01/2018', name: 'Kent Recruitment'},
@@ -65,11 +67,11 @@ export class CoordHomeComponent implements OnInit {
   page: number = 1;
   myEvent = this.evts[0]; 
   
-  
   constructor(private route: ActivatedRoute) {  
     this.route.params.subscribe( params => this.uId = params['id']);  
     
    }
+   
    
    addCoord(firstName,lastName,email,phone){
     let coord = new Coord("",firstName,lastName,this.uId,email,phone);

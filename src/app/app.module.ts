@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModel } from '@angular/forms';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import {
@@ -18,23 +18,13 @@ import {
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularBasicModalModule } from 'angular-basic-modal';
-import { environment } from './../../environments/environment';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { AppNavbarComponent } from './app-navbar/app-navbar.component';
-import { AppRoutingModule } from './/app-routing.module';
-import { AboutComponent } from './about/about.component';
-import { LoginComponent } from './login/login.component';
-import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
-import { EventMapComponent } from './event-map/event-map.component';
-import { EventListViewComponent } from './event-list-view/event-list-view.component';
-import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { SharedModule } from './shared/shared.module';
 import {Ng2AutoCompleteModule} from 'ng2-auto-complete';
+import { StateService } from './services/state.service';
+import { Globals } from './shared/globals';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
-import { StateService } from './services/state.service';
+import { UserService } from './services/user-service/user.service';
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
@@ -66,6 +56,21 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
   credentialHelper: CredentialHelper.AccountChooser
 };
 
+import { environment } from './../../environments/environment';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { AppNavbarComponent } from './app-navbar/app-navbar.component';
+import { AppRoutingModule } from './/app-routing.module';
+import { EventMapComponent } from './event-map/event-map.component';
+import { AboutComponent } from './about/about.component';
+import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
+import { LoginComponent } from './login/login.component';
+import { NotesComponent } from './notes/notes.component';
+import { EventListViewComponent } from './event-list-view/event-list-view.component';
+import { CoordHomeComponent } from './coord-home/coord-home.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -76,8 +81,10 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     LoginComponent,
     AttendeeProfileComponent,
     EventMapComponent,
+    NotesComponent,
     EventListViewComponent,
     CoordHomeComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -96,7 +103,11 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     SharedModule,
     NgxPaginationModule,
   ],
-  providers: [StateService],
+  providers: [
+    Globals,
+    UserService,
+    StateService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

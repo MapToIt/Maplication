@@ -1,12 +1,1 @@
-<div class="login" *ngIf="afAuth.authState | async as user; else showLogin">
-    <h1>Hello {{ user.displayName }}!</h1>
-    <img src={{user.photoURL}} width="20%">
-    <p>email: {{user.email}}</p>
-    <p>uid: {{user.uid}}</p>
-    <p>creationTime: {{user.metadata.creationTime}}</p>
-    <p>provideId: {{user.providerId}}</p>
-    <button (click)="logout()">Logout</button>
-</div>
-<ng-template #showLogin>
-    <firebase-ui (signInSuccess)="successCallback($event)"></firebase-ui>
-</ng-template>
+<firebase-ui></firebase-ui>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from './user';
 import {Attendee} from '../shared/domain-model/attendee'
+import {Company} from '../shared/domain-model/company'
 import { logger } from '@firebase/database/dist/esm/src/core/util/util';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AnonymousSubscription } from 'rxjs/Subscription';
@@ -10,6 +11,9 @@ import * as firebase from 'firebase/app';
 import { ChangeDetectorRef } from '@angular/core';
 import { NgModule } from '@angular/core/src/metadata/ng_module';
 import { StateService, stateObj } from '../services/state.service';
+import { UserService} from '../services/user-service/user.service';
+import {AttendeeService} from '../services/attendee-service/attendee.service';
+import {CompanyService} from '../services/company-service/company.service';
 
 @Component({
   selector: 'app-attendee-profile',
@@ -38,6 +42,7 @@ export class AttendeeProfileComponent implements OnInit {
   viewMode: boolean = false;
   isAttendee: boolean = true;
   isValid: boolean = false;
+  newUser: boolean = true;
   
   //profile image setup
   profileImg: string = "/assets/placeholder.png";
@@ -52,7 +57,8 @@ export class AttendeeProfileComponent implements OnInit {
   profile: User = new User("");
   
 
-  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, private cdr: ChangeDetectorRef, private stateService: StateService) {
+  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, private cdr: ChangeDetectorRef, private stateService: StateService
+  , private userService: UserService, private attendeeService: AttendeeService, private companyService: CompanyService) {
 
   }
 
@@ -60,6 +66,31 @@ export class AttendeeProfileComponent implements OnInit {
     
     //load in states
     this.states = this.getStates();
+
+    if(this.getUser() != ""){
+      //get profile page from url
+      this.profile = this.getProfile(this.getUser())
+    }else{
+      this.profile = this.getProfile(this.UIUser.id)
+    }
+
+    /*DEBUGGING*/
+    this.profile.id = this.myUID;
+   // this.profile.id = "NOT MY ID";
+    this.profile.type = "Company";
+    /*END DEBUGGING*/
+    
+    //check validity
+    if (this.profile.id == this.UIUser.id){
+      this.isValid = true;
+    }else{
+      this.isValid = false;
+    }
+    if(this.isValid){
+      this.getProfile(this.UIUser.id)
+    }else{
+
+    }
 
     //Load in page info from db
     this.profile = this.getProfile(this.getCurrentPageID());
@@ -69,18 +100,6 @@ export class AttendeeProfileComponent implements OnInit {
     this.profile.type = this.getType(this.profile.id);
     this.UIUser.type = this.getType(this.UIUser.id);
 
-    /*DEBUGGING*/
-    this.profile.id = this.myUID;
-   // this.profile.id = "NOT MY ID";
-    this.profile.type = "company";
-    /*END DEBUGGING*/
-    
-    //check validity
-    if (this.profile.id == this.UIUser.id){
-      this.isValid = true;
-    }else{
-      this.isValid = false;
-    }
     this.UICheck();
 
   }
@@ -93,9 +112,9 @@ export class AttendeeProfileComponent implements OnInit {
 
 
   //get user info from url 
-  getUser(id){
+  getUser(){
     //assign to new attendee
-    var user = new User(id);
+    var user: string;
     //setup user for view
 
     
@@ -103,9 +122,28 @@ export class AttendeeProfileComponent implements OnInit {
   }
 
   getProfile(id){
-    var profile = new User("id");
-    //load in from db and assign to profile
-    return profile;
+    var newProfile: User;
+    var attendee: Attendee;
+    var company: Company;
+    var type = this.getType(id)
+    if(type == "Attendee"){
+      //load from attendee
+      this.attendeeService.getAttendee(id).subscribe((data) => {
+        attendee = data
+        newProfile.convertFromAttendee(attendee)
+      })
+      //convert to UI
+    }else if(type == "Company"){
+      //load from company
+      this.companyService.getCompany(id).subscribe((data) => {
+        company = data
+        //convert
+      })
+      //convert to UI
+    }else{
+      newProfile = new User(id);
+    }
+    return newProfile;
   }
 
   //get id from OAuth
@@ -127,11 +165,16 @@ export class AttendeeProfileComponent implements OnInit {
     var id = "testID";
     return id;
   }
+
   //get user type
   getType(id){
-    var type= "attendee"
+    var type: string;
+    this.userService.getUserType(id).subscribe((data) =>{
+      type = data;
+    })
     return type;
   }
+
   //get states from db
   getStates(){
     var states: string[] = [];
@@ -148,6 +191,14 @@ export class AttendeeProfileComponent implements OnInit {
   
   submit(){
     //submit to database
+    if (this.UIUser.type == "Attendee"){
+      var attendee: Attendee = this.UIUser.convertToAttendee(this.UIUser, this.UIUser.id, null);
+      if (this.newUser){
+        //add user
+      }else{
+        //update user
+      }
+    }
     //submit images
     //switch to view mode
     this.switchMode();
@@ -172,7 +223,7 @@ export class AttendeeProfileComponent implements OnInit {
 
   UICheck(){
     //check user type
-    if(this.profile.type == "attendee"){
+    if(this.profile.type == "Attendee"){
       this.isAttendee = true;
       //set UI to reflect attendee
       this.namePlaceholder = "Name";
@@ -187,7 +238,7 @@ export class AttendeeProfileComponent implements OnInit {
         this.descriptionText = "";
         this.greeting = "Here's a look at " + this.profile.name + "'s profile.";
       }
-    }else if(this.profile.type == "company"){
+    }else if(this.profile.type == "Company"){
       //set UI to reflect company
       this.isAttendee = false;
       this.greeting = "Welcome Back, ".concat(this.UIUser.name);

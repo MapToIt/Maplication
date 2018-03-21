@@ -23,15 +23,15 @@ export class User {
     }
 
     //Do conversions from user UI Helper class to domain model classes
-    convertToAttendee(user: User, userId: number, otherUser: any) {
+    convertToAttendee(user: User, userId: string, otherUser: any) {
         //split name into two
         var first = user.name.split(" ");
-        return new Attendee(user.id, first[0], first[1], user.phoneNumber, user.email, user.imgLink, user.resumeLink
+        return new Attendee(0, first[0], first[1], user.phoneNumber, user.email, user.imgLink, user.resumeLink
             , user.degree, user.college, user.tags.join(), userId, otherUser);
     }
 
     convertFromAttendee(attendee: Attendee) {
-        var user = new User(attendee.AttendeeId);
+        var user = new User(attendee.UserId);
         user.name = attendee.FullName;
         user.email = attendee.Email;
         user.phoneNumber = attendee.PhoneNumber;

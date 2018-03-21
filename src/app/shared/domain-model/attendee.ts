@@ -1,5 +1,5 @@
 export class Attendee {
-    public AttendeeId: string;
+    public AttendeeId: number = 0;
     public FirstName: string;
     public LastName: string;
     public PhoneNumber: string;
@@ -9,15 +9,15 @@ export class Attendee {
     public Degree: string;
     public University: string;
     public Chips: string;
-    public UserId: number;
+    public UserId: string;
     public User: any;
     public FullName: string;
 
-    constructor(AttendeeId: string, FirstName: string, LastName: string, 
+    constructor(AttendeeId: number, FirstName: string, LastName: string, 
         PhoneNumber:string, Email: string, Image: string, Resume: string,
-        Degree: string, University: string, Chips: string, UserId: number,
+        Degree: string, University: string, Chips: string, UserId: string,
         User: any){
-        this.AttendeeId = AttendeeId;
+        this.AttendeeId = 0;
         this.FirstName = FirstName;
         this.LastName = LastName;
         this.PhoneNumber = PhoneNumber;

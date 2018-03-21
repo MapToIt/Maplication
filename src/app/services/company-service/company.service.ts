@@ -1,9 +1,5 @@
-export interface stateObj{
-  stateId: number;
-  stateName: string;
-}
-import { Globals } from './../shared/globals';
 import { Injectable } from '@angular/core';
+import { Globals } from '../../shared/globals';
 import {
   HttpClient,
   HttpParams,
@@ -17,15 +13,19 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/retry';
 import 'rxjs/add/observable/of';
 import 'rxjs/Rx';
+import { Company } from '../../shared/domain-model/company'
 
 @Injectable()
-export class StateService {
+export class CompanyService {
 
   constructor(private http: HttpClient) { }
 
-  //get observable array of all states
-  getStates(){
-    return this.http.get<stateObj[]>(Globals.apiUrl +'/State')
+  getCompany(id: string) {
+    return this.http.get<Company>(Globals.apiUrl + '/Company/' + id)
+  }
+
+  updateCompany(company: Company) {
+    this.http.post(Globals.apiUrl + '/Company', company)
   }
 
 }

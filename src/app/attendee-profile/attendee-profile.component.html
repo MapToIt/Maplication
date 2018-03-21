@@ -1,6 +1,8 @@
 <div *ngIf="afAuth.authState | async as user; else showLogin">
   {{regUser(user.uid)}}
 </div>
+
+
 <div id="cont" class="modal-body row">
   <div class="col-lg-8">
     <div class="header">

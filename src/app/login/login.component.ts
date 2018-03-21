@@ -29,67 +29,38 @@ export class LoginComponent implements OnInit {
   
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
-              private _UserService: UserService, private route: ActivatedRoute, 
-              private router: Router) 
+    private _UserService: UserService, private route: ActivatedRoute, 
+    private router: Router) 
   { 
     
   }
 
   ngOnInit() 
   {
-    this.afAuth.authState.subscribe((response) => this.firebaseAuthChangeListener(response));
+    
   }
 
-  firebaseAuthChangeListener(response) 
-  {
-    if (this.currentUser){
-      if (response == null)
+  successCallback(data: FirebaseUISignInSuccess) {
+    this._UserService.getUserType(data.currentUser.uid).subscribe((userType) => {
+      if(userType != null)
       {
-        console.log('Logged out :(');
-        this.router.navigate(['*']);
-      }
-
-    }
-    else
-    {
-      this.currentUser = response;
-      if (response) {
-        this._UserService.getUserType(response.uid).subscribe((userType) => {
-              if(userType != null)
-              {
-                if(userType.toLowerCase() == "company" || userType.toLowerCase() == "attendee")
-                {
-                  this.router.navigate(['event-list-view']);
-                }
-                else if (userType.toLowerCase() == "coordinator")
-                {
-                  this.router.navigate(['coord-home', {id: response.uid}]);
-                }
-                else
-                {
-                  this.router.navigate(['*']);
-                }
-              } 
-              else 
-              {
-                this.router.navigate(['registration']);
-              }      
-            });
+        if(userType.toLowerCase() == "company" || userType.toLowerCase() == "attendee")
+        {
+          this.router.navigate(['event-list-view']);
+        }
+        else if (userType.toLowerCase() == "coordinator")
+        {
+          this.router.navigate(['coord-home', {id: data.currentUser.uid}]);
+        }
+        else
+        {
+          this.router.navigate(['*']);
+        }
       } 
-    }
+      else 
+      {
+        this.router.navigate(['registration']);
+      }      
+    });
   }
-
-  isLoggedIn() {
-    if (this.currentUser == null) {
-      return false;
-    }
-    return true;
-  }
-
-  logout() 
-  {
-    this.afAuth.auth.signOut();
-    this.router.navigate(['*']);
-  }
-
 }

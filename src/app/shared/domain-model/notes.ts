@@ -1,7 +1,7 @@
 export class Notes{
   noteId: number;
   note: string;
-  companyId: int;
+  companyId: number;
   name: string;
   date: Date;
   major: string;

@@ -69,6 +69,7 @@ import { NotesComponent } from './notes/notes.component';
 import { EventListViewComponent } from './event-list-view/event-list-view.component';
 import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { RegistrationComponent } from './registration/registration.component';
     NotesComponent,
     EventListViewComponent,
     CoordHomeComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    CreateMapPromptComponent
   ],
   imports: [
     BrowserModule,

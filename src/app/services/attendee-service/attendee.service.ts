@@ -21,10 +21,14 @@ export class AttendeeService {
   constructor(private http: HttpClient) { }
 
   getAttendee(id: string){
-    return this.http.get<Attendee>(Globals.apiUrl + '/Attendee/' + id)
+    return this.http.get<Attendee>(Globals.apiUrl + 'Attendee/' + id)
   }
 
   updateAttendee(attendee: Attendee){
-    this.http.post(Globals.apiUrl + '/Attendee', attendee)
+    this.http.post(Globals.apiUrl + 'Attendee', attendee)
+  }
+
+  addAttendee(attendee: Attendee){
+    this.http.put(Globals.apiUrl + 'Attendee', attendee);
   }
 }

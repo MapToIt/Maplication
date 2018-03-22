@@ -25,7 +25,7 @@ export class StateService {
 
   //get observable array of all states
   getStates(){
-    return this.http.get<stateObj[]>(Globals.apiUrl +'/State')
+    return this.http.get<stateObj[]>(Globals.apiUrl +'State')
   }
 
 }

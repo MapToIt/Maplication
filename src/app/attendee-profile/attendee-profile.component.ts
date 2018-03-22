@@ -14,7 +14,7 @@ import { StateService, stateObj } from '../services/state.service';
 import { UserService} from '../services/user-service/user.service';
 import {AttendeeService} from '../services/attendee-service/attendee.service';
 import {CompanyService} from '../services/company-service/company.service';
-
+import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: 'app-attendee-profile',
   templateUrl: './attendee-profile.component.html',
@@ -58,7 +58,7 @@ export class AttendeeProfileComponent implements OnInit {
   
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, private cdr: ChangeDetectorRef, private stateService: StateService
-  , private userService: UserService, private attendeeService: AttendeeService, private companyService: CompanyService) {
+    , private userService: UserService, private attendeeService: AttendeeService, private companyService: CompanyService, private route: ActivatedRoute) {
 
   }
 
@@ -66,19 +66,6 @@ export class AttendeeProfileComponent implements OnInit {
     
     //load in states
     this.states = this.getStates();
-
-    if(this.getUser() != ""){
-      //get profile page from url
-      this.profile = this.getProfile(this.getUser())
-    }else{
-      this.profile = this.getProfile(this.UIUser.id)
-    }
-
-    /*DEBUGGING*/
-    this.profile.id = this.myUID;
-   // this.profile.id = "NOT MY ID";
-    this.profile.type = "Company";
-    /*END DEBUGGING*/
     
     //check validity
     if (this.profile.id == this.UIUser.id){
@@ -86,20 +73,40 @@ export class AttendeeProfileComponent implements OnInit {
     }else{
       this.isValid = false;
     }
-    if(this.isValid){
-      this.getProfile(this.UIUser.id)
-    }else{
-
-    }
-
-    //Load in page info from db
-    this.profile = this.getProfile(this.getCurrentPageID());
 
 
     //get user type
     this.profile.type = this.getType(this.profile.id);
     this.UIUser.type = this.getType(this.UIUser.id);
 
+    /*DEBUGGING*/
+    this.profile.id = this.myUID;
+    // this.profile.id = "NOT MY ID";
+    this.profile.type = "Company";
+    /*END DEBUGGING*/
+
+    this.UICheck();
+
+  }
+
+  //get id from OAuth
+  regUser(id: string) {
+    this.UIUser.id = id;
+    //once user id is loaded from auth, load in profiles
+    if (this.getUser() != "") {
+      //get profile page from url
+      this.profile = this.getProfile(this.getCurrentPageID())
+    } else {
+      this.profile = this.getProfile(this.UIUser.id)
+    }
+    //reload page
+
+    //check validity
+    if (this.profile.id == this.UIUser.id) {
+      this.isValid = true;
+    } else {
+      this.isValid = false;
+    }
     this.UICheck();
 
   }
@@ -146,24 +153,16 @@ export class AttendeeProfileComponent implements OnInit {
     return newProfile;
   }
 
-  //get id from OAuth
-  regUser(id: string){
-    this.UIUser.id = id;
-    //reload page
-    //check validity
-    if (this.profile.id == this.UIUser.id) {
-      this.isValid = true;
-    } else {
-      this.isValid = false;
-    }
-    this.UICheck();
-    
-  }
+
 
   //get passed id of profile to view
   getCurrentPageID(){
-    var id = "testID";
-    return id;
+    var id;
+    this.route.params.subscribe(params => {id = params['id']});
+    if(id)
+      return id;
+    else
+      return "";
   }
 
   //get user type

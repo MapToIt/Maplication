@@ -21,11 +21,15 @@ export class CompanyService {
   constructor(private http: HttpClient) { }
 
   getCompany(id: string) {
-    return this.http.get<Company>(Globals.apiUrl + '/Company/' + id)
+    return this.http.get<Company>(Globals.apiUrl + 'Company/' + id)
   }
 
   updateCompany(company: Company) {
-    this.http.post(Globals.apiUrl + '/Company', company)
+    this.http.post(Globals.apiUrl + 'Company', company)
+  }
+
+  addCompany(company: Company) {
+    this.http.put(Globals.apiUrl + 'Company', company)
   }
 
 }

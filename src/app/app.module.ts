@@ -25,6 +25,8 @@ import { Globals } from './shared/globals';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
 import { UserService } from './services/user-service/user.service';
+import { AttendeeService } from './services/attendee-service/attendee.service';
+import { CompanyService } from './services/company-service/company.service';
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
@@ -106,7 +108,9 @@ import { RegistrationComponent } from './registration/registration.component';
   providers: [
     Globals,
     UserService,
-    StateService
+    StateService,
+    AttendeeService,
+    CompanyService,
   ],
   bootstrap: [AppComponent]
 })

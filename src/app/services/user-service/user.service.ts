@@ -25,7 +25,7 @@ export class UserService {
               private http: HttpClient, private globals: Globals) { }
 
   getUserType(id:string){
-    return this.http.get<User>(Globals.apiUrl + `User/${id}`)
+    return this.http.get<string>(Globals.apiUrl + `User/${id}`)
   }
 
 }

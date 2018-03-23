@@ -1,38 +1,28 @@
 import * as SVG from 'svg.js';
-
-enum tableColor {
-  AVAILABLE = '#00ff00',
-  OCCUPIED = '#ff0000'
-};
+import { Company } from './company';
 
 export class Table {
   public tableId:number;
-  public event:number;
-  public company:number;
-  public x:number;
-  public y:number;
+  public mapId:number;
+  public event:number; //Todo: remove
+  public companyId:number;
+  public xCoordinate:number;
+  public yCoordinate:number;
   public width:number;
   public height:number;
+  public company: Company;
+  //Todo: add company domain-model
   public tableSVG:any;
 
-  constructor(tableId: number, event:number, company:number, x:number, y:number, width:number, height:number){
+  constructor(tableId: number, mapId:number, companyId:number, xCoordinate:number, yCoordinate:number, width:number, height:number){
     this.tableId = tableId;
-    this.event = event;
-    this.company = company;
-    this.x = x;
-    this.y = y;
+    this.mapId = mapId;
+    this.companyId = companyId;
+    this.xCoordinate = xCoordinate;
+    this.yCoordinate = yCoordinate;
     this.width = width;
     this.height = height;
     this.tableSVG = null;
   }
 
-  DrawTable(svg: any, imgWidth: number, imgHeight:number){
-    let tempColor = '';
-    if (this.company != null){
-      tempColor = tableColor.OCCUPIED;
-    } else {
-      tempColor = tableColor.AVAILABLE;
-    }
-    this.tableSVG = svg.rect(this.width*imgWidth, this.height*imgHeight).fill(tempColor).opacity(.5).move(this.x*imgWidth, this.y*imgHeight);
-  }
 }

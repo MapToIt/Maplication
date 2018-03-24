@@ -39,7 +39,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let past of (pasts | filter:pastDt | paginate: { id: 'ppast', itemsPerPage: 5, currentPage: p})">
+              <tr *ngFor="let past of (pastEvents | filter:pastDt | paginate: { id: 'ppast', itemsPerPage: 5, currentPage: p})">
                <!-- <td ngIf = "{{past.date}} < now">{{past.date}}</td>-->
                 <td>{{past.date}}</td>
                 <td><a href = "./event/{{past.id}}">{{past.name}}</a></td>
@@ -60,7 +60,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let future of (futures | filter:futureDt | paginate: { id: 'ffuture', itemsPerPage: 5, currentPage: f})">
+          <tr *ngFor="let future of (futureEvents | filter:futureDt | paginate: { id: 'ffuture', itemsPerPage: 5, currentPage: f})">
             <td>{{future.date}}</td>
             <td><a href = "./event/{{future.id}}">{{future.name}}</a></td>
           </tr>

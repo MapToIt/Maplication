@@ -70,6 +70,7 @@ import { EventListViewComponent } from './event-list-view/event-list-view.compon
 import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.component';
+import { AddTablesDirective } from './directives/add-tables.directive';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     EventListViewComponent,
     CoordHomeComponent,
     RegistrationComponent,
-    CreateMapPromptComponent
+    CreateMapPromptComponent,
+    AddTablesDirective
   ],
   entryComponents: [
     CreateMapPromptComponent

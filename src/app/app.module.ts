@@ -19,10 +19,14 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularBasicModalModule } from 'angular-basic-modal';
 import { SharedModule } from './shared/shared.module';
+import {Ng2AutoCompleteModule} from 'ng2-auto-complete';
+import { StateService } from './services/state.service';
 import { Globals } from './shared/globals';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
 import { UserService } from './services/user-service/user.service';
+import { AttendeeService } from './services/attendee-service/attendee.service';
+import { CompanyService } from './services/company-service/company.service';
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
@@ -92,17 +96,21 @@ import { RegistrationComponent } from './registration/registration.component';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     FirebaseUIModule.forRoot(firebaseUiAuthConfig),
+    Ng2AutoCompleteModule,
     AngularFireDatabaseModule,
     AngularBasicModalModule,
     NgbModule.forRoot(),
     RouterModule,
     AppRoutingModule,
     SharedModule,
-    NgxPaginationModule
+    NgxPaginationModule,
   ],
   providers: [
     Globals,
-    UserService
+    UserService,
+    StateService,
+    AttendeeService,
+    CompanyService,
   ],
   bootstrap: [AppComponent]
 })

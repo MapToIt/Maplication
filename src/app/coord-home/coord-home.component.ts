@@ -10,7 +10,7 @@ import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
 //import { Event } from '../shared/domain-model/event';
-import {Event } from './coord';
+import { Event } from './coord';
 
 
 @Component({
@@ -28,24 +28,6 @@ export class CoordHomeComponent implements OnInit {
    coords: Coord[] = new Array();
    cIdHold: number;
       
-  futures = [
-    {id: 1, coord: 1, date: '05/01/2018', name: 'Kent Recruitment'},
-    {id: 1, coord: 1, date: '05/30/2018', name: 'Portage County Recruitment'},
-    {id: 1, coord: 1, date: '06/01/2018', name: 'IBM Recruitment'},
-    {id: 1, coord: 1, date: '06/15/2018', name: 'Stark County Recruitment'},
-    {id: 1, coord: 1, date: '06/30/2018', name: 'Medical Recruitment'},
-    {id: 1, coord: 1, date: '07/01/2018', name: 'Google Recruitment'}
-  ]
-  pasts = [
-    {id: 2, coord: 2, date: '9/01/2017 00:00', name: 'Web Developer Recruitment'},
-    {id: 1, coord: 1, date: '9/15/2017 00:00', name: 'Educational Recruitment'},
-    {id: 1, coord: 1, date: '10/01/2017 00:00', name: 'Cleveland Recruitment'},
-    {id: 1, coord: 1, date: '10/30/2017 00:00', name: 'Engineering Recruitment'},
-    {id: 1, coord: 1, date: '11/01/2017', name: 'Network Recruitment'},
-    {id: 1, coord: 1, date: '12/01/2017', name: 'Tech Recruitment'},
-    {id: 1, coord: 1, date: '01/25/2018', name: 'RN Recruitment'},
-    {id: 1, coord: 1, date: '02/01/2018', name: 'Network Recruitment'}
-  ]
   evts = [
     {id: 1, coord: 1, date: '2018/05/01 00:00:00', name: 'Kent Recruitment'},
     {id: 1, coord: 1, date: '2018/05/30 00:00:00', name: 'Portage County Recruitment'},
@@ -62,8 +44,7 @@ export class CoordHomeComponent implements OnInit {
     {id: 1, coord: 1, date: '2018/01/25 00:00:00', name: 'RN Recruitment'},
     {id: 1, coord: 1, date: '2018/02/01 00:00:00', name: 'Network Recruitment'}
   ];
-  myPast = this.pasts[0];
-  myFuture = this.futures[0];
+ 
   totalRec : number;
   page: number = 1;
   myEvent = this.evts[0]; 
@@ -72,19 +53,15 @@ export class CoordHomeComponent implements OnInit {
 
   constructor(private route: ActivatedRoute) {  
     this.route.params.subscribe( params => this.uId = params['id']);  
-
-   
+  
     this.pastEvents = this.evts.filter(event => event.date < this.now);
     this.futureEvents = this.evts.filter(event => event.date >= this.now);
-   }
+  }
 
-  
-
-
-   addCoord(firstName,lastName,email,phone){
+   updateCoord(firstName,lastName,email,phone){
     let coord = new Coord(firstName,lastName,this.uId,email,phone);
     this.coords.push(coord);
-    console.log("Coordinator Added");
+    console.log("Coordinator Updated");
   }
   ngOnInit() {
     

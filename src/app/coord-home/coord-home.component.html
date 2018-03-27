@@ -12,7 +12,7 @@
              <input #lname class = "form-control" type= "text" placeholder = "Enter Last Name" >
              <input #email class = "form-control" type= "email" placeholder = "someone@mail.com" pattern ="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
              <input #phone class = "form-control" type= "text" placeholder = "Enter Phone Number"> 
-             <button (click)="addCoord(fname.value,lname.value,email.value,phone.value)">Save</button>
+             <button (click)="updateCoord(fname.value,lname.value,email.value,phone.value)">Save</button>
             </div>
         </form> 
             <br>
@@ -40,7 +40,6 @@
             </thead>
             <tbody>
               <tr *ngFor="let past of (pastEvents | filter:pastDt | paginate: { id: 'ppast', itemsPerPage: 5, currentPage: p})">
-               <!-- <td ngIf = "{{past.date}} < now">{{past.date}}</td>-->
                 <td>{{past.date}}</td>
                 <td><a href = "./event/{{past.id}}">{{past.name}}</a></td>
               </tr>

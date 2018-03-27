@@ -86,6 +86,9 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     RegistrationComponent,
     CreateMapPromptComponent
   ],
+  entryComponents: [
+    CreateMapPromptComponent
+  ],
   imports: [
     BrowserModule,
     FormsModule,

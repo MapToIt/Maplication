@@ -5,7 +5,7 @@ import { Event } from "../shared/domain-model/event";
 import { Map } from '../shared/domain-model/map';
 import { MapService } from '../services/map-service/map.service';
 import { TableService } from '../services/table-service/table.service';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { CreateMapPromptComponent } from '../create-map-prompt/create-map-prompt.component';
 
 import { Observable } from 'rxjs';
@@ -172,7 +172,7 @@ export class EventMapComponent implements OnInit {
   }
 
   openEventPrompt() {
-    const modalRef = this.modalService.open(CreateMapPromptComponent);
-    modalRef.componentInstance.name = 'Map prompt';
+    let options: NgbModalOptions = { size: 'lg'};
+    const modalRef = this.modalService.open(CreateMapPromptComponent, options);
   }
 }

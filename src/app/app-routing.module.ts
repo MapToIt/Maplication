@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: 'event/:id', component: EventMapComponent },
   { path: 'about', component: AboutComponent },
   { path: 'attendee-profile', component: AttendeeProfileComponent },
+  { path: 'attendee-profile/:id', component: AttendeeProfileComponent },
   { path: 'login', component: LoginComponent },
   { path: 'notes', component: NotesComponent },
   { path: 'event-list-view', component: EventListViewComponent},

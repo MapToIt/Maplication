@@ -1,10 +1,12 @@
-import { Component, OnInit, HostListener, NgZone } from '@angular/core';
+import { Component, OnInit, HostListener, NgZone, Input } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { Table } from "../shared/domain-model/table";
 import { Event } from "../shared/domain-model/event";
 import { Map } from '../shared/domain-model/map';
 import { MapService } from '../services/map-service/map.service';
 import { TableService } from '../services/table-service/table.service';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { CreateMapPromptComponent } from '../create-map-prompt/create-map-prompt.component';
 
 import { Observable } from 'rxjs';
 
@@ -46,7 +48,8 @@ export class EventMapComponent implements OnInit {
   constructor(private _ngZone: NgZone,
               private route: ActivatedRoute,
               private _MapService: MapService,
-              private _TableService: TableService) {
+              private _TableService: TableService,
+              private modalService: NgbModal) {
     this.route.params.subscribe( params => this.eventId = params['id']);
     this.editToggle = false;
     this.buttonClass = "btn btn-success";
@@ -166,5 +169,10 @@ export class EventMapComponent implements OnInit {
   AddTable(table:Table)
   {
     this._TableService.AddTable(table);
+  }
+
+  openEventPrompt() {
+    const modalRef = this.modalService.open(CreateMapPromptComponent);
+    modalRef.componentInstance.name = 'Map prompt';
   }
 }

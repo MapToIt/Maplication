@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Observable } from 'rxjs/Observable';
+import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 
 @Component({
@@ -10,24 +9,13 @@ import * as firebase from 'firebase/app';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  user: Observable<firebase.User>;
+  currentUser: firebase.User;
   items: AngularFireObject<any[]>;
   msgVal: string = '';
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase) {
-    
-    this.user = this.afAuth.authState;
-
+      this.currentUser = this.afAuth.auth.currentUser;
   }
 
-  login() {
-    this.afAuth.auth.signInAnonymously();
-  }
-
-  logout() {
-      this.afAuth.auth.signOut();
-  }
-
-
-  title = 'app';
+  title = 'Maplication';
 }

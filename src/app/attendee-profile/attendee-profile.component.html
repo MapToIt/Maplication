@@ -1,75 +1,79 @@
+<div *ngIf="afAuth.authState | async as user; else showLogin">
+  {{regUser(user.uid)}}
+</div>
+
+
 <div id="cont" class="modal-body row">
   <div class="col-lg-8">
     <div class="header">
       <h1 class="row justify-content-center">{{greeting}}</h1>
     </div>
     <div>
-      <h6 *ngIf="!viewMode" class="row justify-content-center">{{descriptionText}}</h6>
+      <h6 id="desc" *ngIf="!viewMode" class="row justify-content-center">{{descriptionText}}</h6>
     </div>
     <form>
       <div class="form-row justify-content-center">
         <div class="col">
-          <input type="text" placeholder="{{namePlaceholder}}" class="form-control bg-dark" [(ngModel)]="user.name" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="{{namePlaceholder}}" class="form-control bg-dark" [(ngModel)]="UIUser.name" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
         <div class="col">
-          <input type="text" placeholder="{{emailPlaceholder}}" class="form-control bg-dark" [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
-        </div>
-      </div>
-      <div class="form-row justify-content-center">
-        <div class="col">
-          <input type="text" placeholder="Street Number" class="form-control bg-dark" [(ngModel)]="user.streetNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
-        </div>
-        <div class="col">
-          <input type="text" placeholder="Street Name" class="form-control bg-dark" [(ngModel)]="user.streetName" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="{{emailPlaceholder}}" class="form-control bg-dark" [(ngModel)]="UIUser.email" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
-      <div class="form-row justify-content-center">
+      <div *ngIf="isAttendee" class="form-row justify-content-center">
         <div class="col">
-          <input class="form-control bg-dark" type="text" placeholder="City" [(ngModel)]="user.city" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="Degree" class="form-control bg-dark" [(ngModel)]="UIUser.degree" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
         <div class="col">
-          <input class="form-control bg-dark" type="text" placeholder="State" [(ngModel)]="user.state" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="College" class="form-control bg-dark" [(ngModel)]="UIUser.college" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+        </div>
+      </div>
+      <div *ngIf="!isAttendee" class="form-row justify-content-center">
+        <div class="col">
+          <input type="text" placeholder="Street Number" class="form-control bg-dark" [(ngModel)]="UIUser.streetNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
         <div class="col">
-          <input class="form-control bg-dark" type="text" placeholder="Zip" [(ngModel)]="user.zip" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="Street Name" class="form-control bg-dark" [(ngModel)]="UIUser.streetName" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+        </div>
+      </div>
+      <div *ngIf="!isAttendee" class="form-row justify-content-center">
+        <div class="col">
+          <input class="form-control bg-dark" type="text" placeholder="City" [(ngModel)]="UIUser.city" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+        </div>
+        <div class="col">
+          <input class="form-control bg-dark autoFill" placeholder="State" auto-complete [(ngModel)]="UIUser.state" [source]="states" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode"/>
+        </div>
+        <div class="col">
+          <input class="form-control bg-dark" type="text" placeholder="Zip" [(ngModel)]="UIUser.zip" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
       <div class="form-row justify-content-center">
         <div class="col-lg-6">
-          <input type="text" placeholder="{{phonePlaceholder}}" class="form-control bg-dark" [(ngModel)]="user.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="{{phonePlaceholder}}" class="form-control bg-dark" [(ngModel)]="UIUser.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
-      <div  *ngIf="isAttendee" class="row justify-content-center">
-          <div class="col-lg-3 col-lg-offset-2">
-              <textarea class="form-control bg-dark custom" rows="3" id="motto" placeholder="{{mottoPlaceholder}}" [(ngModel)]="user.motto" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode"></textarea>
-          </div>
-          <div class="col-lg-5">
-              <textarea class="form-control bg-dark custom" rows="3" id="bio" placeholder={{bioPlaceholder}} [(ngModel)]="user.bio" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode"></textarea>
-          </div>
+      <div *ngIf="!isAttendee" class="form-row justify-content-center">
+        <div class="col-lg-6">
+          <input type="text" placeholder="{{urlPlaceholder}}" class="form-control bg-dark" [(ngModel)]="UIUser.url" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+        </div>
       </div>
-      <br>
     </form>
+    
     <div *ngIf="viewMode" class="row justify-content-center">
+      <div class="col-lg-3">
+        <input id="tagSelector" class="form-control bg-dark autoFill" placeholder="Career Tags" auto-complete [(ngModel)]="currTag" (change)="addTag()" [source]="fieldTags" [disabled]="!viewMode"/>
+      </div>
+    </div>
+    <div *ngIf="hasTags()" class="row justify-content-center">
       <h6 >{{tagText}}</h6>
     </div>
-    <div *ngIf="viewMode" class="row justify-content-center">
-      <div *ngFor="let tag of fieldTags">
-        <div class="col">
-          <span id="{{tag}}" [ngClass]="checkTag(tag)" (click)="addTag(tag)" unselectable="on"
-          onselectstart="return false;" 
-          onmousedown="return false;">{{tag}}</span>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="!viewMode" class="row justify-content-center">
-      <h6 *ngIf="hasTags()">{{tagDescription}}</h6>
-    </div>
-    <div *ngIf="!viewMode" class="row justify-content-center">
-      <div *ngFor="let tag of user.tags">
+    <div class="row justify-content-center">
+      <div *ngFor="let tag of UIUser.tags">
         <div class="col">
           <span id="{{tag}}" class="tag" unselectable="on"
           onselectstart="return false;" 
-          onmousedown="return false;">{{tag}}</span>
+          onmousedown="return false;"
+          (click)="removeTag(tag)">{{tag}}</span>
         </div>
       </div>
     </div>
@@ -93,8 +97,10 @@
       <div class="row justify-content-center">
         <button *ngIf="viewMode" id="submitButton" class="btn btn-primary btn-lg m-3" (click)="submit()">Submit Changes</button>
       </div>
-      <div class="row justify-content-center">
-        <button *ngIf="!viewMode && isValid" id="editButton" class="btn btn-primary btn-lg m-3" (click)="switchMode()">Edit Mode</button>
+      <div class="row justify-content-center" *ngIf="!viewMode">
+        <div *ngIf="afAuth.authState | async as user">
+          <button *ngIf="isValid && !user.isAnonymous" id="editButton" class="btn btn-primary btn-lg m-3" (click)="switchMode()">Edit Mode</button>
+        </div>
       </div>
     </div>
   </div>

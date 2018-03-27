@@ -18,6 +18,16 @@ input[type="file"] {
     display: none;
 }
 
+.autoFill{
+    height: 45px;
+    margin-bottom: 30px;
+    color: white;
+    border-radius: 5px;
+    border: 0;
+ 
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-indent: 10px;
+}
 
 
 .custom-file-upload {
@@ -48,9 +58,9 @@ div[class=header]{
 }
 
 #profileImg{
-    margin-top: 30px;
-    width: 100vw;
-    height: 50vh;
+    height: 400px;
+    width: auto;
+    overflow: hidden;
 }
 
 ::placeholder{
@@ -66,12 +76,6 @@ div[class=header]{
 
 }
 
-.tagAdded{
-    display: block;
-    background-color: rgba(3, 61, 250, 0.7);
-    padding: 4px 10px;
-    margin: 5px 0px;
-}
 .tag:hover {
     cursor: pointer;
 }

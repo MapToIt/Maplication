@@ -63,12 +63,12 @@ export class EventMapComponent implements OnInit {
     rect.id('drawLayer');
   }
 
-  @HostListener('document:mousedown', ['$event'])
+  @HostListener('mousedown', ['$event'])
   onMouseDown(ev:MouseEvent) {
     this.AddPointOne(ev);
   }
 
-  @HostListener('document:mouseup', ['$event'])
+  @HostListener('mouseup', ['$event'])
   onMouseUp(ev:MouseEvent){
     this.AddPointTwo(ev);
   }

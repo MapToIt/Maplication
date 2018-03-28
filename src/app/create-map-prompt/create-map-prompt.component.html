@@ -5,24 +5,50 @@
   </button>
 </div>
 <div class="modal-body container">
-  <div class='row'>
-    <input type="text" placeholder="Event Title" class="form-control">
-  </div>
-  <div class='row'>
-    <input type="text" placeholder="Event Description" class="form-control">
-  </div>
-  <div class='row'>
-    <input type="text" placeholder="Event Start" class="form-control col-sm">
-    <input type="text" placeholder="Event End" class="form-control col-sm">
-  </div>
-  <div class='row'>
-    <input type="text" placeholder="Street Number" class="form-control col-sm">
-    <input type="text" placeholder="Street Name" class="form-control col-sm">
-    <input type="text" placeholder="Street City" class="form-control col-sm">
-  </div>
-  <div class='row'>
-    <input type="text" placeholder="State" class="form-control col-sm">
-  </div>
+  <form>
+    <div class='form-row'>
+      <div class='col-md-12'>
+        <input type='text' class='form-control' [(ngModel)]='eventTitle' placeholder='Event Title' id='event-title' required>
+      </div>
+    </div>
+    <div class='form-row'>
+      <div class='col-md-12'>
+        <input type='text' class='form-control' [(ngModel)]='eventDescription' placeholder='Event Description' id='event-description' required>
+      </div>
+    </div>
+    <div class='form-row'>
+      <div id='date-picker' class='col-md-6'>
+        <div class='row'>
+          <label class='col-sm align-middle' for='event-start'>Event Start</label>
+          <input class="form-control col-sm align-middle" placeholder="yyyy-mm-dd" id='event-start' [(ngModel)]="startDate" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append col-sm align-middle">
+            <button class="btn btn-outline-secondary align-middle" (click)="d.toggle()" type="button">
+              <i class="material-icons">date_range</i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class='col-md-6'>
+        <ngb-timepicker [(ngModel)]="startTime"></ngb-timepicker>
+      </div>
+    </div>
+    <div class='form-row'>
+      <div id='date-picker' class='col-md-6'>
+        <div class='row'>
+          <label class='col-sm align-middle' for='event-end'>Event End</label>
+          <input class="form-control col-sm align-middle" placeholder="yyyy-mm-dd" id='event-end' [(ngModel)]="endDate" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append col-sm align-middle">
+            <button class="btn btn-outline-secondary align-middle" (click)="d.toggle()" type="button">
+              <i class="material-icons">date_range</i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class='col-md-6'>
+        <ngb-timepicker [(ngModel)]="endTime"></ngb-timepicker>
+      </div>
+    </div>
+  </form>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-dark" (click)="submit()">Add Event</button>

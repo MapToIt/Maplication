@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StatesService } from '../services/states-service/states-service.service';
-import { State } from '../shared/domain-model/state'
+import { State } from '../shared/domain-model/state';
+import { Event } from '../shared/domain-model/event';
 import { Map } from '../shared/domain-model/map';
 
 @Component({
@@ -51,6 +52,7 @@ export class CreateMapPromptComponent implements OnInit {
     console.log(this.eventState);
     console.log(this.eventZipCode);
     let addMap = new Map();
+    addMap.event = new Event();
     addMap.mapId = 0;
     addMap.eventId = 0;
     addMap.image = "";

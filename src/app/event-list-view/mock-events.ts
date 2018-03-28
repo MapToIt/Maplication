@@ -1,4 +1,5 @@
 import { Event } from '../shared/domain-model/event';
+import { Coordinator } from '../shared/domain-model/coordinator';
 
 export const EVENTSLIST: Event[] = [
     {
@@ -9,12 +10,13 @@ export const EVENTSLIST: Event[] = [
         city: "Melbourne", 
         state:"none",
         stateId:1,
-        coordinator:"John Doe", 
+        coordinatorId:1, 
         eventStartTime: new Date(16, 8, 24, 12, 0, 0, 0), 
         eventEndTime: new Date(16, 9, 24, 12, 0, 0 ,0),
         streetNumber: 12,
         street: "street",
-        zipcode:12345
+        zipcode:12345,
+        coordinator: null
     },
     {
         eventId: 421, 
@@ -24,12 +26,13 @@ export const EVENTSLIST: Event[] = [
         city: "Malmo", 
         state:"none",
         stateId:1, 
-        coordinator:"John Doe", 
+        coordinatorId:1, 
         eventStartTime: new Date(16, 8, 24, 12, 0, 0, 0), 
         eventEndTime: new Date(16, 9, 24, 12, 0, 0 ,0),
         streetNumber: 12,
         street: "street",
-        zipcode:12345
+        zipcode:12345,
+        coordinator: null
     },
     {
         eventId: 399, 
@@ -39,12 +42,13 @@ export const EVENTSLIST: Event[] = [
         city: "Yellowknife", 
         state:"none",
         stateId:1,
-        coordinator:"John Doe", 
+        coordinatorId:1, 
         eventStartTime: new Date(16, 8, 24, 12, 0, 0, 0), 
         eventEndTime: new Date(16, 9, 24, 12, 0, 0 ,0),
         streetNumber: 12,
         street: "street",
-        zipcode:12345
+        zipcode:12345,
+        coordinator: null
     },
     {
         eventId: 213, 
@@ -54,12 +58,13 @@ export const EVENTSLIST: Event[] = [
         city: "Melbourne", 
         state:"none",
         stateId:1,
-        coordinator:"John Doe", 
+        coordinatorId:1, 
         eventStartTime: new Date(16, 8, 24, 12, 0, 0, 0), 
         eventEndTime: new Date(16, 9, 24, 12, 0, 0 ,0),
         streetNumber: 12,
         street: "street",
-        zipcode:12345
+        zipcode:12345,
+        coordinator: null
     },
     {
         eventId: 421,
@@ -69,12 +74,13 @@ export const EVENTSLIST: Event[] = [
         city: "Malmo", 
         state:"none",
         stateId:1,
-        coordinator:"John Doe", 
+        coordinatorId:1, 
         eventStartTime: new Date(16, 8, 24, 12, 0, 0, 0), 
         eventEndTime: new Date(16, 9, 24, 12, 0, 0 ,0),
         streetNumber: 12,
         street: "street",
-        zipcode:12345
+        zipcode:12345,
+        coordinator: null
     },
     {
         eventId: 399, 
@@ -84,12 +90,13 @@ export const EVENTSLIST: Event[] = [
         city: "Yellowknife", 
         state:"none",
         stateId:1,
-        coordinator:"John Doe", 
+        coordinatorId:1, 
         eventStartTime: new Date(16, 8, 24, 12, 0, 0, 0), 
         eventEndTime: new Date(16, 9, 24, 12, 0, 0 ,0),
         streetNumber: 12,
         street: "street",
-        zipcode:12345
+        zipcode:12345,
+        coordinator: null
     }
 ];
 

@@ -1,6 +1,7 @@
 import { NgModule} from '@angular/core';
 import { Component, OnInit } from '@angular/core'; 
 import { Pipe, PipeTransform} from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 
 
@@ -36,8 +37,10 @@ export class CoordHomeComponent implements OnInit {
   myFuture = this.futures[0];
   totalRec : number;
   page: number = 1;
+  uid: string;
   
-  constructor() {    
+  constructor(private route: ActivatedRoute, private router: Router) {
+    this.route.params.subscribe( params => this.uid = params['id']);   
    }
     public next(){
     this.index = Math.min(this.index+5, this.pasts.length - 1);

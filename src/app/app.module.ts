@@ -27,6 +27,7 @@ import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
 import { UserService } from './services/user-service/user.service';
 import { AttendeeService } from './services/attendee-service/attendee.service';
 import { CompanyService } from './services/company-service/company.service';
+import { CoordinatorService } from './services/coordinator/coordinator.service';
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
@@ -73,6 +74,7 @@ import { NotesComponent } from './notes/notes.component';
 import { EventListViewComponent } from './event-list-view/event-list-view.component';
 import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { CompanyProfileComponent } from './company-profile/company-profile.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +88,8 @@ import { RegistrationComponent } from './registration/registration.component';
     NotesComponent,
     EventListViewComponent,
     CoordHomeComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    CompanyProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -111,6 +114,7 @@ import { RegistrationComponent } from './registration/registration.component';
     StateService,
     AttendeeService,
     CompanyService,
+    CoordinatorService
   ],
   bootstrap: [AppComponent]
 })

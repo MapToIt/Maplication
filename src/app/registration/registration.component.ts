@@ -5,7 +5,7 @@ import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
-//import { CoordinatorService } from '../services/coordinator/coordinator.service';
+import { CoordinatorService } from '../services/coordinator/coordinator.service';
 import { AttendeeService } from '../services/attendee-service/attendee.service';
 import { CompanyService } from '../services/company-service/company.service';
 import { Attendee } from '../shared/domain-model/attendee';
@@ -20,15 +20,16 @@ import { Coordinator } from '../shared/domain-model/coordinator';
 export class RegistrationComponent implements OnInit {
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
-    //private _CoordinatorService: CoordinatorService, 
+    private _CoordinatorService: CoordinatorService, 
     private _AttendeeService: AttendeeService, private _CompanyService: CompanyService, private route: ActivatedRoute, 
     private router: Router) { }
 
     currentUser: firebase.User;
 
   ngOnInit() {
-    this.currentUser = this.afAuth.auth.currentUser;
-    console.log("current User: ", this.currentUser);
+    this.afAuth.authState.subscribe((user) => {
+      this.currentUser = user;
+    });
   }
 
   createAttendee(){
@@ -47,7 +48,9 @@ export class RegistrationComponent implements OnInit {
       attendee.university = null;
       attendee.userId = this.currentUser.uid;
 
-      this._AttendeeService.addAttendee(attendee);
+      this._AttendeeService.addAttendee(attendee).subscribe((attendee) => {
+        this.router.navigate(['company-profile', {id: attendee.userId}]);
+      });
     }
 
   }
@@ -69,6 +72,10 @@ export class RegistrationComponent implements OnInit {
       company.userId = this.currentUser.uid;
       company.zipCode = null;
     }
+    this._CompanyService.addCompany(company).subscribe((addedCompany) => {
+      this.router.navigate(['company-profile', this.afAuth.auth.currentUser.uid]);
+    });    
+
   }
 
   createCoordinator(){
@@ -82,7 +89,9 @@ export class RegistrationComponent implements OnInit {
       coordinator.phoneNumber = null;
       coordinator.userId = this.currentUser.uid;
 
-      //this._CoordinatorService.addCoordinator(coordinator);
+      this._CoordinatorService.addCoordinator(coordinator).subscribe((user) => {
+        this.router.navigate(['coors-home', {id: user.userId}]);
+      })
     }
   }
 

@@ -107,14 +107,18 @@ export class EventMapComponent implements OnInit {
     width = Math.abs(this.tempPoint.x1 - this.tempPoint.x2);
     height = Math.abs(this.tempPoint.y1 - this.tempPoint.y2);
     console.log(x, y, width, height);
-    x = (x/this.imageWidth) * 1000;
-    y = (y/this.imageHeight) * 1000;
-    width = (width/this.imageWidth) * 1000;
-    height = (height/this.imageHeight) * 1000;
-    this.eventTables.push(new Table(0, this.mapId, null, x, y, width, height));
-    this.DrawTable(this.eventTables[this.eventTables.length-1]);
-    console.log(this.eventTables[this.eventTables.length-1]);
-    this.AddTable(this.eventTables[this.eventTables.length-1]);
+    x = Math.round((x/this.imageWidth) * 1000);
+    y = Math.round((y/this.imageHeight) * 1000);
+    width = Math.round((width/this.imageWidth) * 1000);
+    height = Math.round((height/this.imageHeight) * 1000);
+    if (width != 0 && height != 0){
+      this.eventTables.push(new Table(0, this.mapId, null, x, y, width, height));
+      this.DrawTable(this.eventTables[this.eventTables.length-1]);
+      console.log(this.eventTables[this.eventTables.length-1]);
+      this.AddTable(this.eventTables[this.eventTables.length-1]);
+    } else {
+      console.log("Table invalid");
+    }
   }
 
   GetElementOffset(element)

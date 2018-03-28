@@ -31,4 +31,5 @@ export class AttendeeService {
   addAttendee(attendee: Attendee){
     this.http.put(Globals.apiUrl + 'Attendee', attendee);
   }
+  
 }

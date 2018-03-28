@@ -14,7 +14,9 @@ import { StateService, stateObj } from '../services/state.service';
 import { UserService} from '../services/user-service/user.service';
 import {AttendeeService} from '../services/attendee-service/attendee.service';
 import {CompanyService} from '../services/company-service/company.service';
+import {FileUploadService} from '../services/file-upload-service/file-upload.service';
 import { ActivatedRoute } from "@angular/router";
+
 @Component({
   selector: 'app-attendee-profile',
   templateUrl: './attendee-profile.component.html',
@@ -58,7 +60,8 @@ export class AttendeeProfileComponent implements OnInit {
   
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, private cdr: ChangeDetectorRef, private stateService: StateService
-    , private userService: UserService, private attendeeService: AttendeeService, private companyService: CompanyService, private route: ActivatedRoute) {
+    , private userService: UserService, private attendeeService: AttendeeService, private companyService: CompanyService, private route: ActivatedRoute,
+    private fileUpload: FileUploadService) {
 
   }
 
@@ -111,9 +114,14 @@ export class AttendeeProfileComponent implements OnInit {
 
   }
 
-  handleFileInput(files: FileList) {
+  handleFileInput(files: FileList, isImg: boolean) {
     this.profileImgFile = files.item(0);
-    
+    if (isImg){
+      this.UIUser.imgLink = this.fileUpload.uploadFile(files.item[0]);
+    }else{
+      this.UIUser.resumeLink = this.fileUpload.uploadFile(files.item[0]);
+    }
+    console.log(this.UIUser)
   }
 
 
@@ -162,7 +170,7 @@ export class AttendeeProfileComponent implements OnInit {
     if(id)
       return id;
     else
-      return "";
+      return "none";
   }
 
   //get user type

@@ -27,6 +27,7 @@ import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
 import { UserService } from './services/user-service/user.service';
 import { AttendeeService } from './services/attendee-service/attendee.service';
 import { CompanyService } from './services/company-service/company.service';
+import {FileUploadService} from './services/file-upload-service/file-upload.service';
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
@@ -111,6 +112,7 @@ import { RegistrationComponent } from './registration/registration.component';
     StateService,
     AttendeeService,
     CompanyService,
+    FileUploadService,
   ],
   bootstrap: [AppComponent]
 })

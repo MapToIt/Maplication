@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
-
+import { AngularFireStorage } from 'angularfire2/storage'
+import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class FileUploadService {
 
-  constructor(public af: AngularFireDatabase) { }
+  constructor(private af: AngularFireStorage) { }
+  
 
   //uploads file to storage and returns download url
-  uploadFile(file: File){
-    var url: string = "";
-    var db = this.af.app.storage().ref();
-    db.put(file).then(
-      (data) => { url = data.downloadURL },
-      (error) => { console.log(error) }
-    )
-    return url;
+  uploadFile(file) {
+    const randomId = Math.random().toString(36).substring(2);
+    var ref = this.af.ref(randomId);
+    var task = ref.put(file)
+    return task.downloadURL();
   }
 
 }

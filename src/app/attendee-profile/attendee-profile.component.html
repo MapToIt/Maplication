@@ -52,17 +52,17 @@
 
   <div class="col-lg-4">
     <div class="row justify-content-center">
-      <img id="profileImg" src="{{profileImg}}">
-      <label *ngIf="viewMode" for="imgFile" class="custom-file-upload"><h3>{{uploadImgText}}</h3></label>
+      <img id="profileImg" src="{{profile.image}}">
+      <label *ngIf="viewMode" for="imgFile" class="custom-file-upload"><h3>Upload Your Picture</h3></label>
       <input *ngIf="viewMode" type="file"
               id="imgFile"
-              (change)="handleFileInput($event.target.files)" class="inputfile">
+              (change)="handleFileInputImg($event.target.files)" class="inputfile">
     </div>
     <div class="row justify-content-center">
       <label *ngIf="viewMode && isAttendee" for="resumeFile" class="custom-file-upload-resume"><h3>Upload Your Resume</h3></label>
       <input *ngIf="viewMode && isAttendee" type="file"
               id="resumeFile"
-              (change)="handleFileInput($event.target.files)" class="inputfile">
+              (change)="handleFileInputRes($event.target.files)" class="inputfile">
     </div>
     <div class="container">
       <div class="row justify-content-center">

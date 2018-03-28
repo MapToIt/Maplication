@@ -7,6 +7,7 @@ import { NgModel } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 import {
   AuthMethods,
   AuthProvider,
@@ -100,6 +101,7 @@ import { RegistrationComponent } from './registration/registration.component';
     Ng2AutoCompleteModule,
     AngularFireDatabaseModule,
     AngularBasicModalModule,
+    AngularFireStorageModule,
     NgbModule.forRoot(),
     RouterModule,
     AppRoutingModule,

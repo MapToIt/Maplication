@@ -3,7 +3,7 @@ import { Coordinator } from "./coordinator";
 export class Event {
     public eventId: number;
     public eventTitle: string;
-    public coordinatorId: number; //Should be a number reference to coordinator DM, but for now string
+    public coordinatorId: number;
     public eventStartTime: Date;
     public eventEndTime: Date;
     public description: string;

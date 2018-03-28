@@ -1,8 +1,3 @@
-<div *ngIf="afAuth.authState | async as user; else showLogin">
-  {{regUser(user.uid)}}
-</div>
-
-
 <div id="cont" class="modal-body row">
   <div class="col-lg-8">
     <div class="header">
@@ -14,47 +9,23 @@
     <form>
       <div class="form-row justify-content-center">
         <div class="col">
-          <input type="text" placeholder="{{namePlaceholder}}" class="form-control bg-dark" [(ngModel)]="UIUser.name" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="{{namePlaceholder}}" class="form-control bg-dark" [(ngModel)]="profile.fullName" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
         <div class="col">
-          <input type="text" placeholder="{{emailPlaceholder}}" class="form-control bg-dark" [(ngModel)]="UIUser.email" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="{{emailPlaceholder}}" class="form-control bg-dark" [(ngModel)]="profile.email" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
       <div *ngIf="isAttendee" class="form-row justify-content-center">
         <div class="col">
-          <input type="text" placeholder="Degree" class="form-control bg-dark" [(ngModel)]="UIUser.degree" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="Degree" class="form-control bg-dark" [(ngModel)]="profile.degree" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
         <div class="col">
-          <input type="text" placeholder="College" class="form-control bg-dark" [(ngModel)]="UIUser.college" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
-        </div>
-      </div>
-      <div *ngIf="!isAttendee" class="form-row justify-content-center">
-        <div class="col">
-          <input type="text" placeholder="Street Number" class="form-control bg-dark" [(ngModel)]="UIUser.streetNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
-        </div>
-        <div class="col">
-          <input type="text" placeholder="Street Name" class="form-control bg-dark" [(ngModel)]="UIUser.streetName" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
-        </div>
-      </div>
-      <div *ngIf="!isAttendee" class="form-row justify-content-center">
-        <div class="col">
-          <input class="form-control bg-dark" type="text" placeholder="City" [(ngModel)]="UIUser.city" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
-        </div>
-        <div class="col">
-          <input class="form-control bg-dark autoFill" placeholder="State" auto-complete [(ngModel)]="UIUser.state" [source]="states" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode"/>
-        </div>
-        <div class="col">
-          <input class="form-control bg-dark" type="text" placeholder="Zip" [(ngModel)]="UIUser.zip" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="College" class="form-control bg-dark" [(ngModel)]="profile.university" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
       <div class="form-row justify-content-center">
         <div class="col-lg-6">
-          <input type="text" placeholder="{{phonePlaceholder}}" class="form-control bg-dark" [(ngModel)]="UIUser.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
-        </div>
-      </div>
-      <div *ngIf="!isAttendee" class="form-row justify-content-center">
-        <div class="col-lg-6">
-          <input type="text" placeholder="{{urlPlaceholder}}" class="form-control bg-dark" [(ngModel)]="UIUser.url" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="{{phonePlaceholder}}" class="form-control bg-dark" [(ngModel)]="profile.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
     </form>
@@ -68,7 +39,7 @@
       <h6 >{{tagText}}</h6>
     </div>
     <div class="row justify-content-center">
-      <div *ngFor="let tag of UIUser.tags">
+      <div *ngFor="let tag of profile.chips">
         <div class="col">
           <span id="{{tag}}" class="tag" unselectable="on"
           onselectstart="return false;" 

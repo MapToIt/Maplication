@@ -1,10 +1,12 @@
-import { Component, OnInit, HostListener, NgZone } from '@angular/core';
+import { Component, OnInit, HostListener, NgZone, Input } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { Table } from "../shared/domain-model/table";
 import { Event } from "../shared/domain-model/event";
 import { Map } from '../shared/domain-model/map';
 import { MapService } from '../services/map-service/map.service';
 import { TableService } from '../services/table-service/table.service';
+import { NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { CreateMapPromptComponent } from '../create-map-prompt/create-map-prompt.component';
 
 import { Observable } from 'rxjs';
 
@@ -46,7 +48,8 @@ export class EventMapComponent implements OnInit {
   constructor(private _ngZone: NgZone,
               private route: ActivatedRoute,
               private _MapService: MapService,
-              private _TableService: TableService) {
+              private _TableService: TableService,
+              private modalService: NgbModal) {
     this.route.params.subscribe( params => this.eventId = params['id']);
     this.editToggle = false;
     this.buttonClass = "btn btn-success";
@@ -60,12 +63,12 @@ export class EventMapComponent implements OnInit {
     rect.id('drawLayer');
   }
 
-  @HostListener('document:mousedown', ['$event'])
+  @HostListener('mousedown', ['$event'])
   onMouseDown(ev:MouseEvent) {
     this.AddPointOne(ev);
   }
 
-  @HostListener('document:mouseup', ['$event'])
+  @HostListener('mouseup', ['$event'])
   onMouseUp(ev:MouseEvent){
     this.AddPointTwo(ev);
   }
@@ -108,10 +111,14 @@ export class EventMapComponent implements OnInit {
     y = Math.round((y/this.imageHeight) * 1000);
     width = Math.round((width/this.imageWidth) * 1000);
     height = Math.round((height/this.imageHeight) * 1000);
-    this.eventTables.push(new Table(0, this.mapId, null, x, y, width, height));
-    this.DrawTable(this.eventTables[this.eventTables.length-1]);
-    console.log(this.eventTables[this.eventTables.length-1]);
-    this.AddTable(this.eventTables[this.eventTables.length-1]);
+    if (width != 0 && height != 0){
+      this.eventTables.push(new Table(0, this.mapId, null, x, y, width, height));
+      this.DrawTable(this.eventTables[this.eventTables.length-1]);
+      console.log(this.eventTables[this.eventTables.length-1]);
+      this.AddTable(this.eventTables[this.eventTables.length-1]);
+    } else {
+      console.log("Table invalid");
+    }
   }
 
   GetElementOffset(element)
@@ -166,5 +173,10 @@ export class EventMapComponent implements OnInit {
   AddTable(table:Table)
   {
     this._TableService.AddTable(table);
+  }
+
+  openEventPrompt() {
+    let options: NgbModalOptions = { size: 'lg'};
+    const modalRef = this.modalService.open(CreateMapPromptComponent, options);
   }
 }

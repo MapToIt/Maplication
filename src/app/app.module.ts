@@ -75,6 +75,7 @@ import { EventListViewComponent } from './event-list-view/event-list-view.compon
 import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
+import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,10 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
     CoordHomeComponent,
     RegistrationComponent,
     CompanyProfileComponent
+    CreateMapPromptComponent
+  ],
+  entryComponents: [
+    CreateMapPromptComponent
   ],
   imports: [
     BrowserModule,

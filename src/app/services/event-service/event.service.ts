@@ -6,6 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { FirebaseUISignInSuccess } from 'firebaseui-angular';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Map } from '../../shared/domain-model/map';
+import { Event } from '../../shared/domain-model/event';
 import { Globals } from '../../shared/globals';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';

@@ -30,6 +30,7 @@ import { UserService } from './services/user-service/user.service';
 import { AttendeeService } from './services/attendee-service/attendee.service';
 import { CompanyService } from './services/company-service/company.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
+import { EventService } from './services/event-service/event.service';
 import { ChipService } from './services/chip-service/chip.service'
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
@@ -124,6 +125,7 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     AttendeeService,
     CompanyService,
     CoordinatorService,
+    EventService,
     ChipService
   ],
   bootstrap: [AppComponent]

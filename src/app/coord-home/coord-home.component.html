@@ -37,8 +37,10 @@
                 <h3><strong>Create Event</strong></h3>
                   <div>
                     <p class="card-text">Click the button to create a new event</p>
-                    
-                    <a href="#" type = "submit" class="btn btn-link btn-outline-primary btn-block center-block">Create Event</a>
+                    <div class="text-center">
+                        <button (click)="openEventPrompt()">Create Event</button>
+                      </div>
+                    <!-- <a href="#" openEventPrompt()type = "submit" class="btn btn-link btn-outline-primary btn-block center-block">Create Event</a> -->
                   </div>
                   <br>
               </div>
@@ -57,9 +59,9 @@
             </thead>
             <tbody>
 
-              <tr *ngFor="let past of (pastEvents | filter:pastDt | paginate: { id: 'ppast', itemsPerPage: 5, currentPage: p})">
-                <td>{{past.date}}</td>
-                <td><a href = "./event/{{past.id}}">{{past.name}}</a></td>
+              <tr *ngFor="let past of pastEvents |  paginate: { id: 'ppast', itemsPerPage: 5, currentPage: p}">
+                <td>{{past.startTime | date: 'medium'}}</td>
+                <td><a href = "./event/{{past.id}}">{{past.eventTitle}}</a></td>
               </tr>
             </tbody>
           </table>
@@ -78,10 +80,10 @@
         </thead>
         <tbody>
 
-          <tr *ngFor="let future of (futureEvents | filter:futureDt | paginate: { id: 'ffuture', itemsPerPage: 5, currentPage: f})">
+          <tr *ngFor="let future of futureEvents | paginate: { id: 'ffuture', itemsPerPage: 5, currentPage: f}">
 
-            <td>{{future.date}}</td>
-            <td><a href = "./event/{{future.id}}">{{future.name}}</a></td>
+            <td>{{future.startTime | date: 'medium'}}</td>
+            <td><a href = "./event/{{future.id}}">{{future.eventTitle}}</a></td>
           </tr>
         </tbody>
       </table>

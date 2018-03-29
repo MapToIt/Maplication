@@ -155,6 +155,10 @@ export class EventMapComponent implements OnInit {
     {
       this.mapInfo = mapData;
       this.mapId = this.mapInfo.mapId;
+      let sd = new Date(this.mapInfo.event.startTime);
+      this.mapInfo.event.startTime = new Date(Date.UTC(sd.getFullYear(), sd.getMonth(), sd.getDate(), sd.getHours(), sd.getMinutes(), sd.getSeconds()));
+      let ed = new Date(this.mapInfo.event.endTime);
+      this.mapInfo.event.endTime = new Date(Date.UTC(ed.getFullYear(), ed.getMonth(), ed.getDate(), ed.getHours(),ed.getMinutes(), ed.getSeconds()));
       this.GetTables(this.mapId);
     });
   }
@@ -178,5 +182,6 @@ export class EventMapComponent implements OnInit {
   openEventPrompt() {
     let options: NgbModalOptions = { size: 'lg'};
     const modalRef = this.modalService.open(CreateMapPromptComponent, options);
+    modalRef.componentInstance.eventCoordinator = 1;
   }
 }

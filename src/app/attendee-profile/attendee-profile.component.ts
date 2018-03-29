@@ -72,8 +72,10 @@ export class AttendeeProfileComponent implements OnInit {
         //check validity
         if (this.uid == this.currentUser.uid){
           this.isValid = true;
+          this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;
         }else{
           this.isValid = false;
+          this.greeting = `Welcome back, ${this.profile.fullName}!`;
         }
       });
     
@@ -93,6 +95,12 @@ export class AttendeeProfileComponent implements OnInit {
               }
               if(!this.profile.chips){
                 this.profile.chips = [];
+              }
+              //set greeting
+              if (!this.isValid) {
+                this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;
+              } else {
+                this.greeting = `Welcome back, ${this.profile.fullName}!`;
               }       
             })
           }
@@ -177,6 +185,7 @@ export class AttendeeProfileComponent implements OnInit {
       //submit images
       //switch to view mode
       this.switchMode();
+      this.descriptionText = "";
     }else{
       this.descriptionText = "Please fill out all fields!";
     }
@@ -189,7 +198,6 @@ export class AttendeeProfileComponent implements OnInit {
 
       if(this.isValid){
         if(this.viewMode){
-          this.greeting = "Welcome Back, ".concat(this.profile.fullName);
           this.viewMode = false;
         }else{
           this.viewMode = true;

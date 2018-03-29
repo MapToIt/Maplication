@@ -16,6 +16,7 @@ import { UserService} from '../services/user-service/user.service';
 import {AttendeeService} from '../services/attendee-service/attendee.service';
 import {CompanyService} from '../services/company-service/company.service';
 import {FileUploadService} from '../services/file-upload-service/file-upload.service';
+import { TagsService } from '../services/tags-service/tags.service'
 import { Tags } from '../shared/domain-model/tags';
 
 
@@ -52,8 +53,9 @@ export class AttendeeProfileComponent implements OnInit {
   profileImgFile: File;
 
   //career field tags
-  fieldTags = ["Business", "Art", "Science", "Technology", "Software", "Architecture", "Design", "Management", "Marketing", "Accounting"]
-  currTag: Tags;
+  fieldTags: Tags[] =[];
+  stringTags: string[] = [];
+  currTag: string;
   stateObjs: stateObj[];
   states: string[];
   UIUser = new User("none");
@@ -66,7 +68,8 @@ export class AttendeeProfileComponent implements OnInit {
               private cdr: ChangeDetectorRef, private stateService: StateService,
               private userService: UserService, private attendeeService: AttendeeService, 
               private companyService: CompanyService, private route: ActivatedRoute, 
-              private router: Router, private fileUploadService: FileUploadService) {
+              private router: Router, private fileUploadService: FileUploadService,
+              private tagsService: TagsService) {
 
       this.route.params.subscribe( params => this.uid = params['id']);
       console.log(this.uid);
@@ -95,6 +98,9 @@ export class AttendeeProfileComponent implements OnInit {
               }
               if (!this.profile.image){
                 this.profile.image = "/assets/placeholder.png";
+              }
+              if(!this.profile.chips){
+                this.profile.chips = new Array<Tags>();
               }              
             })
           }
@@ -106,7 +112,8 @@ export class AttendeeProfileComponent implements OnInit {
       });
 
       this.states = this.getStates();
-    
+      this.getTags();
+      
     
     }
 
@@ -155,12 +162,23 @@ export class AttendeeProfileComponent implements OnInit {
     
     return states;
   }
+
+  //get states from db
+  getTags() {
+    var tagObjs: any[] = [];
+    this.tagsService.getTags().subscribe((data) => {
+      this.fieldTags = data;
+      this.fieldTags.forEach(
+        (tag: Tags) => {this.stringTags.push(tag.tag)}
+    )
+    }), err => { console.log(err) }
+  }
   
   submit(){
     //submit to database
-
+    console.log(this.profile);
     this.attendeeService.updateAttendee(this.profile).subscribe(
-      (data) => {console.log(data)},
+      () => {console.log("Successfully submitted to db")},
       (err) => {console.log(err)}
      )
     //submit images
@@ -175,7 +193,7 @@ export class AttendeeProfileComponent implements OnInit {
 
       if(this.isValid){
         if(this.viewMode){
-          this.greeting = "Welcome Back, ".concat(this.UIUser.name);
+          this.greeting = "Welcome Back, ".concat(this.profile.fullName);
           this.viewMode = false;
         }else{
           this.viewMode = true;
@@ -218,18 +236,19 @@ export class AttendeeProfileComponent implements OnInit {
   //add career tag to user
   addTag(){
     var tag = this.currTag;
-    console.log(tag);
+    var tagObj: Tags = this.fieldTags.find((t: Tags) => {return t.tag == tag})
+
     if(this.viewMode){
-      if (!this.profile.chips.includes(tag)){
-        this.profile.chips.push(tag);
+      if(!this.profile.chips.includes(tagObj)){
+        this.profile.chips.push(tagObj);
       }
     }
   }
 
-  removeTag(tag: Tags){
+  removeTag(tag: string){
     if(this.viewMode){
-      this.profile.chips.splice(this.profile.chips.findIndex((index) => { return index == tag}), 1)
-      document.getElementById(tag.tag).remove
+      this.profile.chips.splice(this.profile.chips.findIndex((index) => { return index.tag == tag}), 1)
+      document.getElementById(tag).remove
     }
   }
 }

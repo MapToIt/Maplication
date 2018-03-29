@@ -32,7 +32,7 @@
     
     <div *ngIf="viewMode" class="row justify-content-center">
       <div class="col-lg-3">
-        <input id="tagSelector" class="form-control bg-dark autoFill" placeholder="Career Tags" auto-complete [(ngModel)]="currTag" (change)="addTag()" [source]="fieldTags" [disabled]="!viewMode"/>
+        <input id="tagSelector" class="form-control bg-dark autoFill" placeholder="Career Tags" auto-complete [(ngModel)]="currTag" (change)="addTag()" [source]="stringTags" [disabled]="!viewMode"/>
       </div>
     </div>
     <div *ngIf="hasTags()" class="row justify-content-center">
@@ -41,10 +41,10 @@
     <div class="row justify-content-center">
       <div *ngFor="let tag of profile.chips">
         <div class="col">
-          <span id="{{tag}}" class="tag" unselectable="on"
+          <span id="{{tag.tag}}" class="tag" unselectable="on"
           onselectstart="return false;" 
           onmousedown="return false;"
-          (click)="removeTag(tag)">{{tag}}</span>
+          (click)="removeTag(tag.tag)">{{tag.tag}}</span>
         </div>
       </div>
     </div>

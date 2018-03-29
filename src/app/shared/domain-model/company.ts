@@ -1,4 +1,5 @@
 import { State } from './state';
+import { Tags } from './tags';
 
 export class Company {
   companyId: number;

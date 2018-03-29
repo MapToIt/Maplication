@@ -28,6 +28,7 @@ import { UserService } from './services/user-service/user.service';
 import { AttendeeService } from './services/attendee-service/attendee.service';
 import { CompanyService } from './services/company-service/company.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
+import { ChipService } from './services/chip-service/chip.service'
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
@@ -90,7 +91,7 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     EventListViewComponent,
     CoordHomeComponent,
     RegistrationComponent,
-    CompanyProfileComponent
+    CompanyProfileComponent,
     CreateMapPromptComponent
   ],
   entryComponents: [
@@ -119,7 +120,8 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     StateService,
     AttendeeService,
     CompanyService,
-    CoordinatorService
+    CoordinatorService,
+    ChipService
   ],
   bootstrap: [AppComponent]
 })

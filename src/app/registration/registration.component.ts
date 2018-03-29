@@ -49,7 +49,7 @@ export class RegistrationComponent implements OnInit {
       attendee.userId = this.currentUser.uid;
 
       this._AttendeeService.addAttendee(attendee).subscribe((attendee) => {
-        this.router.navigate(['company-profile', {id: attendee.userId}]);
+        this.router.navigate(['attendee-profile', this.afAuth.auth.currentUser.uid]);
       });
     }
 
@@ -90,7 +90,7 @@ export class RegistrationComponent implements OnInit {
       coordinator.userId = this.currentUser.uid;
 
       this._CoordinatorService.addCoordinator(coordinator).subscribe((user) => {
-        this.router.navigate(['coors-home', {id: user.userId}]);
+        this.router.navigate(['coord-home', this.afAuth.auth.currentUser.uid]);
       })
     }
   }

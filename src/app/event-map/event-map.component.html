@@ -1,13 +1,20 @@
 <div class='container'>
-  <div  class='heading'>
+  <div *ngIf='mapPopulated' class='heading'>
     <h1 class='row'>{{mapInfo.event.eventTitle}}</h1>
     <p class='row'>Date: {{mapInfo.event.startTime.toString()}} - {{mapInfo.event.endTime.toString()}}</p>
   </div>
   <div class='row'>
     <div class='col-8' id='drawing'></div>
-    <div class='col-4'>
-      <button [ngClass]="buttonClass" (click)="toggleEdit()">Add tables</button>
-      <button class="btn btn-lg btn-outline-primary" (click)="openEventPrompt()">Launch demo modal</button>
+    <div *ngIf='mapPopulated' class='col-4'>
+      <form>
+          <input type='text' class='form-control' [(ngModel)]='mapInfo.event.eventTitle' placeholder='Event Title' name='event-title' required>
+          <input type='text' class='form-control' [(ngModel)]='mapInfo.event.description' placeholder='Event Description' name='event-description' required>
+          <input type='text' class='form-control disabled' [(ngModel)]='mapInfo.event.coordinator.firstName' placeholder='Event Coordinator' name='event-coordinator' required>
+      </form>
     </div>
+  </div>
+  <div *ngIf='isEventCoordinator' class='row'>
+    <button [ngClass]="buttonClass" (click)="toggleEdit()">Add tables</button>
+    <button class="btn btn-lg btn-outline-primary" (click)="openEventPrompt()">Launch demo modal</button>
   </div>
 </div>

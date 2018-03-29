@@ -1,12 +1,17 @@
 import { Component, OnInit, HostListener, NgZone, Input } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Table } from "../shared/domain-model/table";
 import { Event } from "../shared/domain-model/event";
 import { Map } from '../shared/domain-model/map';
+import { Coordinator } from '../shared/domain-model/coordinator';
 import { MapService } from '../services/map-service/map.service';
 import { TableService } from '../services/table-service/table.service';
+import { UserService } from '../services/user-service/user.service';
+import { CoordinatorService } from '../services/coordinator/coordinator.service';
 import { NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { CreateMapPromptComponent } from '../create-map-prompt/create-map-prompt.component';
+import * as firebase from 'firebase/app';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import { Observable } from 'rxjs';
 
@@ -43,14 +48,27 @@ export class EventMapComponent implements OnInit {
   buttonClass: string;
   draw: any;
 
+  mapPopulated: boolean = false;
+
   tempPoint: any = {};
+
+  currentUser: firebase.User;
+  isEventCoordinator: boolean = false;
+  coordinator: Coordinator = new Coordinator();
 
   constructor(private _ngZone: NgZone,
               private route: ActivatedRoute,
+              private router: Router,
+              private afAuth: AngularFireAuth,
               private _MapService: MapService,
               private _TableService: TableService,
+              private _UserService: UserService,
+              private _CoordinatorService: CoordinatorService,
               private modalService: NgbModal) {
     this.route.params.subscribe( params => this.eventId = params['id']);
+
+    
+
     this.editToggle = false;
     this.buttonClass = "btn btn-success";
   }
@@ -160,6 +178,8 @@ export class EventMapComponent implements OnInit {
       let ed = new Date(this.mapInfo.event.endTime);
       this.mapInfo.event.endTime = new Date(Date.UTC(ed.getFullYear(), ed.getMonth(), ed.getDate(), ed.getHours(),ed.getMinutes(), ed.getSeconds()));
       this.GetTables(this.mapId);
+      this.CheckEditPermissions();
+      this.mapPopulated = true;
     });
   }
 
@@ -183,5 +203,17 @@ export class EventMapComponent implements OnInit {
     let options: NgbModalOptions = { size: 'lg'};
     const modalRef = this.modalService.open(CreateMapPromptComponent, options);
     modalRef.componentInstance.eventCoordinator = 1;
+  }
+
+  CheckEditPermissions(){
+    this.afAuth.authState.subscribe((user) => {
+      this.currentUser = user;
+      
+      //check if user logged in is profile owner
+      this.isEventCoordinator = this.mapInfo.event.coordinator.userId == this.currentUser.uid;
+      console.log(this.isEventCoordinator);
+      console.log(this.mapInfo.event.coordinator.userId);
+      console.log(this.currentUser.uid);
+    });
   }
 }

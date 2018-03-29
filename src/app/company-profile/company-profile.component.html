@@ -1,4 +1,4 @@
-<h1 *ngIf="isProfileUser">Welcome back {{profile.companyName}}</h1>
+<h1 *ngIf="isProfileUser">Welcome Back!</h1>
 <h1 *ngIf="!isProfileUser">{{profile.companyName}}</h1>
 
 <div class="card p-3 m-3">
@@ -6,29 +6,46 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">Company Name</span>
         </div>
-        <input type="text" class="form-control" [(ngModel)]="profile.companyName" placeholder="Company Name" aria-label="Name" aria-describedby="basic-addon1">
+        <input type="text" class="form-control" [(ngModel)]="profile.companyName" [disabled]="!isProfileUser" placeholder="Company Name" aria-label="Name" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Company Website</span>
+        </div>
+        <input type="text" class="form-control" [(ngModel)]="profile.url" [disabled]="!isProfileUser" placeholder="Company Website" aria-label="Name" aria-describedby="basic-addon1">
     </div>
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1"><i class="material-icons">call</i></span>
         </div>
-        <input type="text" class="form-control" [(ngModel)]="profile.phoneNumber"  placeholder="Email" aria-label="Phone Number" aria-describedby="basic-addon1">
-    </div>
-    <div class="input-group mb-3">
+        <input type="text" class="form-control" [(ngModel)]="profile.phoneNumber" [disabled]="!isProfileUser" placeholder="Phone Number" aria-label="Phone Number" aria-describedby="basic-addon1">
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">#</span>
         </div>
-        <input type="text" class="form-control" [(ngModel)]="profile.streetNumber" placeholder="Street Number" aria-label="Major" aria-describedby="basic-addon1">
+        <input type="text" class="form-control" [(ngModel)]="profile.streetNumber" [disabled]="!isProfileUser" placeholder="Street Number" aria-label="Major" aria-describedby="basic-addon1">
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">Street</span>
         </div>
-        <input type="text" class="form-control" [(ngModel)]="profile.street" placeholder="Street" aria-label="Major" aria-describedby="basic-addon1">
+        <input type="text" class="form-control" [(ngModel)]="profile.street" [disabled]="!isProfileUser" placeholder="Street" aria-label="Major" aria-describedby="basic-addon1">
     </div>
-    <div class="input-group">
+    <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <span class="input-group-text">Notes</span>
+            <span class="input-group-text" id="basic-addon1">City</span>
         </div>
-        <textarea class="form-control" aria-label="Notes"></textarea>
+        <input type="text" class="form-control" [(ngModel)]="profile.city" [disabled]="!isProfileUser" placeholder="City" aria-label="Major" aria-describedby="basic-addon1">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">State</span>
+        </div>
+        <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="profile.stateId" uib-typeahead="state for state in states | filter:$viewValue | limitTo:8"/>
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Zipcode</span>
+        </div>
+        <input type="text" class="form-control" [(ngModel)]="profile.zipCode" [disabled]="!isProfileUser" placeholder="Zipcode" aria-label="Major" aria-describedby="basic-addon1">
     </div>
-    <button type="button" class="btn btn-primary m-2" (click)="submitNote()">Submit</button>
+    <div class="input-group mb-3">
+        <label class="import-file">
+            <input type="file" multiple [disabled]="!isProfileUser" onchange="angular.element(this).scope().fileNameChanged(this)">
+        </label>
+    </div>
+    <button type="button" class="btn btn-primary m-2" (click)="updateCompany()">Update Profile</button>
 </div>

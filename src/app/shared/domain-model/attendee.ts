@@ -11,7 +11,7 @@ export class Attendee {
   resume: string;
   degree: string;
   university: string;
-  chips: Tags[];
+  chips: string;
   userId: string;
   
 }

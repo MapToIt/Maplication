@@ -8,6 +8,10 @@ import * as firebase from 'firebase/app';
 import { UserService } from '../services/user-service/user.service';
 import { CompanyService } from '../services/company-service/company.service';
 import { Company } from '../shared/domain-model/company';
+import { State } from '../shared/domain-model/state';
+import { StateService } from '../services/state.service';
+import { ChipService } from '../services/chip-service/chip.service';
+import { Tags } from '../shared/domain-model/tags';
 
 @Component({
   selector: 'app-company-profile',
@@ -21,8 +25,11 @@ export class CompanyProfileComponent implements OnInit {
   currentUser: firebase.User;
   isProfileUser: boolean;
   profile: Company = new Company();
+  states: State[];
+  chips: Tags[];
 
-  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase,
+  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
+              private _StateService: StateService, private _ChipService: ChipService,
               private _CompanyService: CompanyService, private _UserService: UserService,
               private route: ActivatedRoute, private router: Router) {
                 this.route.params.subscribe( params => this.uid = params['id']);
@@ -50,9 +57,22 @@ export class CompanyProfileComponent implements OnInit {
         //check if user logged in is profile owner
         this.isProfileUser = this.uid == this.currentUser.uid;
       });
+
+      this._StateService.getStates().subscribe((states) => {
+        this.states = states;
+      });
+
+      this._ChipService.getChips().subscribe((chips) => {
+        this.chips = chips;
+        console.log(this.chips);
+      });
    }
 
   ngOnInit() {
+  }
+
+  updateCompany(){
+
   }
 
 }

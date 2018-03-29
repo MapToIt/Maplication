@@ -64,6 +64,13 @@
               id="resumeFile"
               (change)="handleFileInputRes($event.target.files)" class="inputfile">
     </div>
+    <div *ngIf="!viewMode" class="row justify-content-center">
+      <a href="{{profile.resume}}" target="_blank">
+      <button class="btn align-middle" type="button" (click)="console.log(profile.resume)">
+        <i class="large material-icons black">file_download</i>
+      </button>
+      </a>
+    </div>
     <div class="container">
       <div class="row justify-content-center">
         <button *ngIf="viewMode" id="submitButton" class="btn btn-primary btn-lg m-3" (click)="submit()">Submit Changes</button>

@@ -94,7 +94,7 @@ export class AttendeeProfileComponent implements OnInit {
                 this.profile.image = "/assets/placeholder.png";
               }
               if(!this.profile.chips){
-                this.profile.chips = [];
+                this.profile.chips = "";
               }
               //set greeting
               if (!this.isValid) {
@@ -237,19 +237,24 @@ export class AttendeeProfileComponent implements OnInit {
 
   //add career tag to user
   addTag(){
-    var tag = this.currTag;
-    var tagObj: Tags = this.fieldTags.find((t: Tags) => {return t.tag == tag})
     if(this.viewMode){
-      if(!this.profile.chips.includes(tagObj)){
-        this.profile.chips.push(tagObj);
+      var tag = this.currTag;
+      var tagObj: Tags = this.fieldTags.find((t: Tags) => { return t.tag == tag })
+      var userTags: Tags[] = JSON.parse(this.profile.chips);
+      if(!userTags.includes(tagObj)){
+        userTags.push(tagObj);
       }
+      this.profile.chips = JSON.stringify(userTags);
     }
   }
 
   removeTag(tag: string){
     if(this.viewMode){
-      this.profile.chips.splice(this.profile.chips.findIndex((index) => { return index.tag == tag}), 1)
+      var userTags: Tags[] = JSON.parse(this.profile.chips);
+      userTags.splice(userTags.findIndex((index) => { return index.tag == tag}), 1)
       document.getElementById(tag).remove
+      this.profile.chips = JSON.stringify(userTags);
     }
   }
+
 }

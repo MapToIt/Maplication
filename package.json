@@ -40,6 +40,7 @@
     "ng2-filter-pipe": "^0.1.10",
     "ng2-search-filter": "^0.4.7",
     "ngx-pagination": "^3.1.0",
+    "popper.js": "^1.12.9",
     "promise-polyfill": "7.1.0",
     "rxjs": "^5.5.7",
     "svg.js": "^2.6.4",

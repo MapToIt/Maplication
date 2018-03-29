@@ -25,10 +25,10 @@ export class AttendeeService {
   }
 
   updateAttendee(attendee: Attendee){
-    this.http.post(Globals.apiUrl + 'Attendee', attendee)
+    return this.http.post<Attendee>(Globals.apiUrl + 'Attendee', attendee)
   }
 
   addAttendee(attendee: Attendee){
-    this.http.put(Globals.apiUrl + 'Attendee', attendee);
+    return this.http.put<Attendee>(Globals.apiUrl + 'Attendee', attendee);
   }
 }

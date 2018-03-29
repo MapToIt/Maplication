@@ -9,10 +9,10 @@
     <form>
       <div class="form-row justify-content-center">
         <div class="col">
-          <input type="text" placeholder="{{namePlaceholder}}" class="form-control bg-dark" [(ngModel)]="profile.fullName" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="Full Name" class="form-control bg-dark" [(ngModel)]="profile.fullName" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
         <div class="col">
-          <input type="text" placeholder="{{emailPlaceholder}}" class="form-control bg-dark" [(ngModel)]="profile.email" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="Email" class="form-control bg-dark" [(ngModel)]="profile.email" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
       <div *ngIf="isAttendee" class="form-row justify-content-center">
@@ -25,7 +25,7 @@
       </div>
       <div class="form-row justify-content-center">
         <div class="col-lg-6">
-          <input type="text" placeholder="{{phonePlaceholder}}" class="form-control bg-dark" [(ngModel)]="profile.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="Phone Number" class="form-control bg-dark" [(ngModel)]="profile.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
     </form>

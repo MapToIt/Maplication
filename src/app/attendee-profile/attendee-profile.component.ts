@@ -31,12 +31,6 @@ export class AttendeeProfileComponent implements OnInit {
 
   //string for ui
   greeting: string = "Let's Get Started With Your Profile!";
-  bioPlaceholder: string = "Tell us a bit about your background, your experience, and your goals.";
-  mottoPlaceholder: string = "Sum yourself up in one sentence.";
-  namePlaceholder: string = "Name";
-  emailPlaceholder: string = "Email";
-  phonePlaceholder: string = "Phone Number";
-  urlPlaceholder: string = "Company Website URL";
   tagText: string = "Click tags to add them to your profile";
   uploadImgText: string = "Upload Your Picture";
   tagDescription: string = "I am interested in: ";
@@ -98,7 +92,7 @@ export class AttendeeProfileComponent implements OnInit {
                 this.profile.image = "/assets/placeholder.png";
               }
               if(!this.profile.chips){
-                this.profile.chips = "";
+                this.profile.chips = [];
               }       
             })
           }
@@ -237,21 +231,17 @@ export class AttendeeProfileComponent implements OnInit {
   addTag(){
     var tag = this.currTag;
     var tagObj: Tags = this.fieldTags.find((t: Tags) => {return t.tag == tag})
-    var tags = this.stringToTags(this.profile.chips)
     if(this.viewMode){
-      if(!tags.includes(tagObj)){
-        tags.push(tagObj);
+      if(!this.profile.chips.includes(tagObj)){
+        this.profile.chips.push(tagObj);
       }
     }
-    this.profile.chips = this.tagsToString(tags);
   }
 
   removeTag(tag: string){
-    var tags = this.stringToTags(this.profile.chips)
     if(this.viewMode){
-      tags.splice(tags.findIndex((index) => { return index.tag == tag}), 1)
+      this.profile.chips.splice(this.profile.chips.findIndex((index) => { return index.tag == tag}), 1)
       document.getElementById(tag).remove
     }
-    this.profile.chips = this.tagsToString(tags);
   }
 }

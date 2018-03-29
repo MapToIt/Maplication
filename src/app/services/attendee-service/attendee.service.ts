@@ -29,7 +29,7 @@ export class AttendeeService {
   }
 
   addAttendee(attendee: Attendee){
-    return this.http.put<Attendee>(Globals.apiUrl + 'Attendee', attendee)
+    return this.http.put<Attendee>(Globals.apiUrl + 'Attendee', attendee);
   }
   
 }

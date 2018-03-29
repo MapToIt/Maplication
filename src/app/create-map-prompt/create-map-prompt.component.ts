@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StatesService } from '../services/states-service/states-service.service';
+import { MapService } from '../services/map-service/map.service';
 import { State } from '../shared/domain-model/state';
 import { Event } from '../shared/domain-model/event';
 import { Map } from '../shared/domain-model/map';
@@ -9,9 +10,10 @@ import { Map } from '../shared/domain-model/map';
   selector: 'app-create-map-prompt',
   templateUrl: './create-map-prompt.component.html',
   styleUrls: ['./create-map-prompt.component.css'],
-  providers: [StatesService]
+  providers: [StatesService, MapService]
 })
 export class CreateMapPromptComponent implements OnInit {
+  @Input () eventCoordinator;
 
   eventTitle: string;
   eventDescription: string;
@@ -26,12 +28,9 @@ export class CreateMapPromptComponent implements OnInit {
   eventCity: string;
   eventState: number;
   eventZipCode: number;
-
-  eventCoordinator = 1;
-
   states: State[];
 
-  constructor(public activeModal: NgbActiveModal, private _StatesService: StatesService) { }
+  constructor(public activeModal: NgbActiveModal, private _StatesService: StatesService, private _MapService: MapService) { }
 
   ngOnInit() {
     this.GetStates();
@@ -39,40 +38,34 @@ export class CreateMapPromptComponent implements OnInit {
 
   Submit()
   {
-    console.log(this.eventTitle);
-    console.log(this.eventDescription);
-    this.eventStart = this.CombineDateAndTime(this.startDate, this.startTime);
-    console.log(this.startTime);
-    this.eventEnd = this.CombineDateAndTime(this.endDate, this.endTime);
-    console.log(this.eventStart);
-    console.log(this.eventEnd);
-    console.log(this.eventStreetNumber);
-    console.log(this.eventStreetName);
-    console.log(this.eventCity);
-    console.log(this.eventState);
-    console.log(this.eventZipCode);
-    let addMap = new Map();
-    addMap.event = new Event();
-    addMap.mapId = 0;
-    addMap.eventId = 0;
-    addMap.image = "";
-    let mapJSON = JSON.stringify(addMap);
-    console.log(addMap);
-    console.log(mapJSON);
-    addMap.event.eventId = 0;
-    addMap.event.eventTitle = this.eventTitle;
-    addMap.event.coordinatorId = this.eventCoordinator;
-    addMap.event.eventStartTime = this.eventStart;
-    addMap.event.eventEndTime = this.eventEnd;
-    addMap.event.description = this.eventDescription;
-    addMap.event.streetNumber = this.eventStreetNumber;
-    addMap.event.street = this.eventStreetName;
-    addMap.event.city = this.eventCity;
-    addMap.event.stateId = this.eventState;
-    addMap.event.zipcode = this.eventZipCode;
-    addMap.event.eventPic = "";
-    
-    console.log(addMap);
+    if (typeof(this.eventStreetNumber) === "number" && typeof(this.eventZipCode) === "number" && this.eventTitle != null
+          && this.eventCoordinator != null && this.eventDescription != null && this.eventStreetName != null && this.eventCity != null
+          && typeof(this.eventState) === "number")
+    {
+      this.eventStart = this.CombineDateAndTime(this.startDate, this.startTime);
+      this.eventEnd = this.CombineDateAndTime(this.endDate, this.endTime);
+      let addMap = new Map();
+      addMap.event = new Event();
+      addMap.mapId = 0;
+      addMap.eventId = 0;
+      addMap.image = "";
+      addMap.event.eventId = 0;
+      addMap.event.eventTitle = this.eventTitle;
+      addMap.event.coordinatorId = this.eventCoordinator;
+      addMap.event.startTime = this.eventStart;
+      addMap.event.endTime = this.eventEnd;
+      addMap.event.description = this.eventDescription;
+      addMap.event.streetNumber = this.eventStreetNumber;
+      addMap.event.street = this.eventStreetName;
+      addMap.event.city = this.eventCity;
+      addMap.event.stateId = this.eventState;
+      addMap.event.zipcode = this.eventZipCode;
+      addMap.event.eventPic = "";
+      
+      console.log(typeof(this.eventStart));
+      console.log(addMap);
+      //this._MapService.AddMap(addMap);
+    }
   }
 
   GetStates()

@@ -2,9 +2,10 @@ import { NgModule} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core'; 
 import { Pipe, PipeTransform} from '@angular/core';
-import { Coord } from './coord';
+import { Coordinator } from './coord';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Table } from "../shared/domain-model/table";
+import { CoordinatorService } from "../services/coordinator/coordinator.service";
 import { logger } from '@firebase/database/dist/esm/src/core/util/util';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
@@ -16,7 +17,8 @@ import { Event } from './coord';
 @Component({
   selector: 'app-coord-home',
   templateUrl: './coord-home.component.html',
-  styleUrls: ['./coord-home.component.css']
+  styleUrls: ['./coord-home.component.css'],
+  providers: [CoordinatorService]
 })
  
 export class CoordHomeComponent implements OnInit {
@@ -25,7 +27,7 @@ export class CoordHomeComponent implements OnInit {
    public now = '2018/03/22 00:00:00';
    cId: number = 0;
    uId: string;
-   coords: Coord[] = new Array();
+   coords: Coordinator[] = new Array();
    cIdHold: number;
       
   evts = [
@@ -51,17 +53,19 @@ export class CoordHomeComponent implements OnInit {
   pastEvents: Event[] = new Array();
   futureEvents: Event[] = new Array();
 
-  constructor(private route: ActivatedRoute) {  
+  constructor(private _CoordinatorService: CoordinatorService,private route: ActivatedRoute) {  
     this.route.params.subscribe( params => this.uId = params['id']);  
-  
+    console.log(this.uId);
     this.pastEvents = this.evts.filter(event => event.date < this.now);
     this.futureEvents = this.evts.filter(event => event.date >= this.now);
   }
 
-   updateCoord(firstName,lastName,email,phone){
-    let coord = new Coord(firstName,lastName,this.uId,email,phone);
+   updateCoord(cId,firstName,lastName,email,phone){
+   let coord = new Coordinator(cId,firstName,lastName,this.uId,email,phone);
     this.coords.push(coord);
-    console.log("Coordinator Updated");
+    console.log(coord);
+    this._CoordinatorService.updateCoordinator;
+    
   }
   ngOnInit() {
     

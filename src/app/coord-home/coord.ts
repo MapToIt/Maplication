@@ -1,4 +1,4 @@
-export class Coord {
+export class Coordinator {
     CoordinatorId: number;
     FirstName: string;
     LastName: string;
@@ -6,7 +6,8 @@ export class Coord {
     Email: string;
     PhoneNumber: string;
 
-   constructor(FirstName, LastName, UserId, Email, PhoneNumber){
+   constructor(cId, FirstName, LastName, UserId, Email, PhoneNumber){
+        this.CoordinatorId = cId;
         this.FirstName = FirstName;
         this.LastName = LastName;
         this.UserId = UserId;

@@ -4,8 +4,8 @@
     <p class='row'>Date: {{mapInfo.event.startTime.toString()}} - {{mapInfo.event.endTime.toString()}}</p>
   </div>
   <div class='row'>
-    <div class='col-9' id='drawing'></div>
-    <div class='col-3'>
+    <div class='col-8' id='drawing'></div>
+    <div class='col-4'>
       <button [ngClass]="buttonClass" (click)="toggleEdit()">Add tables</button>
       <button class="btn btn-lg btn-outline-primary" (click)="openEventPrompt()">Launch demo modal</button>
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, NgZone, Input } from '@angular/core';
+import { Component, OnInit, HostListener, NgZone, Input, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Table } from "../shared/domain-model/table";
 import { Event } from "../shared/domain-model/event";
@@ -29,6 +29,9 @@ enum tableColor {
   providers: [MapService, TableService]
 })
 export class EventMapComponent implements OnInit {
+
+  @ViewChild('drawing') drawing;
+
   imagePath:string = '../../assets/SampleMap.png';
   imageHeight:number = 600;
   imageWidth:number = 600;
@@ -64,10 +67,9 @@ export class EventMapComponent implements OnInit {
               private _TableService: TableService,
               private _UserService: UserService,
               private _CoordinatorService: CoordinatorService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private renderer: Renderer2) {
     this.route.params.subscribe( params => this.eventId = params['id']);
-
-    
 
     this.editToggle = false;
     this.buttonClass = "btn btn-success";
@@ -79,9 +81,20 @@ export class EventMapComponent implements OnInit {
     let image = this.draw.image(this.imagePath).size(this.imageWidth, this.imageHeight);
     let rect = this.draw.rect(this.imageWidth, this.imageHeight).opacity(0).attr({'class': 'unselectable', 'draggable':false});
     rect.id('drawLayer');
+
+    let drawingMouseDown = this.renderer.listen(this.drawing.nativeElement, 'mousedown', (evt) => {
+      console.log(evt);
+      this.AddPointOne(evt);
+    });
+    let drawingMouseUp = this.renderer.listen(this.drawing.nativeElement, 'mouseup', (evt) => {
+      console.log(evt);
+      this.AddPointTwo(evt);
+    });
+    
+
   }
 
-  @HostListener('mousedown', ['$event'])
+  /*@HostListener('mousedown', ['$event'])
   onMouseDown(ev:MouseEvent) {
     this.AddPointOne(ev);
   }
@@ -89,7 +102,7 @@ export class EventMapComponent implements OnInit {
   @HostListener('mouseup', ['$event'])
   onMouseUp(ev:MouseEvent){
     this.AddPointTwo(ev);
-  }
+  }*/
 
   toggleEdit(){
     this.editToggle = !this.editToggle;

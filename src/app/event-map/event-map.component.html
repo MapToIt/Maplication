@@ -4,7 +4,7 @@
     <p class='row'>Date: {{mapInfo.event.startTime.toString()}} - {{mapInfo.event.endTime.toString()}}</p>
   </div>
   <div class='row'>
-    <div class='col-8' id='drawing'></div>
+    <div class='col-8' #drawing id='drawing'></div>
     <div *ngIf='mapPopulated' class='col-4'>
       <form>
           <input type='text' class='form-control' [(ngModel)]='mapInfo.event.eventTitle' placeholder='Event Title' name='event-title' required>

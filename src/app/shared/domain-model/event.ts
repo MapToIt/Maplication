@@ -4,8 +4,8 @@ export class Event {
     public eventId: number;
     public eventTitle: string;
     public coordinatorId: number;
-    public eventStartTime: Date;
-    public eventEndTime: Date;
+    public startTime: Date;
+    public endTime: Date;
     public description: string;
     public streetNumber: number;
     public street: string;

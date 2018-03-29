@@ -45,7 +45,7 @@ export class AppNavbarComponent implements OnInit {
           }
           else
           {
-            this.router.navigate(['coord-mone', this.afAuth.auth.currentUser.uid]);
+            this.router.navigate(['coord-home', this.afAuth.auth.currentUser.uid]);
           }
         }
     });

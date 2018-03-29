@@ -42,3 +42,11 @@ testem.log
 .DS_Store
 Thumbs.db
 package-lock.json
+src/app/app.module_REMOTE_584.ts
+src/app/app.module_REMOTE_14784.ts
+src/app/app.module_LOCAL_584.ts
+src/app/app.module_LOCAL_14784.ts
+src/app/app.module_BASE_584.ts
+src/app/app.module_BASE_14784.ts
+src/app/app.module_BACKUP_584.ts
+src/app/app.module_BACKUP_14784.ts

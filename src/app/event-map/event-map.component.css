@@ -1,4 +1,4 @@
-:host ::ng-deep .unselectable {
+:host ::ng-deep .unselectable{
   cursor: crosshair;
   user-drag: none;
   user-select: none;

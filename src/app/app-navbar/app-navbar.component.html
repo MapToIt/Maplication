@@ -42,7 +42,7 @@
     </ng-template>
     
     <form class="form-inline my-2 my-lg-0" *ngIf="afAuth.authState | async as user; else showLogin">
-      <a class="navbar-brand" id="title" href="#">Hello {{ user.displayName }}!</a>  
+      <a class="navbar-brand" id="title" (click)="goToProfile()">Hello {{ user.displayName }}!</a>  
       <button class="nav-link" (click)="logout()" class="btn btn-primary my-2 my-sm-0">Log Out</button>
       <!-- <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button> -->

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { User } from './user';
 import {Attendee} from '../shared/domain-model/attendee'
 import {Company} from '../shared/domain-model/company'
 import { logger } from '@firebase/database/dist/esm/src/core/util/util';
@@ -18,6 +17,7 @@ import {CompanyService} from '../services/company-service/company.service';
 import {FileUploadService} from '../services/file-upload-service/file-upload.service';
 import { TagsService } from '../services/tags-service/tags.service'
 import { Tags } from '../shared/domain-model/tags';
+import { forEach } from '@angular/router/src/utils/collection';
 
 
 @Component({
@@ -58,7 +58,6 @@ export class AttendeeProfileComponent implements OnInit {
   currTag: string;
   stateObjs: stateObj[];
   states: string[];
-  UIUser = new User("none");
   profile: Attendee = new Attendee();
   uid: string;
   currentUser: firebase.User;
@@ -100,8 +99,8 @@ export class AttendeeProfileComponent implements OnInit {
                 this.profile.image = "/assets/placeholder.png";
               }
               if(!this.profile.chips){
-                this.profile.chips = new Array<Tags>();
-              }              
+                this.profile.chips = "";
+              }       
             })
           }
           else
@@ -162,6 +161,27 @@ export class AttendeeProfileComponent implements OnInit {
     
     return states;
   }
+
+  tagsToString(tags: Tags[]): string{
+    var str: string = "";
+    if (tags) {
+      tags.forEach(
+        (tag) => {str += (tag.tag + ",")}
+      )
+    }
+    return str;
+  }
+
+  stringToTags(str: string): Tags[]{
+    var tags: Tags[] = []
+    var strArr: string[] = str.split(',');
+    strArr.forEach((s) => {
+      var tag = this.fieldTags.find((tag) => {return tag.tag == s})
+      tags.push(tag);
+    })
+    return tags;
+  }
+
 
   //get states from db
   getTags() {
@@ -237,18 +257,21 @@ export class AttendeeProfileComponent implements OnInit {
   addTag(){
     var tag = this.currTag;
     var tagObj: Tags = this.fieldTags.find((t: Tags) => {return t.tag == tag})
-
+    var tags = this.stringToTags(this.profile.chips)
     if(this.viewMode){
-      if(!this.profile.chips.includes(tagObj)){
-        this.profile.chips.push(tagObj);
+      if(!tags.includes(tagObj)){
+        tags.push(tagObj);
       }
     }
+    this.profile.chips = this.tagsToString(tags);
   }
 
   removeTag(tag: string){
+    var tags = this.stringToTags(this.profile.chips)
     if(this.viewMode){
-      this.profile.chips.splice(this.profile.chips.findIndex((index) => { return index.tag == tag}), 1)
+      tags.splice(tags.findIndex((index) => { return index.tag == tag}), 1)
       document.getElementById(tag).remove
     }
+    this.profile.chips = this.tagsToString(tags);
   }
 }

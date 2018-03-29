@@ -15,10 +15,9 @@ import { UserService} from '../services/user-service/user.service';
 import {AttendeeService} from '../services/attendee-service/attendee.service';
 import {CompanyService} from '../services/company-service/company.service';
 import {FileUploadService} from '../services/file-upload-service/file-upload.service';
-import { TagsService } from '../services/tags-service/tags.service'
 import { Tags } from '../shared/domain-model/tags';
 import { forEach } from '@angular/router/src/utils/collection';
-
+import { ChipService } from '../services/chip-service/chip.service';
 
 @Component({
   selector: 'app-attendee-profile',
@@ -68,7 +67,7 @@ export class AttendeeProfileComponent implements OnInit {
               private userService: UserService, private attendeeService: AttendeeService, 
               private companyService: CompanyService, private route: ActivatedRoute, 
               private router: Router, private fileUploadService: FileUploadService,
-              private tagsService: TagsService) {
+              private tagsService: ChipService) {
 
       this.route.params.subscribe( params => this.uid = params['id']);
       console.log(this.uid);
@@ -162,31 +161,10 @@ export class AttendeeProfileComponent implements OnInit {
     return states;
   }
 
-  tagsToString(tags: Tags[]): string{
-    var str: string = "";
-    if (tags) {
-      tags.forEach(
-        (tag) => {str += (tag.tag + ",")}
-      )
-    }
-    return str;
-  }
-
-  stringToTags(str: string): Tags[]{
-    var tags: Tags[] = []
-    var strArr: string[] = str.split(',');
-    strArr.forEach((s) => {
-      var tag = this.fieldTags.find((tag) => {return tag.tag == s})
-      tags.push(tag);
-    })
-    return tags;
-  }
-
-
   //get states from db
   getTags() {
     var tagObjs: any[] = [];
-    this.tagsService.getTags().subscribe((data) => {
+    this.tagsService.getChips().subscribe((data) => {
       this.fieldTags = data;
       this.fieldTags.forEach(
         (tag: Tags) => {this.stringTags.push(tag.tag)}
@@ -197,13 +175,17 @@ export class AttendeeProfileComponent implements OnInit {
   submit(){
     //submit to database
     console.log(this.profile);
-    this.attendeeService.updateAttendee(this.profile).subscribe(
-      () => {console.log("Successfully submitted to db")},
-      (err) => {console.log(err)}
-     )
-    //submit images
-    //switch to view mode
-    this.switchMode();
+    if (this.authentication()){
+      this.attendeeService.updateAttendee(this.profile).subscribe(
+        () => {console.log("Successfully submitted to db")},
+        (err) => {console.log(err)}
+      )
+      //submit images
+      //switch to view mode
+      this.switchMode();
+    }else{
+      this.descriptionText = "Please fill out all fields!";
+    }
   }
 
   //switch views based on controls
@@ -222,20 +204,18 @@ export class AttendeeProfileComponent implements OnInit {
   
   }
 
-  // //form authentication
-  // authentication(){
-  //   var prof = this.profile;
-  //   if(prof.type == "attendee"){    //check for attendee type
-  //     if (
-  //       prof.name || prof.email || prof.phoneNumber || prof.degree || prof.college == ""
-  //     ){
-  //       return "Please fill out all fields!"
-  //     }
-  //     if (prof.imgLink || prof.resumeLink == "" ){ return "Please upload a profile picture and resume!"}
-  //     if (prof.tags.length == 0){ return "Please add some tags to your profile!"}
-  //   }
-  //   return "";
-  // }
+  //form authentication
+  authentication(){
+    var prof = this.profile;
+    if (!(prof.firstName || prof.email || prof.phoneNumber || prof.degree || prof.university))
+    {
+      return false;
+    }
+    if (!(prof.image || prof.resume)){ return false}
+    if (prof.chips.length == 0){ return false}
+    return true;
+  }
+
 
   // //debug user object
   debug(files){

@@ -26,9 +26,13 @@ export class MapService {
   }
 
   AddMap(map: Map){
-    console.log(map);
+    console.log(JSON.stringify(map));
     this.http.post(Globals.apiUrl + `map/add`, map)
-      .catch(this.handleError);
+      .catch(this.handleError)
+      .subscribe(
+        data => console.log('success', data),
+        error => console.log('oops', error)
+      );
   }
 
   private handleError(error: HttpErrorResponse) {

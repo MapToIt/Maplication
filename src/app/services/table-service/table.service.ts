@@ -32,7 +32,11 @@ export class TableService {
     //var toSend = JSON.stringify(tempTable);
     console.log(tempTable);
     this.http.post(Globals.apiUrl + `map/tables/add`, tempTable)
-      .catch(this.handleError);
+      .catch(this.handleError)
+      .subscribe(
+        data => console.log('success', data),
+        error => console.log('oops', error)
+      );
   }
 
   private handleError(error: HttpErrorResponse) {

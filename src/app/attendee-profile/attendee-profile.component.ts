@@ -1,6 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from './user';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import {Attendee} from '../shared/domain-model/attendee'
+import {Company} from '../shared/domain-model/company'
 import { logger } from '@firebase/database/dist/esm/src/core/util/util';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AnonymousSubscription } from 'rxjs/Subscription';
+import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
+import * as firebase from 'firebase/app';
+import { ChangeDetectorRef } from '@angular/core';
+import { NgModule } from '@angular/core/src/metadata/ng_module';
+import { StateService, stateObj } from '../services/state.service';
+import { UserService} from '../services/user-service/user.service';
+import {AttendeeService} from '../services/attendee-service/attendee.service';
+import {CompanyService} from '../services/company-service/company.service';
+import {FileUploadService} from '../services/file-upload-service/file-upload.service';
+import { Tags } from '../shared/domain-model/tags';
+import { forEach } from '@angular/router/src/utils/collection';
+import { ChipService } from '../services/chip-service/chip.service';
 
 @Component({
   selector: 'app-attendee-profile',
@@ -9,14 +26,11 @@ import { logger } from '@firebase/database/dist/esm/src/core/util/util';
 })
 export class AttendeeProfileComponent implements OnInit { 
 
+  //debug
+  myUID: string = "1XZbEmGQfJPAVwLh1KjzgMchiUd2";
 
   //string for ui
   greeting: string = "Let's Get Started With Your Profile!";
-  bioPlaceholder: string = "Tell us a bit about your background, your experience, and your goals.";
-  mottoPlaceholder: string = "Sum yourself up in one sentence.";
-  namePlaceholder: string = "Name";
-  emailPlaceholder: string = "Email";
-  phonePlaceholder: string = "Phone Number";
   tagText: string = "Click tags to add them to your profile";
   uploadImgText: string = "Upload Your Picture";
   tagDescription: string = "I am interested in: ";
@@ -25,191 +39,222 @@ export class AttendeeProfileComponent implements OnInit {
   //page controls
   viewMode: boolean = false;
   isAttendee: boolean = true;
-  isValid: boolean = true;
+  isValid: boolean = false;
   
   //profile image setup
   profileImg: string = "/assets/placeholder.png";
   profileImgFile: File;
 
   //career field tags
-  fieldTags = ["Business", "Art", "Science", "Technology", "Software", "Architecture", "Design", "Management", "Marketing", "Accounting"]
-  //debug object
-  user: User = new User("");    //change to testID to view logged-in
-  profile: User = new User("");
+  fieldTags: Tags[] =[];
+  stringTags: string[] = [];
+  currTag: string;
+  stateObjs: stateObj[];
+  states: string[];
+  profile: Attendee = new Attendee();
+  uid: string;
+  currentUser: firebase.User;
   
 
-  constructor() {
-  }
+  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
+              private cdr: ChangeDetectorRef, private stateService: StateService,
+              private userService: UserService, private attendeeService: AttendeeService, 
+              private companyService: CompanyService, private route: ActivatedRoute, 
+              private router: Router, private fileUploadService: FileUploadService,
+              private tagsService: ChipService) {
 
-  ngOnInit() {
-    //Load in page info from db
-    this.profile = this.getProfile(this.getCurrentPageID());
-    //Load in user
-    this.user = this.getUser(this.getCurrentID());
-    //get user type
-    this.profile.type = this.getType(this.profile.id);
-    this.user.type = this.getType(this.user.id);
+      this.route.params.subscribe( params => this.uid = params['id']);
+      console.log(this.uid);
 
-    /*DEBUGGING*/
-    this.profile.id = "same";
-    this.user.id = "same";
-    this.profile.type = "attendee";
-    /*END DEBUGGING*/
+      this.afAuth.authState.subscribe((user) => {
+        this.currentUser = user;
+        
+        //check validity
+        if (this.uid == this.currentUser.uid){
+          this.isValid = true;
+          this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;
+        }else{
+          this.isValid = false;
+          this.greeting = `Welcome back, ${this.profile.fullName}!`;
+        }
+      });
     
-    //check validity
-    if (this.profile.id == this.user.id){
-      this.isValid = true;
-    }else{
-      this.isValid = false;
+
+      this.userService.getUserType(this.uid).subscribe((userType) => {
+        if(userType != null)
+        {
+          if (userType.toLowerCase() == "attendee")
+          {
+            this.attendeeService.getAttendee(this.uid).subscribe((attendee) => {
+              this.profile = attendee;
+              if (!this.profile.firstName){
+                this.profile.fullName = attendee.firstName + ' ' + attendee.lastName
+              }
+              if (!this.profile.image){
+                this.profile.image = "/assets/placeholder.png";
+              }
+              if(!this.profile.chips){
+                this.profile.chips = "";
+              }
+              //set greeting
+              if (!this.isValid) {
+                this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;
+              } else {
+                this.greeting = `Welcome back, ${this.profile.fullName}!`;
+              }       
+            })
+          }
+          else
+          {
+            this.router.navigate(['*']);
+          }
+        }
+      });
+
+      this.states = this.getStates();
+      this.getTags();
+      
+    
     }
-    this.UICheck();
+
+    ngOnInit() {
+
+    // /*DEBUGGING*/
+    // this.uid = this.myUID;
+    // // this.profile.id = "NOT MY ID";
+    // this.profile.type = "Company";
+    // /*END DEBUGGING*/
 
   }
 
-  handleFileInput(files: FileList) {
-    this.profileImgFile = files.item(0);
-    
+  handleFileInputImg(files) {
+    var file: File = files[0];
+    console.log(file)
+
+      this.fileUploadService.uploadFile(file).subscribe(
+        (data) => {
+          this.profile.image = data;
+        }
+      )
   }
 
-  //add career tag to user
-  addTag(tag){
-    if(this.viewMode){
-      if(!this.user.tags.includes(tag)){
-        this.user.tags.push(tag);
-        document.getElementById(tag).className = "tagAdded";
-      }else{
-        var index = this.user.tags.indexOf(tag);
-        this.user.tags.splice(index, 1);
-        document.getElementById(tag).className = "tag";
+  handleFileInputRes(files) {
+    var file: File = files[0];
+
+    this.fileUploadService.uploadFile(file).subscribe(
+      (data) => {
+        this.profile.resume = data;
       }
-    }
+    )
   }
 
-  //get user info from url 
-  getUser(id){
-    //assign to new attendee
-    var user = new User(id);
-    //setup user for view
 
+  //get states from db
+  getStates(){
+    var states: string[] = [];
+    this.stateService.getStates().subscribe((data) => {
+      this.stateObjs = data;
+      //convert from objects to a string of state names
+      this.stateObjs.forEach(state => {
+        states.push(state.stateName);
+      });
+    }), err => { console.log(err)}
     
-    return user;
+    return states;
   }
 
-  getProfile(id){
-    var profile = new User("id");
-    //load in from db and assign to profile
-    return profile;
+  //get states from db
+  getTags() {
+    var tagObjs: any[] = [];
+    this.tagsService.getChips().subscribe((data) => {
+      this.fieldTags = data;
+      this.fieldTags.forEach(
+        (tag: Tags) => {this.stringTags.push(tag.tag)}
+    )
+    }), err => { console.log(err) }
   }
-
-  //get id from OAuth
-  getCurrentID(){
-    var id = "testID";
-    return id;
-  }
-
-  //get passed id of profile to view
-  getCurrentPageID(){
-    var id = "testID";
-    return id;
-  }
-  //get user type
-  getType(id){
-    var type= "attendee"
-    return type;
-  }
-
+  
   submit(){
     //submit to database
-    //submit images
-    //switch to view mode
-    this.switchMode();
-    this.debug();
+    console.log(this.profile);
+    if (this.authentication()){
+      this.attendeeService.updateAttendee(this.profile).subscribe(
+        () => {console.log("Successfully submitted to db")},
+        (err) => {console.log(err)}
+      )
+      //submit images
+      //switch to view mode
+      this.switchMode();
+      this.descriptionText = "";
+    }else{
+      this.descriptionText = "Please fill out all fields!";
+    }
   }
 
   //switch views based on controls
   switchMode(){
     //check validation
-    
-    if(this.isValid){
-      if(this.viewMode){
-        this.getUser(this.getCurrentID());
-        this.greeting = "Welcome Back, ".concat(this.user.name);
-        this.viewMode = false;
-      }else{
-        this.viewMode = true;
-        //show which tags have already been selected
-        this.fieldTags.forEach(tag => {
-          if(this.user.tags.includes(tag)){
-            console.log(tag);
+    //var err = this.authentication()
 
-            document.getElementById(tag).className = "tagAdded";
-          }
-        })
-      }
-    }
-  }
-
-  UICheck(){
-    //check user type
-    if(this.profile.type == "attendee"){
-      this.isAttendee = true;
-      //set UI to reflect attendee
-      this.namePlaceholder = "Name";
-      this.emailPlaceholder = "Email";
-      this.phonePlaceholder = "Phone Number";
-      if (this.isValid){
-        this.tagText = "Click tags to add them to your profile";
-        this.uploadImgText = "Upload Your Picture";
-        this.tagDescription = "I am interested in: ";
-        this.descriptionText = "Here's a look at your profile. Press the edit button to switch to edit mode.";
-      }else{
-        this.descriptionText = "";
-        this.greeting = "Here's a look at " + this.user.name + "'s profile.";
-      }
-    }else if(this.profile.type == "company"){
-      //set UI to reflect company
-      this.isAttendee = false;
-      this.namePlaceholder = "Company Name";
-      this.emailPlaceholder = "Contact Email";
-      this.phonePlaceholder = "Contact Phone Number"
-      if (this.isValid){
-        this.tagText = "Click tags which your company is interested in";
-        this.uploadImgText = "Upload Company Picture";
-        this.tagDescription = this.user.name + " is interested in: ";
-        this.descriptionText = "Here's a look at your company profile. Press the edit button to switch to edit mode.";
-      }else{
-        this.descriptionText = "";
-        this.greeting = "Here's a look at " + this.user.name + "'s profile.";
-      }
-      
-    }
-    //set greeting
-    if(this.viewMode){
       if(this.isValid){
-        this.greeting = "Welcome Back, ".concat(this.user.name);
-      }else{
-        this.descriptionText = "";
-        this.greeting = "Here's a look at " + this.user.name + "'s profile.";
-      } 
-    }
+        if(this.viewMode){
+          this.viewMode = false;
+        }else{
+          this.viewMode = true;
+        }
+      }
+  
   }
 
-  //debug user object
-  debug(){
-    console.log(this.user);
-  }
-  
-  //helper function to change style of selected vs unselected tags
-  checkTag(tag){
-    if(!this.user.tags.includes(tag)){
-      return "tagAdded";
-    }else{
-      return "tag";
+  //form authentication
+  authentication(){
+    var prof = this.profile;
+    if (!(prof.firstName || prof.email || prof.phoneNumber || prof.degree || prof.university))
+    {
+      return false;
     }
+    if (!(prof.image || prof.resume)){ return false}
+    if (prof.chips.length == 0){ return false}
+    return true;
+  }
+
+
+  // //debug user object
+  debug(files){
+    console.log(files);
   }
 
   hasTags(){
-    return (this.user.tags.length != 0)
+    if (this.profile.chips){
+      return (this.profile.chips.length != 0)
+    }
+    else{
+      return false;
+    }
+  }
+
+
+
+  //add career tag to user
+  addTag(){
+    if(this.viewMode){
+      var tag = this.currTag;
+      var tagObj: Tags = this.fieldTags.find((t: Tags) => { return t.tag == tag })
+      var userTags: Tags[] = JSON.parse(this.profile.chips);
+      if(!userTags.includes(tagObj)){
+        userTags.push(tagObj);
+      }
+      this.profile.chips = JSON.stringify(userTags);
+    }
+  }
+
+  removeTag(tag: string){
+    if(this.viewMode){
+      var userTags: Tags[] = JSON.parse(this.profile.chips);
+      userTags.splice(userTags.findIndex((index) => { return index.tag == tag}), 1)
+      document.getElementById(tag).remove
+      this.profile.chips = JSON.stringify(userTags);
+    }
   }
 
 }

@@ -1,0 +1,20 @@
+:host ::ng-deep .unselectable{
+  cursor: crosshair;
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.heading{
+  justify-content: center;
+}
+
+button {
+  height: 20vh;
+  width: 20vh;
+  justify-content: center;
+  margin-top: 15vh;
+}

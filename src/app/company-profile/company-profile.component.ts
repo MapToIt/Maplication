@@ -136,6 +136,7 @@ export class CompanyProfileComponent implements OnInit {
     this._FileUploadService.uploadFile(file).subscribe(
       (data) => {
         this.profile.logo = data;
+        this.updateCompany();
       }
     )
   }

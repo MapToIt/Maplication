@@ -63,17 +63,17 @@
                     <button class="btn btn-outline-primary" type="button" (click)="addChip(newTag)">Add Tag</button>
                 </div>
             </div>
-            <div class="row m-3" *ngIf="isProfileUser">
-                  <ngb-alert *ngFor="let chip of companyChips" type='info' (close)=deleteChip(chip)>{{chip}}</ngb-alert>
+            <div class="row m-2" *ngIf="isProfileUser">
+                  <ngb-alert *ngFor="let chip of companyChips" type='info' class="m-1" (close)=deleteChip(chip)>{{chip}}</ngb-alert>
             </div>
-            <div class="row m-3" *ngIf="!isProfileUser">
-                <ngb-alert *ngFor="let chip of companyChips" type='info' [dismissible]="false">{{chip}}</ngb-alert>
+            <div class="row m-2" *ngIf="!isProfileUser">
+                <ngb-alert *ngFor="let chip of companyChips" type='info' class="m-1" [dismissible]="false">{{chip}}</ngb-alert>
           </div>
         </div>
         <div class="col-4">
             <img src="{{profile.logo ? profile.logo : '../../assets/placeholder.png' }}" class="w-100"/>
             <div class="input-group m-3" *ngIf="isProfileUser">
-                <label for="imgFile" class="custom-file-upload"><h3>Upload Your Picture</h3></label>
+                <label for="imgFile" class="custom-file-upload"><h3>Upload Your Logo</h3></label>
                 <input type="file" id="imgFile"
                     (change)="handleFileInputImg($event.target.files)" class="inputfile">
             </div>

@@ -19,6 +19,7 @@ import {
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularBasicModalModule } from 'angular-basic-modal';
+import { TextMaskModule } from 'angular2-text-mask'
 import { SharedModule } from './shared/shared.module';
 import {Ng2AutoCompleteModule} from 'ng2-auto-complete';
 import { StateService } from './services/state.service';
@@ -116,6 +117,7 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     AppRoutingModule,
     SharedModule,
     NgxPaginationModule,
+    TextMaskModule
   ],
   providers: [
     Globals,

@@ -73,9 +73,9 @@
         <div class="col-4">
             <img src="{{profile.logo ? profile.logo : '../../assets/placeholder.png' }}" class="w-100"/>
             <div class="input-group m-3" *ngIf="isProfileUser">
-                <label class="import-file">
-                    <input type="file" onchange="angular.element(this).scope().fileNameChanged(this)">
-                </label>
+                <label for="imgFile" class="custom-file-upload"><h3>Upload Your Picture</h3></label>
+                <input type="file" id="imgFile"
+                    (change)="handleFileInputImg($event.target.files)" class="inputfile">
             </div>
         </div>
     </div>

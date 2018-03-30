@@ -9,6 +9,7 @@ import 'rxjs/add/operator/map';
 import * as firebase from 'firebase/app';
 import { UserService } from '../services/user-service/user.service';
 import { CompanyService } from '../services/company-service/company.service';
+import { FileUploadService } from '../services/file-upload-service/file-upload.service';
 import { Company } from '../shared/domain-model/company';
 import { State } from '../shared/domain-model/state';
 import { StateService } from '../services/state.service';
@@ -53,6 +54,7 @@ export class CompanyProfileComponent implements OnInit {
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
               private _StateService: StateService, private _ChipService: ChipService,
               private _CompanyService: CompanyService, private _UserService: UserService,
+              private _FileUploadService: FileUploadService,
               private route: ActivatedRoute, private router: Router) {
                
       this.route.params.subscribe( params => this.uid = params['id']);
@@ -123,9 +125,19 @@ export class CompanyProfileComponent implements OnInit {
     }
   }
 
-  public deleteChip(chip: string) {
+  deleteChip(chip: string) {
     const index: number = this.companyChips.indexOf(chip);
     this.companyChips.splice(index, 1);
+  }
+
+  handleFileInputImg(files: any[]) {
+    var file: File = files[0];
+
+    this._FileUploadService.uploadFile(file).subscribe(
+      (data) => {
+        this.profile.logo = data;
+      }
+    )
   }
 
 }

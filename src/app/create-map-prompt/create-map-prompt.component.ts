@@ -38,9 +38,38 @@ export class CreateMapPromptComponent implements OnInit {
 
   Submit()
   {
-    if (typeof(this.eventStreetNumber) === "number" && typeof(this.eventZipCode) === "number" && this.eventTitle != null
-          && this.eventCoordinator != null && this.eventDescription != null && this.eventStreetName != null && this.eventCity != null
-          && typeof(this.eventState) === "number")
+    let validForm = true;
+    if (this.eventTitle == null){
+      validForm = false;
+      alert('Please enter an event title.');
+    }
+    if (this.eventDescription == null){
+      validForm = false;
+      alert('Please enter an event description.');
+    }
+    //CHECK FOR EVENTSTART VALID DATE
+    //CHECK FOR EVENTEND VALID DATE
+    if (this.eventStreetNumber == null || typeof(this.eventStreetNumber) != 'number'){
+      validForm = false;
+      alert('Please enter a valid street number.');
+    }
+    if (this.eventStreetName == null){
+      validForm = false;
+      alert('Please enter a street name.');
+    }
+    if (this.eventCity == null){
+      validForm = false;
+      alert('Please enter a city.');
+    }
+    if (this.eventState == null){
+      validForm = false;
+      alert('Please enter a state.');
+    }
+    if (this.eventZipCode == null || typeof(this.eventZipCode) != 'number'){
+      validForm = false;
+      alert('Please enter a valid zip code.');
+    }
+    if (validForm)
     {
       this.eventStart = this.CombineDateAndTime(this.startDate, this.startTime);
       this.eventEnd = this.CombineDateAndTime(this.endDate, this.endTime);
@@ -64,7 +93,7 @@ export class CreateMapPromptComponent implements OnInit {
       
       console.log(typeof(this.eventStart));
       console.log(addMap);
-      //this._MapService.AddMap(addMap);
+      this._MapService.AddMap(addMap);
     }
   }
 

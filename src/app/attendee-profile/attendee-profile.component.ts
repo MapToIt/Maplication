@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { User } from './user';
 import {Attendee} from '../shared/domain-model/attendee'
 import {Company} from '../shared/domain-model/company'
 import { logger } from '@firebase/database/dist/esm/src/core/util/util';
@@ -15,8 +14,10 @@ import { StateService, stateObj } from '../services/state.service';
 import { UserService} from '../services/user-service/user.service';
 import {AttendeeService} from '../services/attendee-service/attendee.service';
 import {CompanyService} from '../services/company-service/company.service';
+import {FileUploadService} from '../services/file-upload-service/file-upload.service';
 import { Tags } from '../shared/domain-model/tags';
-
+import { forEach } from '@angular/router/src/utils/collection';
+import { ChipService } from '../services/chip-service/chip.service';
 
 @Component({
   selector: 'app-attendee-profile',
@@ -30,12 +31,6 @@ export class AttendeeProfileComponent implements OnInit {
 
   //string for ui
   greeting: string = "Let's Get Started With Your Profile!";
-  bioPlaceholder: string = "Tell us a bit about your background, your experience, and your goals.";
-  mottoPlaceholder: string = "Sum yourself up in one sentence.";
-  namePlaceholder: string = "Name";
-  emailPlaceholder: string = "Email";
-  phonePlaceholder: string = "Phone Number";
-  urlPlaceholder: string = "Company Website URL";
   tagText: string = "Click tags to add them to your profile";
   uploadImgText: string = "Upload Your Picture";
   tagDescription: string = "I am interested in: ";
@@ -51,11 +46,11 @@ export class AttendeeProfileComponent implements OnInit {
   profileImgFile: File;
 
   //career field tags
-  fieldTags = ["Business", "Art", "Science", "Technology", "Software", "Architecture", "Design", "Management", "Marketing", "Accounting"]
-  currTag: Tags;
+  fieldTags: Tags[] =[];
+  stringTags: string[] = [];
+  currTag: string;
   stateObjs: stateObj[];
   states: string[];
-  UIUser = new User("none");
   profile: Attendee = new Attendee();
   uid: string;
   currentUser: firebase.User;
@@ -65,7 +60,8 @@ export class AttendeeProfileComponent implements OnInit {
               private cdr: ChangeDetectorRef, private stateService: StateService,
               private userService: UserService, private attendeeService: AttendeeService, 
               private companyService: CompanyService, private route: ActivatedRoute, 
-              private router: Router) {
+              private router: Router, private fileUploadService: FileUploadService,
+              private tagsService: ChipService) {
 
       this.route.params.subscribe( params => this.uid = params['id']);
       console.log(this.uid);
@@ -73,14 +69,17 @@ export class AttendeeProfileComponent implements OnInit {
       this.afAuth.authState.subscribe((user) => {
         this.currentUser = user;
         
-            //check validity
+        //check validity
         if (this.uid == this.currentUser.uid){
           this.isValid = true;
+          this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;
         }else{
           this.isValid = false;
+          this.greeting = `Welcome back, ${this.profile.fullName}!`;
         }
       });
     
+
       this.userService.getUserType(this.uid).subscribe((userType) => {
         if(userType != null)
         {
@@ -90,7 +89,19 @@ export class AttendeeProfileComponent implements OnInit {
               this.profile = attendee;
               if (!this.profile.firstName){
                 this.profile.fullName = attendee.firstName + ' ' + attendee.lastName
-              }              
+              }
+              if (!this.profile.image){
+                this.profile.image = "/assets/placeholder.png";
+              }
+              if(!this.profile.chips){
+                this.profile.chips = "";
+              }
+              //set greeting
+              if (!this.isValid) {
+                this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;
+              } else {
+                this.greeting = `Welcome back, ${this.profile.fullName}!`;
+              }       
             })
           }
           else
@@ -101,15 +112,12 @@ export class AttendeeProfileComponent implements OnInit {
       });
 
       this.states = this.getStates();
-    
+      this.getTags();
+      
     
     }
 
     ngOnInit() {
-
-
-    //load in states
-    
 
     // /*DEBUGGING*/
     // this.uid = this.myUID;
@@ -117,94 +125,29 @@ export class AttendeeProfileComponent implements OnInit {
     // this.profile.type = "Company";
     // /*END DEBUGGING*/
 
-    //this.UICheck();
-
   }
 
-  // //get id from OAuth
-  // regUser(id: string) {
-  //   this.UIUser.id = id;
-  //   //once user id is loaded from auth, load in profiles
-  //   if (this.getUser() != "") {
-  //     //get profile page from url
-  //     this.profile = this.getProfile(this.getCurrentPageID())
-  //   } else {
-  //     this.profile = this.getProfile(this.UIUser.id)
-  //   }
-  //   //reload page
+  handleFileInputImg(files) {
+    var file: File = files[0];
+    console.log(file)
 
-  //   //check validity
-  //   if (this.profile.id == this.UIUser.id) {
-  //     this.isValid = true;
-  //   } else {
-  //     this.isValid = false;
-  //   }
-  //   this.UICheck();
-
-  // }
-
-  handleFileInput(files: FileList) {
-    this.profileImgFile = files.item(0);
-    
+      this.fileUploadService.uploadFile(file).subscribe(
+        (data) => {
+          this.profile.image = data;
+        }
+      )
   }
 
+  handleFileInputRes(files) {
+    var file: File = files[0];
 
+    this.fileUploadService.uploadFile(file).subscribe(
+      (data) => {
+        this.profile.resume = data;
+      }
+    )
+  }
 
-  // //get user info from url 
-  // getUser(){
-  //   //assign to new attendee
-  //   var user: string;
-  //   //setup user for view
-
-    
-  //   return user;
-  // }
-
-  // getProfile(id){
-  //   var newProfile: User;
-  //   var attendee: Attendee;
-  //   var company: Company;
-  //   var type = this.getType(id)
-  //   if(type == "Attendee"){
-  //     //load from attendee
-  //     this.attendeeService.getAttendee(id).subscribe((data) => {
-  //       attendee = data
-  //       newProfile.convertFromAttendee(attendee)
-  //     })
-  //     //convert to UI
-  //   }else if(type == "Company"){
-  //     //load from company
-  //     this.companyService.getCompany(id).subscribe((data) => {
-  //       company = data
-  //       //convert
-  //     })
-  //     //convert to UI
-  //   }else{
-  //     newProfile = new User(id);
-  //   }
-  //   return newProfile;
-  // }
-
-
-
-  //get passed id of profile to view
-  // getCurrentPageID(){
-  //   var id;
-  //   this.route.params.subscribe(params => {id = params['id']});
-  //   if(id)
-  //     return id;
-  //   else
-  //     return "";
-  // }
-
-  // //get user type
-  // getType(id){
-  //   var type: string;
-  //   this.userService.getUserType(id).subscribe((data) =>{
-  //     type = data;
-  //   })
-  //   return type;
-  // }
 
   //get states from db
   getStates(){
@@ -219,21 +162,33 @@ export class AttendeeProfileComponent implements OnInit {
     
     return states;
   }
+
+  //get states from db
+  getTags() {
+    var tagObjs: any[] = [];
+    this.tagsService.getChips().subscribe((data) => {
+      this.fieldTags = data;
+      this.fieldTags.forEach(
+        (tag: Tags) => {this.stringTags.push(tag.tag)}
+    )
+    }), err => { console.log(err) }
+  }
   
   submit(){
-    // //submit to database
-    // if (this.UIUser.type == "Attendee"){
-    //   var attendee: Attendee = this.UIUser.convertToAttendee(this.UIUser, this.UIUser.id, null);
-    //   if (this.newUser){
-    //     //add user
-    //   }else{
-    //     //update user
-    //   }
-    // }
-    // //submit images
-    // //switch to view mode
-    // this.switchMode();
-    // this.debug();
+    //submit to database
+    console.log(this.profile);
+    if (this.authentication()){
+      this.attendeeService.updateAttendee(this.profile).subscribe(
+        () => {console.log("Successfully submitted to db")},
+        (err) => {console.log(err)}
+      )
+      //submit images
+      //switch to view mode
+      this.switchMode();
+      this.descriptionText = "";
+    }else{
+      this.descriptionText = "Please fill out all fields!";
+    }
   }
 
   //switch views based on controls
@@ -243,7 +198,6 @@ export class AttendeeProfileComponent implements OnInit {
 
       if(this.isValid){
         if(this.viewMode){
-          this.greeting = "Welcome Back, ".concat(this.UIUser.name);
           this.viewMode = false;
         }else{
           this.viewMode = true;
@@ -252,81 +206,23 @@ export class AttendeeProfileComponent implements OnInit {
   
   }
 
-  // UICheck(){
-  //   //check user type
-  //   if(this.profile.type == "Attendee"){
-  //     this.isAttendee = true;
-  //     //set UI to reflect attendee
-  //     this.namePlaceholder = "Name";
-  //     this.emailPlaceholder = "Email";
-  //     this.phonePlaceholder = "Phone Number";
-  //     if (this.isValid){
-  //       this.tagText = "You are interested in these fields:";
-  //       this.uploadImgText = "Upload Your Picture";
-  //       this.tagDescription = "I am interested in: ";
-  //       this.descriptionText = "Here's a look at your profile. Press the edit button to switch to edit mode.";
-  //     }else{
-  //       this.descriptionText = "";
-  //       this.greeting = "Here's a look at " + this.profile.name + "'s profile.";
-  //     }
-  //   }else if(this.profile.type == "Company"){
-  //     //set UI to reflect company
-  //     this.isAttendee = false;
-  //     this.greeting = "Welcome Back, ".concat(this.UIUser.name);
-  //     this.namePlaceholder = "Company Name";
-  //     this.emailPlaceholder = "Contact Email";
-  //     this.phonePlaceholder = "Contact Phone Number";
-  //     this.urlPlaceholder = "Your Company Url";
-  //     if (this.isValid){
-  //       this.tagText = "Tags which your company is interested in (click to remove)";
-  //       this.uploadImgText = "Upload Company Picture";
-  //       this.tagDescription = this.UIUser.name + " is interested in: ";
-  //       this.descriptionText = "Here's a look at your company profile. Press the edit button to switch to edit mode.";
-  //     }else{
-  //       this.descriptionText = "";
-  //       this.greeting = "Here's a look at " + this.profile.name + "'s profile.";
-  //     }
-      
-  //   }
+  //form authentication
+  authentication(){
+    var prof = this.profile;
+    if (!(prof.firstName || prof.email || prof.phoneNumber || prof.degree || prof.university))
+    {
+      return false;
+    }
+    if (!(prof.image || prof.resume)){ return false}
+    if (prof.chips.length == 0){ return false}
+    return true;
+  }
 
-    // //set greeting
-    // if(this.viewMode){
-    //   if(this.isValid){
-    //     this.greeting = "Welcome Back, ".concat(this.UIUser.name);
-
-    //   }else{
-    //     this.descriptionText = "";
-    //     this.greeting = "Here's a look at " + this.profile.name + "'s profile.";
-    //   } 
-    // }else{
-    //   if (this.isValid && this.profile.name != "") {
-    //     this.greeting = "Welcome Back, ".concat(this.UIUser.name);
-
-    //   } else {
-    //     this.greeting = "Lets get started with your profile!";
-    //   }
-    // }
-  
-
-  // //form authentication
-  // authentication(){
-  //   var prof = this.profile;
-  //   if(prof.type == "attendee"){    //check for attendee type
-  //     if (
-  //       prof.name || prof.email || prof.phoneNumber || prof.degree || prof.college == ""
-  //     ){
-  //       return "Please fill out all fields!"
-  //     }
-  //     if (prof.imgLink || prof.resumeLink == "" ){ return "Please upload a profile picture and resume!"}
-  //     if (prof.tags.length == 0){ return "Please add some tags to your profile!"}
-  //   }
-  //   return "";
-  // }
 
   // //debug user object
-  // debug(){
-  //   console.log(this.UIUser, this.profile);
-  // }
+  debug(files){
+    console.log(files);
+  }
 
   hasTags(){
     if (this.profile.chips){
@@ -341,19 +237,24 @@ export class AttendeeProfileComponent implements OnInit {
 
   //add career tag to user
   addTag(){
-    var tag = this.currTag;
-    console.log(tag);
     if(this.viewMode){
-      if (!this.profile.chips.includes(tag)){
-        this.profile.chips.push(tag);
+      var tag = this.currTag;
+      var tagObj: Tags = this.fieldTags.find((t: Tags) => { return t.tag == tag })
+      var userTags: Tags[] = JSON.parse(this.profile.chips);
+      if(!userTags.includes(tagObj)){
+        userTags.push(tagObj);
       }
+      this.profile.chips = JSON.stringify(userTags);
     }
   }
 
-  removeTag(tag: Tags){
+  removeTag(tag: string){
     if(this.viewMode){
-      this.profile.chips.splice(this.profile.chips.findIndex((index) => { return index == tag}), 1)
-      document.getElementById(tag.tag).remove
+      var userTags: Tags[] = JSON.parse(this.profile.chips);
+      userTags.splice(userTags.findIndex((index) => { return index.tag == tag}), 1)
+      document.getElementById(tag).remove
+      this.profile.chips = JSON.stringify(userTags);
     }
   }
+
 }

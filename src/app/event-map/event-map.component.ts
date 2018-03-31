@@ -1,12 +1,17 @@
-import { Component, OnInit, HostListener, NgZone, Input } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { Component, OnInit, HostListener, NgZone, Input, Renderer2, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
 import { Table } from "../shared/domain-model/table";
 import { Event } from "../shared/domain-model/event";
 import { Map } from '../shared/domain-model/map';
+import { Coordinator } from '../shared/domain-model/coordinator';
 import { MapService } from '../services/map-service/map.service';
 import { TableService } from '../services/table-service/table.service';
+import { UserService } from '../services/user-service/user.service';
+import { CoordinatorService } from '../services/coordinator/coordinator.service';
 import { NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { CreateMapPromptComponent } from '../create-map-prompt/create-map-prompt.component';
+import * as firebase from 'firebase/app';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import { Observable } from 'rxjs';
 
@@ -24,6 +29,9 @@ enum tableColor {
   providers: [MapService, TableService]
 })
 export class EventMapComponent implements OnInit {
+
+  @ViewChild('drawing') drawing;
+
   imagePath:string = '../../assets/SampleMap.png';
   imageHeight:number = 600;
   imageWidth:number = 600;
@@ -43,14 +51,26 @@ export class EventMapComponent implements OnInit {
   buttonClass: string;
   draw: any;
 
+  mapPopulated: boolean = false;
+
   tempPoint: any = {};
+
+  currentUser: firebase.User;
+  isEventCoordinator: boolean = false;
+  coordinator: Coordinator = new Coordinator();
 
   constructor(private _ngZone: NgZone,
               private route: ActivatedRoute,
+              private router: Router,
+              private afAuth: AngularFireAuth,
               private _MapService: MapService,
               private _TableService: TableService,
-              private modalService: NgbModal) {
+              private _UserService: UserService,
+              private _CoordinatorService: CoordinatorService,
+              private modalService: NgbModal,
+              private renderer: Renderer2) {
     this.route.params.subscribe( params => this.eventId = params['id']);
+
     this.editToggle = false;
     this.buttonClass = "btn btn-success";
   }
@@ -61,9 +81,20 @@ export class EventMapComponent implements OnInit {
     let image = this.draw.image(this.imagePath).size(this.imageWidth, this.imageHeight);
     let rect = this.draw.rect(this.imageWidth, this.imageHeight).opacity(0).attr({'class': 'unselectable', 'draggable':false});
     rect.id('drawLayer');
+
+    let drawingMouseDown = this.renderer.listen(this.drawing.nativeElement, 'mousedown', (evt) => {
+      console.log(evt);
+      this.AddPointOne(evt);
+    });
+    let drawingMouseUp = this.renderer.listen(this.drawing.nativeElement, 'mouseup', (evt) => {
+      console.log(evt);
+      this.AddPointTwo(evt);
+    });
+    
+
   }
 
-  @HostListener('mousedown', ['$event'])
+  /*@HostListener('mousedown', ['$event'])
   onMouseDown(ev:MouseEvent) {
     this.AddPointOne(ev);
   }
@@ -71,7 +102,7 @@ export class EventMapComponent implements OnInit {
   @HostListener('mouseup', ['$event'])
   onMouseUp(ev:MouseEvent){
     this.AddPointTwo(ev);
-  }
+  }*/
 
   toggleEdit(){
     this.editToggle = !this.editToggle;
@@ -160,6 +191,8 @@ export class EventMapComponent implements OnInit {
       let ed = new Date(this.mapInfo.event.endTime);
       this.mapInfo.event.endTime = new Date(Date.UTC(ed.getFullYear(), ed.getMonth(), ed.getDate(), ed.getHours(),ed.getMinutes(), ed.getSeconds()));
       this.GetTables(this.mapId);
+      this.CheckEditPermissions();
+      this.mapPopulated = true;
     });
   }
 
@@ -183,5 +216,17 @@ export class EventMapComponent implements OnInit {
     let options: NgbModalOptions = { size: 'lg'};
     const modalRef = this.modalService.open(CreateMapPromptComponent, options);
     modalRef.componentInstance.eventCoordinator = 1;
+  }
+
+  CheckEditPermissions(){
+    this.afAuth.authState.subscribe((user) => {
+      this.currentUser = user;
+      
+      //check if user logged in is profile owner
+      this.isEventCoordinator = this.mapInfo.event.coordinator.userId == this.currentUser.uid;
+      console.log(this.isEventCoordinator);
+      console.log(this.mapInfo.event.coordinator.userId);
+      console.log(this.currentUser.uid);
+    });
   }
 }

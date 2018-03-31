@@ -4,15 +4,15 @@
       <h1 class="row justify-content-center">{{greeting}}</h1>
     </div>
     <div>
-      <h6 id="desc" *ngIf="!viewMode" class="row justify-content-center">{{descriptionText}}</h6>
+      <h6 id="desc" *ngIf="viewMode" class="row justify-content-center">{{descriptionText}}</h6>
     </div>
     <div class="row justify-content-center">
       <div class="form-row justify-content-center">
         <div class="col">
-          <input type="text" placeholder="{{namePlaceholder}}" class="form-control bg-dark" [(ngModel)]="profile.fullName" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="Full Name" class="form-control bg-dark" [(ngModel)]="profile.fullName" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
         <div class="col">
-          <input type="text" placeholder="{{emailPlaceholder}}" class="form-control bg-dark" [(ngModel)]="profile.email" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="Email" class="form-control bg-dark" [(ngModel)]="profile.email" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
       <div *ngIf="isAttendee" class="form-row justify-content-center">
@@ -25,14 +25,14 @@
       </div>
       <div class="form-row justify-content-center">
         <div class="col-lg-6">
-          <input type="text" placeholder="{{phonePlaceholder}}" class="form-control bg-dark" [(ngModel)]="profile.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="Phone Number" class="form-control bg-dark" [(ngModel)]="profile.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
     </div>
     
     <div *ngIf="viewMode" class="row justify-content-center">
       <div class="col-lg-3">
-        <input id="tagSelector" class="form-control bg-dark autoFill" placeholder="Career Tags" auto-complete [(ngModel)]="currTag" (change)="addTag()" [source]="fieldTags" [disabled]="!viewMode"/>
+        <input id="tagSelector" class="form-control bg-dark autoFill" placeholder="Career Tags" auto-complete [(ngModel)]="currTag" (change)="addTag()" [source]="stringTags" [disabled]="!viewMode"/>
       </div>
     </div>
     <div *ngIf="hasTags()" class="row justify-content-center">
@@ -41,10 +41,10 @@
     <div class="row justify-content-center">
       <div *ngFor="let tag of profile.chips">
         <div class="col">
-          <span id="{{tag}}" class="tag" unselectable="on"
+          <span id="{{tag.tag}}" class="tag" unselectable="on"
           onselectstart="return false;" 
           onmousedown="return false;"
-          (click)="removeTag(tag)">{{tag}}</span>
+          (click)="removeTag(tag.tag)">{{tag.tag}}</span>
         </div>
       </div>
     </div>
@@ -52,17 +52,24 @@
 
   <div class="col-lg-4">
     <div class="row justify-content-center">
-      <img id="profileImg" src="{{profileImg}}">
-      <label *ngIf="viewMode" for="imgFile" class="custom-file-upload"><h3>{{uploadImgText}}</h3></label>
+      <img id="profileImg" src="{{profile.image}}">
+      <label *ngIf="viewMode" for="imgFile" class="custom-file-upload"><h3>Upload Your Picture</h3></label>
       <input *ngIf="viewMode" type="file"
               id="imgFile"
-              (change)="handleFileInput($event.target.files)" class="inputfile">
+              (change)="handleFileInputImg($event.target.files)" class="inputfile">
     </div>
     <div class="row justify-content-center">
       <label *ngIf="viewMode && isAttendee" for="resumeFile" class="custom-file-upload-resume"><h3>Upload Your Resume</h3></label>
       <input *ngIf="viewMode && isAttendee" type="file"
               id="resumeFile"
-              (change)="handleFileInput($event.target.files)" class="inputfile">
+              (change)="handleFileInputRes($event.target.files)" class="inputfile">
+    </div>
+    <div *ngIf="!viewMode" class="row justify-content-center">
+      <a href="{{profile.resume}}" target="_blank">
+      <button class="btn align-middle" type="button" (click)="console.log(profile.resume)">
+        <i class="large material-icons black">file_download</i>
+      </button>
+      </a>
     </div>
     <div class="container">
       <div class="row justify-content-center">

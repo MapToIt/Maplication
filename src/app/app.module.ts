@@ -7,6 +7,7 @@ import { NgModel } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 import {
   AuthMethods,
   AuthProvider,
@@ -18,6 +19,7 @@ import {
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularBasicModalModule } from 'angular-basic-modal';
+import { TextMaskModule } from 'angular2-text-mask'
 import { SharedModule } from './shared/shared.module';
 import {Ng2AutoCompleteModule} from 'ng2-auto-complete';
 import { StateService } from './services/state.service';
@@ -27,6 +29,7 @@ import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
 import { UserService } from './services/user-service/user.service';
 import { AttendeeService } from './services/attendee-service/attendee.service';
 import { CompanyService } from './services/company-service/company.service';
+import {FileUploadService} from './services/file-upload-service/file-upload.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { ChipService } from './services/chip-service/chip.service'
 
@@ -108,11 +111,13 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     Ng2AutoCompleteModule,
     AngularFireDatabaseModule,
     AngularBasicModalModule,
+    AngularFireStorageModule,
     NgbModule.forRoot(),
     RouterModule,
     AppRoutingModule,
     SharedModule,
     NgxPaginationModule,
+    TextMaskModule
   ],
   providers: [
     Globals,
@@ -120,8 +125,9 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     StateService,
     AttendeeService,
     CompanyService,
+    FileUploadService,
     CoordinatorService,
-    ChipService
+    ChipService,
   ],
   bootstrap: [AppComponent]
 })

@@ -1,16 +1,16 @@
 <div class='container'>
-  <div *ngIf='mapPopulated' class='heading'>
-    <h1 class='row'>{{mapInfo.event.eventTitle}}</h1>
-    <p class='row'>Date: {{mapInfo.event.startTime.toString()}} - {{mapInfo.event.endTime.toString()}}</p>
-  </div>
-  <div class='row'>
+  <div class='row spacing'></div>
+  <div class='row content'>
     <div class='col-8' #drawing id='drawing'></div>
-    <div *ngIf='mapPopulated' class='col-4'>
-      <form>
-          <input type='text' class='form-control' [(ngModel)]='mapInfo.event.eventTitle' placeholder='Event Title' name='event-title' required>
-          <input type='text' class='form-control' [(ngModel)]='mapInfo.event.description' placeholder='Event Description' name='event-description' required>
-          <input type='text' class='form-control disabled' [(ngModel)]='mapInfo.event.coordinator.firstName' placeholder='Event Coordinator' name='event-coordinator' required>
-      </form>
+    <div class='eventInfo' *ngIf='mapPopulated' class='col-4'>
+      <div class='row'>
+        <h3>{{mapInfo.event.eventTitle}}</h3>
+        <h5>Start Time: {{mapInfo.event.startTime.toLocaleDateString()}} {{mapInfo.event.startTime.toLocaleTimeString()}}</h5>
+        <h5>End Time: {{mapInfo.event.endTime.toLocaleDateString()}} {{mapInfo.event.endTime.toLocaleTimeString()}}</h5>
+        <h5>Coordinator: {{mapInfo.event.coordinator.firstName}} {{mapInfo.event.coordinator.lastName}}</h5>
+        <h5>Location: {{mapInfo.event.streetNumber}} {{mapInfo.event.street}} {{mapInfo.event.city}} {{mapInfo.event.state.stateName}} {{mapInfo.event.zipCode}}</h5>
+
+      </div>
     </div>
   </div>
   <div *ngIf='isEventCoordinator' class='row'>

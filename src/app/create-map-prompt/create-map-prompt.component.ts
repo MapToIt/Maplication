@@ -88,7 +88,7 @@ export class CreateMapPromptComponent implements OnInit {
       addMap.event.street = this.eventStreetName;
       addMap.event.city = this.eventCity;
       addMap.event.stateId = this.eventState;
-      addMap.event.zipcode = this.eventZipCode;
+      addMap.event.zipCode = this.eventZipCode;
       addMap.event.eventPic = "";
       
       console.log(typeof(this.eventStart));

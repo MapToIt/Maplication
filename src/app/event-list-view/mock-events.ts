@@ -15,7 +15,7 @@ export const EVENTSLIST: Event[] = [
         endTime: new Date(16, 9, 24, 12, 0, 0 ,0),
         streetNumber: 12,
         street: "street",
-        zipcode:12345,
+        zipCode:12345,
         coordinator: null
     },
     {
@@ -31,7 +31,7 @@ export const EVENTSLIST: Event[] = [
         endTime: new Date(16, 9, 24, 12, 0, 0 ,0),
         streetNumber: 12,
         street: "street",
-        zipcode:12345,
+        zipCode:12345,
         coordinator: null
     },
     {
@@ -47,7 +47,7 @@ export const EVENTSLIST: Event[] = [
         endTime: new Date(16, 9, 24, 12, 0, 0 ,0),
         streetNumber: 12,
         street: "street",
-        zipcode:12345,
+        zipCode:12345,
         coordinator: null
     },
     {
@@ -63,7 +63,7 @@ export const EVENTSLIST: Event[] = [
         endTime: new Date(16, 9, 24, 12, 0, 0 ,0),
         streetNumber: 12,
         street: "street",
-        zipcode:12345,
+        zipCode:12345,
         coordinator: null
     },
     {
@@ -79,7 +79,7 @@ export const EVENTSLIST: Event[] = [
         endTime: new Date(16, 9, 24, 12, 0, 0 ,0),
         streetNumber: 12,
         street: "street",
-        zipcode:12345,
+        zipCode:12345,
         coordinator: null
     },
     {
@@ -95,7 +95,7 @@ export const EVENTSLIST: Event[] = [
         endTime: new Date(16, 9, 24, 12, 0, 0 ,0),
         streetNumber: 12,
         street: "street",
-        zipcode:12345,
+        zipCode:12345,
         coordinator: null
     }
 ];

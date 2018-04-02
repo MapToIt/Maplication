@@ -14,7 +14,7 @@ export class EventFilterPipe implements PipeTransform {
     return events.filter( it => {
       return it.eventTitle.includes(searchText)
       || it.city.includes(searchText)
-      || it.state.includes(searchText);
+      || it.state.stateName.includes(searchText);
     });
   }
 

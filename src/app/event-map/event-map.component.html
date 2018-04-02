@@ -1,7 +1,13 @@
 <div class='container'>
   <div class='row spacing'></div>
   <div class='row content'>
-    <div class='col-8' #drawing id='drawing'></div>
+    <div class='col-8'>
+      <div #drawing id='drawing'></div>
+      <div *ngIf='!hasMap'>
+        <input type='file' accept='image/*' name='mapFile' [(ngModel)]='mapImage'>
+        <button type="button" (click)="SubmitMap()">Add Event</button>
+      </div>
+    </div>
     <div class='eventInfo' *ngIf='mapPopulated' class='col-4'>
       <div class='row'>
         <h3>{{mapInfo.event.eventTitle}}</h3>
@@ -9,7 +15,13 @@
         <h5>End Time: {{mapInfo.event.endTime.toLocaleDateString()}} {{mapInfo.event.endTime.toLocaleTimeString()}}</h5>
         <h5>Coordinator: {{mapInfo.event.coordinator.firstName}} {{mapInfo.event.coordinator.lastName}}</h5>
         <h5>Location: {{mapInfo.event.streetNumber}} {{mapInfo.event.street}} {{mapInfo.event.city}} {{mapInfo.event.state.stateName}} {{mapInfo.event.zipCode}}</h5>
-
+      </div>
+      <div class='row' id='companyInfo' *ngIf='activeCompany'>
+        <h3>Company Info:</h3>
+        <h5>Name: <a href='/company-profile/{{activeCompany.companyId}}'>{{activeCompany.companyName}}</a></h5>
+        <h5>Phone: {{activeCompany.phoneNumber}}</h5>
+        <h5>Location: {{activeCompany.streetNumber}} {{activeCompany.street}} {{activeCompany.city}} {{activeCompany.state.stateName}} {{activeCompany.zipCode}}</h5>
+        <h5>Website: {{activeCompany.url}}</h5>
       </div>
     </div>
   </div>

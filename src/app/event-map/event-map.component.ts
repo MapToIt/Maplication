@@ -1,9 +1,10 @@
-import { Component, OnInit, HostListener, NgZone, Input, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, NgZone, Input, Renderer2, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Table } from "../shared/domain-model/table";
 import { Event } from "../shared/domain-model/event";
 import { Map } from '../shared/domain-model/map';
 import { Coordinator } from '../shared/domain-model/coordinator';
+import { Company } from '../shared/domain-model/company';
 import { MapService } from '../services/map-service/map.service';
 import { TableService } from '../services/table-service/table.service';
 import { UserService } from '../services/user-service/user.service';
@@ -16,6 +17,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs';
 
 import * as SVG from 'svg.js';
+import { AngularFireStorage } from 'angularfire2/storage';
 
 enum tableColor {
   AVAILABLE = '#00ff00',
@@ -59,16 +61,22 @@ export class EventMapComponent implements OnInit {
   isEventCoordinator: boolean = false;
   coordinator: Coordinator = new Coordinator();
 
+  activeCompany: Company;
+
+  mapImage: File;
+
   constructor(private _ngZone: NgZone,
               private route: ActivatedRoute,
               private router: Router,
               private afAuth: AngularFireAuth,
+              private afStore: AngularFireStorage,
               private _MapService: MapService,
               private _TableService: TableService,
               private _UserService: UserService,
               private _CoordinatorService: CoordinatorService,
               private modalService: NgbModal,
-              private renderer: Renderer2) {
+              private renderer: Renderer2,
+              private changeRef: ChangeDetectorRef) {
     this.route.params.subscribe( params => this.eventId = params['id']);
 
     this.editToggle = false;
@@ -83,26 +91,21 @@ export class EventMapComponent implements OnInit {
     rect.id('drawLayer');
 
     let drawingMouseDown = this.renderer.listen(this.drawing.nativeElement, 'mousedown', (evt) => {
-      console.log(evt);
       this.AddPointOne(evt);
     });
     let drawingMouseUp = this.renderer.listen(this.drawing.nativeElement, 'mouseup', (evt) => {
-      console.log(evt);
+      if (evt.target.id.substring(0,7) == 'tableId'){
+        let tableIds = evt.target.id.substring(7,9);
+        let tableId = parseInt(tableIds);
+        for (let i = 0; i < this.eventTables.length; i ++){
+          if (this.eventTables[i].tableId === tableId){
+            this.activeCompany = this.eventTables[i].company;
+          }
+        }
+      }
       this.AddPointTwo(evt);
     });
-    
-
   }
-
-  /*@HostListener('mousedown', ['$event'])
-  onMouseDown(ev:MouseEvent) {
-    this.AddPointOne(ev);
-  }
-
-  @HostListener('mouseup', ['$event'])
-  onMouseUp(ev:MouseEvent){
-    this.AddPointTwo(ev);
-  }*/
 
   toggleEdit(){
     this.editToggle = !this.editToggle;
@@ -173,6 +176,7 @@ export class EventMapComponent implements OnInit {
     let tempHeight = (table.height * this.imageHeight) / 1000;
     table.tableSVG = this.draw.rect(tempWidth, tempHeight).fill(tempColor).opacity(.5);
     table.tableSVG.move((table.xCoordinate/1000.0)*this.imageWidth, (table.yCoordinate/1000.0)*this.imageHeight);
+    table.tableSVG.attr({'id': 'tableId' + table.tableId});
   }
 
   ResetTable(table: Table){
@@ -228,5 +232,9 @@ export class EventMapComponent implements OnInit {
       console.log(this.mapInfo.event.coordinator.userId);
       console.log(this.currentUser.uid);
     });
+  }
+
+  SubmitMap(){
+   
   }
 }

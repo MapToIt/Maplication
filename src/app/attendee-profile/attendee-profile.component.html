@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="form-row justify-content-center">
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-md-8">
           <input type="text" placeholder="Phone Number" class="form-control bg-light" [(ngModel)]="profile.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
@@ -64,7 +64,9 @@
     </div>
     <div *ngIf="profile.resume" class="row justify-content-center">
       <a href="{{profile.resume}}" download>
-      <button class="btn align-middle" type="button">
+        <br>
+      <button class="btn btn-primary align-middle" type="button" style="text-align:center;">
+        <h4>Download Resume</h4>
         <i class="large material-icons black">file_download</i>
       </button>
       </a>

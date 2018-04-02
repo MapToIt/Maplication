@@ -76,7 +76,6 @@ export class AttendeeProfileComponent implements OnInit {
               private tagsService: ChipService) {
 
       this.route.params.subscribe( params => this.uid = params['id']);
-      console.log(this.uid);
 
       this.afAuth.authState.subscribe((user) => {
         this.currentUser = user;
@@ -143,7 +142,6 @@ export class AttendeeProfileComponent implements OnInit {
 
   handleFileInputImg(files) {
     var file: File = files[0];
-    console.log(file)
 
       this.fileUploadService.uploadFile(file).subscribe(
         (data) => {
@@ -188,8 +186,7 @@ export class AttendeeProfileComponent implements OnInit {
     }), err => { console.log(err) }
   }
   
-    addChip(newChip){
-      console.log(newChip)
+  addChip(newChip){
     if(!this.attendeeChips.includes(newChip.tag)){
       this.attendeeChips.push(newChip.tag);
       this.newTag = null;
@@ -203,7 +200,6 @@ export class AttendeeProfileComponent implements OnInit {
 
   submit(){
     //submit to database
-    console.log(this.profile);
     if (this.authentication()){
       this.profile.chips = JSON.stringify(this.attendeeChips);
       this.attendeeService.updateAttendee(this.profile).subscribe(
@@ -211,7 +207,6 @@ export class AttendeeProfileComponent implements OnInit {
         (err) => {console.log(err)},
         () => {console.log("Success")}
       )
-      //submit images
       //switch to view mode
       this.switchMode();
       this.descriptionText = "";
@@ -238,11 +233,11 @@ export class AttendeeProfileComponent implements OnInit {
   //form authentication
   authentication(){
     var prof = this.profile;
-    if (!(prof.firstName || prof.email || prof.phoneNumber || prof.degree || prof.university))
+    if ((prof.firstName == null || prof.email == null || prof.phoneNumber == null || prof.degree == null || prof.university == null))
     {
       return false;
     }
-    if (!(prof.image || prof.resume)){ return false}
+    if ((prof.image == null || prof.resume == null)){ return false }
     if (prof.chips == ""){ return false}
     return true;
   }

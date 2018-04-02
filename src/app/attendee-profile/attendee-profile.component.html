@@ -30,7 +30,7 @@
       </div>
     </form>
     
-    <div *ngIf="viewMode" class="row justify-content-center">
+    <!-- <div *ngIf="viewMode" class="row justify-content-center">
       <div class="col-lg-3">
         <input id="tagSelector" class="form-control bg-dark autoFill" placeholder="Career Tags" auto-complete [(ngModel)]="currTag" (change)="addTag()" [source]="stringTags" [disabled]="!viewMode"/>
       </div>
@@ -39,7 +39,7 @@
       <h6 >{{tagText}}</h6>
     </div>
     <div class="row justify-content-center">
-      <div *ngFor="let tag of profile.chips">
+      <div *ngFor="let tag of getTagFromStr(this.profile.chips)">
         <div class="col">
           <span id="{{tag.tag}}" class="tag" unselectable="on"
           onselectstart="return false;" 
@@ -47,6 +47,23 @@
           (click)="removeTag(tag.tag)">{{tag.tag}}</span>
         </div>
       </div>
+    </div> -->
+
+    <div class="input-group m-3" *ngIf="viewMode">
+      <ng-template #chipsTemplate let-r="result" let-t="term">
+        {{ r.tag }}
+      </ng-template>
+      <input id="typeahead-template" type="text" class="form-control" [(ngModel)]="newTag" [ngbTypeahead]="searchTags" [resultTemplate]="chipsTemplate"
+        [inputFormatter]="formatterTag" />
+      <div class="input-group-append">
+        <button class="btn btn-outline-primary" type="button" (click)="addChip(newTag)">Add Tag</button>
+      </div>
+    </div>
+    <div class="row m-2" *ngIf="viewMode">
+      <ngb-alert *ngFor="let chip of attendeeChips" type='info' class="m-1" (close)=deleteChip(chip)>{{chip}}</ngb-alert>
+    </div>
+    <div class="row m-2" *ngIf="!viewMode">
+      <ngb-alert *ngFor="let chip of attendeeChips" type='info' class="m-1" [dismissible]="false">{{chip}}</ngb-alert>
     </div>
   </div>
 
@@ -64,9 +81,9 @@
               id="resumeFile"
               (change)="handleFileInputRes($event.target.files)" class="inputfile">
     </div>
-    <div *ngIf="!viewMode" class="row justify-content-center">
-      <a href="{{profile.resume}}" target="_blank">
-      <button class="btn align-middle" type="button" (click)="console.log(profile.resume)">
+    <div *ngIf="profile.resume" class="row justify-content-center">
+      <a href="{{profile.resume}}" download>
+      <button class="btn align-middle" type="button">
         <i class="large material-icons black">file_download</i>
       </button>
       </a>
@@ -82,6 +99,7 @@
       </div>
     </div>
   </div>
+
 </div>
 
 

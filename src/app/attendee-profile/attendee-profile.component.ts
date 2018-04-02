@@ -54,6 +54,18 @@ export class AttendeeProfileComponent implements OnInit {
   profile: Attendee = new Attendee();
   uid: string;
   currentUser: firebase.User;
+  mask:any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  attendeeChips: String[];
+  newTag: Tags;
+
+
+  searchTags = (text$: Observable<string>) =>
+    text$
+      .debounceTime(200)
+      .map(term => term === '' ? []
+        : this.fieldTags.filter(v => v.tag.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+
+  formatterTag = (x: {tag: string}) => x.tag;
   
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
@@ -72,10 +84,10 @@ export class AttendeeProfileComponent implements OnInit {
         //check validity
         if (this.uid == this.currentUser.uid){
           this.isValid = true;
-          this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;
+          this.greeting = `Welcome back, ${this.profile.fullName}!`;
         }else{
           this.isValid = false;
-          this.greeting = `Welcome back, ${this.profile.fullName}!`;
+          this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;      
         }
       });
     
@@ -87,15 +99,13 @@ export class AttendeeProfileComponent implements OnInit {
           {
             this.attendeeService.getAttendee(this.uid).subscribe((attendee) => {
               this.profile = attendee;
-              if (!this.profile.firstName){
+              if (!this.profile.fullName){
                 this.profile.fullName = attendee.firstName + ' ' + attendee.lastName
               }
               if (!this.profile.image){
                 this.profile.image = "/assets/placeholder.png";
               }
-              if(!this.profile.chips){
-                this.profile.chips = "";
-              }
+              this.attendeeChips = attendee.chips ? JSON.parse(attendee.chips) : new Array();
               //set greeting
               if (!this.isValid) {
                 this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;
@@ -108,6 +118,10 @@ export class AttendeeProfileComponent implements OnInit {
           {
             this.router.navigate(['*']);
           }
+        }
+        else 
+        {
+          this.router.navigate(['*']);
         }
       });
 
@@ -174,13 +188,28 @@ export class AttendeeProfileComponent implements OnInit {
     }), err => { console.log(err) }
   }
   
+    addChip(newChip){
+      console.log(newChip)
+    if(!this.attendeeChips.includes(newChip.tag)){
+      this.attendeeChips.push(newChip.tag);
+      this.newTag = null;
+    }
+  }
+
+  deleteChip(chip: string) {
+    const index: number = this.attendeeChips.indexOf(chip);
+    this.attendeeChips.splice(index, 1);
+  }
+
   submit(){
     //submit to database
     console.log(this.profile);
     if (this.authentication()){
+      this.profile.chips = JSON.stringify(this.attendeeChips);
       this.attendeeService.updateAttendee(this.profile).subscribe(
-        () => {console.log("Successfully submitted to db")},
-        (err) => {console.log(err)}
+        (data) => {console.log("Submitting to db")},
+        (err) => {console.log(err)},
+        () => {console.log("Success")}
       )
       //submit images
       //switch to view mode
@@ -214,7 +243,7 @@ export class AttendeeProfileComponent implements OnInit {
       return false;
     }
     if (!(prof.image || prof.resume)){ return false}
-    if (prof.chips.length == 0){ return false}
+    if (prof.chips == ""){ return false}
     return true;
   }
 
@@ -224,37 +253,26 @@ export class AttendeeProfileComponent implements OnInit {
     console.log(files);
   }
 
-  hasTags(){
-    if (this.profile.chips){
-      return (this.profile.chips.length != 0)
-    }
-    else{
-      return false;
-    }
-  }
 
 
+  // //add career tag to user
+  // addTag(){
+  //   if(this.viewMode){
+  //     //get tag object that matches string tag
+  //     var tag: Tags = this.fieldTags.find((tag: Tags) => {return this.currTag == tag.tag});
+  //     var str = JSON.stringify(tag);
+  //     this.profile.chips += str;
+  //   }
+  // }
 
-  //add career tag to user
-  addTag(){
-    if(this.viewMode){
-      var tag = this.currTag;
-      var tagObj: Tags = this.fieldTags.find((t: Tags) => { return t.tag == tag })
-      var userTags: Tags[] = JSON.parse(this.profile.chips);
-      if(!userTags.includes(tagObj)){
-        userTags.push(tagObj);
-      }
-      this.profile.chips = JSON.stringify(userTags);
-    }
-  }
+  // removeTag(tag: string){
+  //   if(this.viewMode){
+  //     var userTags: Tags[] = this.profile.chips != "" ? JSON.parse(this.profile.chips) : [];
+  //     userTags.splice(userTags.findIndex((index) => { return index.tag == tag}), 1)
+  //     document.getElementById(tag).remove
+  //     this.profile.chips = JSON.stringify(userTags);
+  //   }
+  // }
 
-  removeTag(tag: string){
-    if(this.viewMode){
-      var userTags: Tags[] = JSON.parse(this.profile.chips);
-      userTags.splice(userTags.findIndex((index) => { return index.tag == tag}), 1)
-      document.getElementById(tag).remove
-      this.profile.chips = JSON.stringify(userTags);
-    }
-  }
 
 }

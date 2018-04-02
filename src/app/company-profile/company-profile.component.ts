@@ -27,6 +27,7 @@ export class CompanyProfileComponent implements OnInit {
   uid:string;
   currentUser: firebase.User;
   isProfileUser: boolean;
+  changeMade: boolean = false;
   profile: Company = new Company();
   states: State[];
   chips: Tags[];
@@ -90,18 +91,7 @@ export class CompanyProfileComponent implements OnInit {
 
       this._ChipService.getChips().subscribe((chips) => {
         this.chips = chips;
-
-  //       search = (text$: Observable<string>) =>
-  //   text$
-  //     .debounceTime(200)
-  //     .map(term => term === '' ? []
-  //       : statesWithFlags.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
-
-  // formatter = (x: {name: string}) => x.name;
-
-      });
-
-      
+      });      
    }
 
   ngOnInit() {
@@ -113,6 +103,7 @@ export class CompanyProfileComponent implements OnInit {
     this.profile.chips = JSON.stringify(this.companyChips);
     this._CompanyService.updateCompany(this.profile).subscribe((addedCompany) => {
       if(addedCompany != null){
+        this.changeMade = false;
         this.router.navigate(['company-profile', this.afAuth.auth.currentUser.uid]);
       }
     });
@@ -122,12 +113,14 @@ export class CompanyProfileComponent implements OnInit {
     if(!this.companyChips.includes(newChip.tag)){
       this.companyChips.push(newChip.tag);
       this.newTag = null;
+      this.changeMade = true;
     }
   }
 
   deleteChip(chip: string) {
     const index: number = this.companyChips.indexOf(chip);
     this.companyChips.splice(index, 1);
+    this.changeMade = true;
   }
 
   handleFileInputImg(files: any[]) {

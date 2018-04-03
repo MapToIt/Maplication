@@ -14,6 +14,8 @@ import 'rxjs/add/operator/retry';
 import 'rxjs/add/observable/of';
 import 'rxjs/Rx';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { EventFilter } from '../../shared/filter/eventFilter';
+import { State } from '../../shared/domain-model/state';
 
 @Injectable()
 export class EventService {
@@ -29,4 +31,17 @@ export class EventService {
     return this.http.get<Event[]>(Globals.apiUrl + `event/details`);
   }
 
+  GetFutureEvents()
+  {
+    return this.http.get<Event[]>(Globals.apiUrl + `event/futureEvents`);
+  }
+
+  GetEventsByFilter(start:Date, end:Date, state:State){
+    var filter = new EventFilter();
+    filter.Start = start;
+    filter.End = end;
+    filter.State = state;
+
+    return this.http.post<Event[]>(Globals.apiUrl + `event/filter`, filter);
+  }
 }

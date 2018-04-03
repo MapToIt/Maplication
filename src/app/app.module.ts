@@ -19,7 +19,7 @@ import {
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularBasicModalModule } from 'angular-basic-modal';
-import { TextMaskModule } from 'angular2-text-mask'
+import { TextMaskModule } from 'angular2-text-mask';
 import { SharedModule } from './shared/shared.module';
 import {Ng2AutoCompleteModule} from 'ng2-auto-complete';
 import { StateService } from './services/state.service';
@@ -31,7 +31,9 @@ import { AttendeeService } from './services/attendee-service/attendee.service';
 import { CompanyService } from './services/company-service/company.service';
 import {FileUploadService} from './services/file-upload-service/file-upload.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
-import { ChipService } from './services/chip-service/chip.service'
+import { ChipService } from './services/chip-service/chip.service';
+import { EventService } from './services/event-service/event.service';
+import { EventAttendanceService } from './services/event-attendance-service/event-attendance.service';
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
@@ -128,6 +130,8 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     FileUploadService,
     CoordinatorService,
     ChipService,
+    EventService,
+    EventAttendanceService
   ],
   bootstrap: [AppComponent]
 })

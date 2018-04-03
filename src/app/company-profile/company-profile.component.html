@@ -24,7 +24,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1"><i class="material-icons">call</i></span>
                     </div>
-                    <input type="text" class="form-control" [textMask]="{mask:mask}"  [ngModel]="profile.phoneNumber" [disabled]="!isProfileUser" placeholder="Phone Number" aria-label="Phone Number" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" [textMask]="{mask:mask}"  [(ngModel)]="profile.phoneNumber" [disabled]="!isProfileUser" placeholder="Phone Number" aria-label="Phone Number" aria-describedby="basic-addon1">
                     <div class="m-3"></div>
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">#</span>

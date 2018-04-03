@@ -101,12 +101,19 @@ export class CompanyProfileComponent implements OnInit {
 
   updateCompany(){
     this.profile.chips = JSON.stringify(this.companyChips);
-    this._CompanyService.updateCompany(this.profile).subscribe((addedCompany) => {
-      if(addedCompany != null){
-        this.changeMade = false;
-        this.router.navigate(['company-profile', this.afAuth.auth.currentUser.uid]);
-      }
-    });
+    this.profile.phoneNumber = this.profile.phoneNumber.replace(/\D+/g, '');
+    console.log(this.profile);
+    if (!(this.profile.city && this.profile.companyName && this.profile.phoneNumber && 
+          this.profile.state && this.profile.street && this.profile.streetNumber)){
+      alert("Please complete all fields of your profile before saving.");
+    } else {
+      this._CompanyService.updateCompany(this.profile).subscribe((addedCompany) => {
+        if(addedCompany != null){
+          this.changeMade = false;
+          this.router.navigate(['company-profile', this.afAuth.auth.currentUser.uid]);
+        }
+      });
+    }
   }
 
   addChip(newChip){

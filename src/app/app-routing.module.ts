@@ -20,8 +20,10 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'notes', component: NotesComponent },
   { path: 'event-list-view', component: EventListViewComponent},
+
   { path: 'coord-home/:id', component: CoordHomeComponent },
   { path: 'registration', component: RegistrationComponent },
+
   { path: '**', redirectTo: 'home'}
 ];
 

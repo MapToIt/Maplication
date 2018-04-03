@@ -5,4 +5,5 @@ export class Coordinator {
   userId: string;
   email: string;
   phoneNumber: string;
+
 }

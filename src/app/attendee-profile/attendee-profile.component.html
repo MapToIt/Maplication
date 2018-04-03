@@ -6,7 +6,7 @@
     <div>
       <h6 id="desc" *ngIf="viewMode" class="row justify-content-center">{{descriptionText}}</h6>
     </div>
-    <form>
+    <div class="row justify-content-center">
       <div class="form-row justify-content-center">
         <div class="col">
           <input type="text" placeholder="Full Name" class="form-control bg-light" [(ngModel)]="profile.fullName" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">

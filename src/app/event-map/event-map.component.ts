@@ -34,6 +34,8 @@ export class EventMapComponent implements OnInit {
 
   @ViewChild('drawing') drawing;
 
+  uploadImage: File;
+
   imagePath:string = '../../assets/SampleMap.png';
   imageHeight:number = 600;
   imageWidth:number = 600;
@@ -50,6 +52,7 @@ export class EventMapComponent implements OnInit {
   mapInfo: Map;
 
   editToggle: boolean;
+  deleteToggle: boolean;
   buttonClass: string;
   draw: any;
 
@@ -80,13 +83,17 @@ export class EventMapComponent implements OnInit {
     this.route.params.subscribe( params => this.eventId = params['id']);
 
     this.editToggle = false;
+    this.deleteToggle = false;
     this.buttonClass = "btn btn-success";
   }
 
   ngOnInit() {
     this.GetMap(this.eventId);
+  }
+
+  DrawMap(){
     this.draw = SVG('drawing').size(this.imageWidth, this.imageHeight);
-    let image = this.draw.image(this.imagePath).size(this.imageWidth, this.imageHeight);
+    let image = this.draw.image(this.mapInfo.image).size(this.imageWidth, this.imageHeight);
     let rect = this.draw.rect(this.imageWidth, this.imageHeight).opacity(0).attr({'class': 'unselectable', 'draggable':false});
     rect.id('drawLayer');
 
@@ -109,11 +116,18 @@ export class EventMapComponent implements OnInit {
 
   toggleEdit(){
     this.editToggle = !this.editToggle;
+    this.deleteToggle = false;
     if (this.editToggle){
       this.buttonClass = "btn btn-warning";
     } else {
       this.buttonClass = "btn btn-success";
     }
+  }
+
+  toggleDelete(){
+    this.deleteToggle = !this.deleteToggle;
+    this.editToggle = false;
+    this.buttonClass = "btn btn-success";
   }
 
   AddPointOne(e){
@@ -122,6 +136,9 @@ export class EventMapComponent implements OnInit {
     if (this.editToggle){
       this.tempPoint.x1 = e.pageX - this.GetElementOffset(document.getElementById('drawLayer')).left;
       this.tempPoint.y1 = e.pageY - this.GetElementOffset(document.getElementById('drawLayer')).top;
+    } else if (this.deleteToggle){
+      console.log('here');
+      this.DeleteTable(parseInt(e.target.id.substring(7,9)));
     }
   }
 
@@ -179,6 +196,17 @@ export class EventMapComponent implements OnInit {
     table.tableSVG.attr({'id': 'tableId' + table.tableId});
   }
 
+  DeleteTable(tableId: number){
+    console.log("DELETE TABLE");
+    this._MapService.DeleteTable(tableId);
+    for (let i = 0; i < this.eventTables.length; i++){
+      if (this.eventTables[i].tableId == tableId){
+        this.ResetTable(this.eventTables[i]);
+        this.eventTables.splice(i, 1);
+      }
+    }
+  }
+
   ResetTable(table: Table){
     //To dynamically draw map when window gets resized
     table.tableSVG.remove();
@@ -197,6 +225,7 @@ export class EventMapComponent implements OnInit {
       this.GetTables(this.mapId);
       this.CheckEditPermissions();
       this.mapPopulated = true;
+      this.DrawMap();
     });
   }
 
@@ -234,7 +263,30 @@ export class EventMapComponent implements OnInit {
     });
   }
 
+  DetectFiles(event){
+    console.log(event.target.files.item(0));
+    this.uploadImage = event.target.files.item(0);
+  }
+
   SubmitMap(){
-   
+   let storageRef = firebase.storage().ref();
+   console.log(typeof(this.uploadImage));
+   console.log(this.uploadImage);
+   let uploadTask = storageRef.child(`/maps/${this.mapInfo.mapId}/${this.uploadImage.name}`).put(this.uploadImage);
+   uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+    (snapshot) =>  {
+      // upload in progress
+    },
+    (error) => {
+      // upload failed
+      console.log(error)
+    },
+    () => {
+      // upload success
+      console.log(uploadTask.snapshot.downloadURL);
+      this.mapInfo.image = uploadTask.snapshot.downloadURL;
+      this._MapService.UpdateMap(this.mapInfo);
+    }
+  );
   }
 }

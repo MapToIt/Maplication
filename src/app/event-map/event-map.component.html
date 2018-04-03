@@ -3,8 +3,8 @@
   <div class='row content'>
     <div class='col-8'>
       <div #drawing id='drawing'></div>
-      <div *ngIf='!hasMap'>
-        <input type='file' accept='image/*' name='mapFile' [(ngModel)]='mapImage'>
+      <div *ngIf='!mapInfo.image'>
+        <input type='file' accept='image/*' name='mapFile' (change)='DetectFiles($event)'>
         <button type="button" (click)="SubmitMap()">Add Event</button>
       </div>
     </div>
@@ -27,6 +27,7 @@
   </div>
   <div *ngIf='isEventCoordinator' class='row'>
     <button [ngClass]="buttonClass" (click)="toggleEdit()">Add tables</button>
+    <button class='btn btn-danger' (click)="toggleDelete()">Delete Tables</button>
     <button class="btn btn-lg btn-outline-primary" (click)="openEventPrompt()">Launch demo modal</button>
   </div>
 </div>

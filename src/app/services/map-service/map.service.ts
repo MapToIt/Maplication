@@ -35,6 +35,23 @@ export class MapService {
       );
   }
 
+  UpdateMap(map: Map){
+    this.http.put(Globals.apiUrl + `map/update`, map)
+      .catch(this.handleError)
+      .subscribe(
+        data => console.log('success', data),
+        error => console.log('oops', error)
+      )
+  }
+
+  DeleteTable(tableId: number){
+    this.http.delete(Globals.apiUrl + `map/tables/${tableId}`)
+    .subscribe(
+      data => console.log('success', data),
+      error => console.log('oops', error)
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

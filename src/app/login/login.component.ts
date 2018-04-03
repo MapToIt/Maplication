@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
         }
         else if (userType.toLowerCase() == "coordinator")
         {
-          this.router.navigate(['coord-home', {id: data.currentUser.uid}]);
+          this.router.navigate(['coord-home', data.currentUser.uid]);
         }
         else
         {

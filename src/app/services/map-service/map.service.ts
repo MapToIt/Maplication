@@ -28,15 +28,7 @@ export class MapService {
 
   AddMap(map: Map){
     console.log(JSON.stringify(map));
-    this.http.post(Globals.apiUrl + `map/add`, map)
-      .catch(this.handleError)
-      .subscribe(
-        data => {
-          console.log('success', data);
-          this.router.navigate([`/event/${map.eventId}`])
-        },
-        error => console.log('oops', error),
-      );
+    return this.http.post<Map>(Globals.apiUrl + `map/add`, map);
   }
 
   UpdateMap(map: Map){

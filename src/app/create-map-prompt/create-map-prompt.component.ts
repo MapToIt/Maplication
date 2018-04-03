@@ -97,7 +97,11 @@ export class CreateMapPromptComponent implements OnInit {
       
       console.log(typeof(this.eventStart));
       console.log(addMap);
-      this._MapService.AddMap(addMap);
+      this._MapService.AddMap(addMap).subscribe((addedMap) => {
+        if (addedMap != null){
+          this.router.navigate(['event', addedMap.eventId]);
+        }
+      });
     }
   }
 

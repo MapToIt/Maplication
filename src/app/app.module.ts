@@ -97,7 +97,8 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     CoordHomeComponent,
     RegistrationComponent,
     CompanyProfileComponent,
-    CreateMapPromptComponent
+    CreateMapPromptComponent,
+
   ],
   entryComponents: [
     CreateMapPromptComponent

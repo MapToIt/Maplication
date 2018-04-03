@@ -1,11 +1,11 @@
 export const environment = {
     production: false,
     firebaseConfig: {
-        apiKey: "AIzaSyA2cDAtDLhvRfWwXLmaVwV_SBE6zcOp8eA",
-        authDomain: "maptoit-9c290.firebaseapp.com",
-        databaseURL: "https://maptoit-9c290.firebaseio.com",
-        projectId: "maptoit-9c290",
-        storageBucket: "maptoit-9c290.appspot.com",
-        messagingSenderId: "345716341579"
+        apiKey: "AIzaSyDG4byzwgZFbsIdCE-BJGkP4HnZBn7PD1I",
+        authDomain: "maptoit-cece3.firebaseapp.com",
+        databaseURL: "https://maptoit-cece3.firebaseio.com",
+        projectId: "maptoit-cece3",
+        storageBucket: "maptoit-cece3.appspot.com",
+        messagingSenderId: "625166561557"
     }
   };

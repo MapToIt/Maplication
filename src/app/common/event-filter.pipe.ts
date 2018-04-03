@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { Event } from '../domain-model/event';
+import { Event } from './event';
 
 @Pipe({
   name: 'eventFilter'
@@ -12,9 +12,9 @@ export class EventFilterPipe implements PipeTransform {
     if(!searchText) return events;
 
     return events.filter( it => {
-      return it.eventTitle.includes(searchText)
-      || it.city.includes(searchText)
-      || it.state.stateName.includes(searchText);
+      return it.eventName.includes(searchText)
+      || it.eventLocCity.includes(searchText)
+      || it.eventLocState.includes(searchText);
     });
   }
 

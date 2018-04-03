@@ -82,6 +82,7 @@ import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.component';
+import { AttendeeListComponent } from './attendee-list/attendee-list.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     RegistrationComponent,
     CompanyProfileComponent,
     CreateMapPromptComponent,
+    AttendeeListComponent,
 
   ],
   entryComponents: [

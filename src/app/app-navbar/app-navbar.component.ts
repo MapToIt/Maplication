@@ -26,11 +26,11 @@ export class AppNavbarComponent implements OnInit {
         this._UserService.getUserType(user.uid).subscribe((userType) => {
         if(userType != null)
           {
-            if (userType.toLowerCase() == "attendee")
+            if (userType == "Attendee")
             {
               this.isAttendee = true;
             }
-            else if (userType.toLowerCase() == "company")
+            else if (userType == "Company")
             {
               this.isCompany = true;
             }

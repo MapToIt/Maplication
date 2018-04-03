@@ -1,0 +1,25 @@
+<div style="height:5vh"></div>
+<table class="table m-2">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone Number</th>
+      <th scope="col">Degree</th>
+      <th scope="col">University</th>
+      <th scope="col">Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let attendee of attendees">
+      <td>{{attendee.fullName}}</td>
+      <td>{{attendee.email}}</td>
+      <td>{{attendee.phoneNumber}}</td>
+      <td>{{attendee.degree}}</td>
+      <td>{{attendee.university}}</td>
+      <td>
+          <button type="button" class="btn btn-primary m-2" (click)="makeNote(attendee.userId)">Make Note</button>         
+      </td>
+    </tr>
+  </tbody>
+</table>

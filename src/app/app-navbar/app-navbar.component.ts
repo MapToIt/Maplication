@@ -15,10 +15,32 @@ import * as firebase from 'firebase/app';
 export class AppNavbarComponent implements OnInit {
   
   isUser = false;
+  isAttendee = false;
+  isCoordinator = false;
+  isCompany = false;
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase,
     private route: ActivatedRoute, private router: Router, 
     private _UserService: UserService) {
+      this.afAuth.authState.subscribe((user) => {
+        this._UserService.getUserType(user.uid).subscribe((userType) => {
+        if(userType != null)
+          {
+            if (userType.toLowerCase() == "attendee")
+            {
+              this.isAttendee = true;
+            }
+            else if (userType.toLowerCase() == "company")
+            {
+              this.isCompany = true;
+            }
+            else
+            {
+              this.isCoordinator = true;
+            }
+          }
+        });
+      });
    }
 
   ngOnInit() {
@@ -37,14 +59,17 @@ export class AppNavbarComponent implements OnInit {
         {
           if (userType.toLowerCase() == "attendee")
           {
+            this.isAttendee = true;
             this.router.navigate(['attendee-profile', this.afAuth.auth.currentUser.uid]);
           }
           else if (userType.toLowerCase() == "company")
           {
+            this.isCompany = true;
             this.router.navigate(['company-profile', this.afAuth.auth.currentUser.uid]);
           }
           else
           {
+            this.isCoordinator = true;
             this.router.navigate(['coord-home', this.afAuth.auth.currentUser.uid]);
           }
         }

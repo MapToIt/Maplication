@@ -24,6 +24,7 @@ const routes: Routes = [
   { path: 'attendee-list/:id', component: AttendeeListComponent },
   { path: 'coord-home/:id', component: CoordHomeComponent },
   { path: 'registration', component: RegistrationComponent },
+
   { path: '**', redirectTo: 'home'}
 ];
 

@@ -14,12 +14,13 @@ import 'rxjs/add/operator/retry';
 import 'rxjs/add/observable/of';
 import 'rxjs/Rx';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class MapService {
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase,
-              private http: HttpClient, private globals: Globals) { }
+              private http: HttpClient, private globals: Globals, private router: Router) { }
 
   GetMapById(eventId:number){
     return this.http.get<Map>(Globals.apiUrl + `map/details/${eventId}`);
@@ -27,12 +28,24 @@ export class MapService {
 
   AddMap(map: Map){
     console.log(JSON.stringify(map));
-    this.http.post(Globals.apiUrl + `map/add`, map)
+    return this.http.post<Map>(Globals.apiUrl + `map/add`, map);
+  }
+
+  UpdateMap(map: Map){
+    this.http.put(Globals.apiUrl + `map/update`, map)
       .catch(this.handleError)
       .subscribe(
         data => console.log('success', data),
         error => console.log('oops', error)
-      );
+      )
+  }
+
+  DeleteTable(tableId: number){
+    this.http.delete(Globals.apiUrl + `map/tables/${tableId}`)
+    .subscribe(
+      data => console.log('success', data),
+      error => console.log('oops', error)
+    );
   }
 
   private handleError(error: HttpErrorResponse) {

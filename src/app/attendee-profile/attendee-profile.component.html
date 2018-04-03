@@ -28,7 +28,7 @@
           <input type="text" placeholder="Phone Number" class="form-control bg-light" [(ngModel)]="profile.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
-    </form>
+    </div>
 
     <div class="input-group col-lg-6 offset-lg-3" *ngIf="viewMode">
       <ng-template #chipsTemplate let-r="result" let-t="term">

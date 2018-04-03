@@ -21,9 +21,11 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularBasicModalModule } from 'angular-basic-modal';
 import { TextMaskModule } from 'angular2-text-mask';
 import { SharedModule } from './shared/shared.module';
+
 import {Ng2AutoCompleteModule} from 'ng2-auto-complete';
 import { StateService } from './services/state.service';
 import { Globals } from './shared/globals';
+
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
 import { UserService } from './services/user-service/user.service';
@@ -120,6 +122,7 @@ import { AttendeeListComponent } from './attendee-list/attendee-list.component';
     NgbModule.forRoot(),
     RouterModule,
     AppRoutingModule,
+    Ng2SearchPipeModule,
     SharedModule,
     NgxPaginationModule,
     TextMaskModule

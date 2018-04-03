@@ -13,7 +13,6 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'event', component:EventMapComponent },
   { path: 'event/:id', component: EventMapComponent },
   { path: 'about', component: AboutComponent },
   { path: 'attendee-profile/:id', component: AttendeeProfileComponent },

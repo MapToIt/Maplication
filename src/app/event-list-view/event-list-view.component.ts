@@ -56,31 +56,26 @@ export class EventListViewComponent implements OnInit {
         this._UserService.getUserType(this.currentUser.uid).subscribe((userType) => { 
           if(userType != null)
           {
-            if (userType.toLowerCase() == "attendee")
-            {
-              this.userType = userType;
-            }
-            else if (userType.toLowerCase() == "company")
-            {
-              this.userType = userType;
-            }
-            else
+            this.userType = userType;
+            console.log(this.userType);
+            if (!(userType.toLowerCase() == "attendee" || userType.toLowerCase() == "company"))
             {
               this.router.navigate(['*']);
+            }else{
+              var date = new Date();
+              console.log (date, date.getDate());
+              var ngbDateStruct = { day: date.getDate(), month: date.getMonth(), year: date.getFullYear()};
+              console.log(ngbDateStruct);
+              this.start = new NgbDate(ngbDateStruct.year, ngbDateStruct.month + 1, ngbDateStruct.day);
+              this.end = new NgbDate(ngbDateStruct.year, ngbDateStruct.month + 2, ngbDateStruct.day);
+              this.state = null;
+              
+              this.updateEvents();
             }
           } else {
             this.router.navigate(['*']);
           }
         });
-
-        var date = new Date();
-        console.log (date, date.getDate());
-        var ngbDateStruct = { day: date.getDate(), month: date.getMonth(), year: date.getFullYear()};
-        console.log(ngbDateStruct);
-        this.start = new NgbDate(ngbDateStruct.year, ngbDateStruct.month + 1, ngbDateStruct.day);
-        this.end = new NgbDate(ngbDateStruct.year, ngbDateStruct.month + 2, ngbDateStruct.day);
-        this.state = null;
-        this.updateEvents();
       });
       
       this._StateService.getStates().subscribe((states) => {
@@ -95,7 +90,10 @@ export class EventListViewComponent implements OnInit {
   updateEvents(){
     var start = this.start ? new Date(this.start.year, this.start.month - 1, this.start.day) : null;
     var end = this.end ? new Date(this.end.year, this.end.month - 1, this.end.day) : null;
-    this._EventService.GetEventsByFilter(start, end, this.state).subscribe((events) => {
+    console.log("in updateEvents(): ", this.userType);
+    var isCompany = this.userType.toLowerCase() == "company";
+
+    this._EventService.GetEventsByFilter(start, end, this.state, isCompany).subscribe((events) => {
       this.events = events;
 
       this._EventAttendanceService.GetEventAttendanceByUser(this.currentUser.uid).subscribe((rsvps) => {

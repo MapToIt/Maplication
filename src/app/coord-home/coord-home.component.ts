@@ -38,6 +38,7 @@ export class CoordHomeComponent implements OnInit {
    profile: Coordinator = new Coordinator();
    pastEvents: Event[] = new Array();
    futureEvents: Event[] = new Array();
+   mask:any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   // evts = [
   //   {id: 1, coord: 1, date: '2018/05/01 00:00:00', name: 'Kent Recruitment'},
   //   {id: 1, coord: 1, date: '2018/05/30 00:00:00', name: 'Portage County Recruitment'},

@@ -33,17 +33,11 @@ import { AttendeeService } from './services/attendee-service/attendee.service';
 import { CompanyService } from './services/company-service/company.service';
 import {FileUploadService} from './services/file-upload-service/file-upload.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
-<<<<<<< HEAD
 
 import { ChipService } from './services/chip-service/chip.service';
 import { EventService } from './services/event-service/event.service';
 import { EventAttendanceService } from './services/event-attendance-service/event-attendance.service';
 
-=======
-import { ChipService } from './services/chip-service/chip.service';
-import { EventService } from './services/event-service/event.service';
-import { EventAttendanceService } from './services/event-attendance-service/event-attendance.service';
->>>>>>> eebd8464ffd9f43fe4551a67b65a477afdf6f726
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,

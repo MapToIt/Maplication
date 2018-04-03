@@ -25,7 +25,7 @@
       </div>
       <div class="form-row justify-content-center">
         <div class="col-lg-6 col-md-8">
-          <input type="text" placeholder="Phone Number" class="form-control bg-light" [(ngModel)]="profile.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
+          <input type="text" placeholder="Phone Number" class="form-control bg-light" [textMask]="{mask:mask}" [(ngModel)]="profile.phoneNumber" [ngModelOptions]="{standalone: true}" [disabled]="!viewMode">
         </div>
       </div>
     </div>

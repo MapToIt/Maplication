@@ -5,8 +5,11 @@ import { Event } from "../shared/domain-model/event";
 import { Map } from '../shared/domain-model/map';
 import { Coordinator } from '../shared/domain-model/coordinator';
 import { Company } from '../shared/domain-model/company';
+import { State } from '../shared/domain-model/state';
+import { RSVP } from '../shared/domain-model/rsvp';
 import { MapService } from '../services/map-service/map.service';
 import { TableService } from '../services/table-service/table.service';
+import { StatesService } from '../services/states-service/states-service.service';
 import { UserService } from '../services/user-service/user.service';
 import { CoordinatorService } from '../services/coordinator/coordinator.service';
 import { NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
@@ -28,7 +31,7 @@ enum tableColor {
   selector: 'app-event-map',
   templateUrl: './event-map.component.html',
   styleUrls: ['./event-map.component.css'],
-  providers: [MapService, TableService]
+  providers: [MapService, TableService, StatesService]
 })
 export class EventMapComponent implements OnInit {
 
@@ -56,6 +59,8 @@ export class EventMapComponent implements OnInit {
   buttonClass: string;
   draw: any;
 
+  states: State[];
+
   mapPopulated: boolean = false;
 
   tempPoint: any = {};
@@ -76,6 +81,7 @@ export class EventMapComponent implements OnInit {
               private _MapService: MapService,
               private _TableService: TableService,
               private _UserService: UserService,
+              private _StatesService: StatesService,
               private _CoordinatorService: CoordinatorService,
               private modalService: NgbModal,
               private renderer: Renderer2,
@@ -89,6 +95,9 @@ export class EventMapComponent implements OnInit {
 
   ngOnInit() {
     this.GetMap(this.eventId);
+    this._StatesService.GetStates().subscribe((statesData) => {
+      this.states = statesData;
+    });
   }
 
   DrawMap(){
@@ -255,11 +264,8 @@ export class EventMapComponent implements OnInit {
     this.afAuth.authState.subscribe((user) => {
       this.currentUser = user;
       
-      //check if user logged in is profile owner
+      //check if user logged in is event coordinator
       this.isEventCoordinator = this.mapInfo.event.coordinator.userId == this.currentUser.uid;
-      console.log(this.isEventCoordinator);
-      console.log(this.mapInfo.event.coordinator.userId);
-      console.log(this.currentUser.uid);
     });
   }
 
@@ -268,25 +274,40 @@ export class EventMapComponent implements OnInit {
     this.uploadImage = event.target.files.item(0);
   }
 
+  SubmitMapChanges(){
+    this._MapService.UpdateMap(this.mapInfo);
+  }
+
   SubmitMap(){
    let storageRef = firebase.storage().ref();
    console.log(typeof(this.uploadImage));
    console.log(this.uploadImage);
    let uploadTask = storageRef.child(`/maps/${this.mapInfo.mapId}/${this.uploadImage.name}`).put(this.uploadImage);
    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-    (snapshot) =>  {
-      // upload in progress
-    },
-    (error) => {
-      // upload failed
-      console.log(error)
-    },
-    () => {
-      // upload success
-      console.log(uploadTask.snapshot.downloadURL);
-      this.mapInfo.image = uploadTask.snapshot.downloadURL;
-      this._MapService.UpdateMap(this.mapInfo);
-    }
-  );
+      (snapshot) =>  {
+        // upload in progress
+      },
+        (error) => {
+        // upload failed
+        console.log(error)
+      },
+      () => {
+        // upload success
+        console.log(uploadTask.snapshot.downloadURL);
+        this.mapInfo.image = uploadTask.snapshot.downloadURL;
+        this._MapService.UpdateMap(this.mapInfo);
+      }
+    );
   }
+
+  rsvp(eventId: number){
+    let rsvp = new RSVP();
+    rsvp.Event = eventId;
+    rsvp.UserId = this.currentUser.uid;
+    rsvp.UserType = this.userType;
+    this._EventAttendanceService.updateRSVP(rsvp).subscribe((rsvp) => {
+      this.updateEvents();
+    });    
+}
+
 }

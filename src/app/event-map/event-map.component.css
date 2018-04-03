@@ -25,9 +25,6 @@
   height: 5%;
 }
 
-button {
-  height: 20vh;
-  width: 20vh;
+button{
   justify-content: center;
-  margin-top: 15vh;
 }

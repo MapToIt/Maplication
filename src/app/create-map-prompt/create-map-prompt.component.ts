@@ -5,6 +5,7 @@ import { MapService } from '../services/map-service/map.service';
 import { State } from '../shared/domain-model/state';
 import { Event } from '../shared/domain-model/event';
 import { Map } from '../shared/domain-model/map';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-map-prompt',
@@ -30,7 +31,10 @@ export class CreateMapPromptComponent implements OnInit {
   eventZipCode: number;
   states: State[];
 
-  constructor(public activeModal: NgbActiveModal, private _StatesService: StatesService, private _MapService: MapService) { }
+  constructor(public activeModal: NgbActiveModal, 
+              private _StatesService: StatesService, 
+              private _MapService: MapService,
+              private router: Router) { }
 
   ngOnInit() {
     this.GetStates();

@@ -14,12 +14,13 @@ import 'rxjs/add/operator/retry';
 import 'rxjs/add/observable/of';
 import 'rxjs/Rx';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class MapService {
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase,
-              private http: HttpClient, private globals: Globals) { }
+              private http: HttpClient, private globals: Globals, private router: Router) { }
 
   GetMapById(eventId:number){
     return this.http.get<Map>(Globals.apiUrl + `map/details/${eventId}`);
@@ -30,8 +31,11 @@ export class MapService {
     this.http.post(Globals.apiUrl + `map/add`, map)
       .catch(this.handleError)
       .subscribe(
-        data => console.log('success', data),
-        error => console.log('oops', error)
+        data => {
+          console.log('success', data);
+          this.router.navigate([`/event/${map.eventId}`])
+        },
+        error => console.log('oops', error),
       );
   }
 

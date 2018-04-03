@@ -6,12 +6,13 @@ import { Map } from '../shared/domain-model/map';
 import { Coordinator } from '../shared/domain-model/coordinator';
 import { Company } from '../shared/domain-model/company';
 import { State } from '../shared/domain-model/state';
-import { RSVP } from '../shared/domain-model/rsvp';
+import { RSVP } from '../shared/filter/rsvp';
 import { MapService } from '../services/map-service/map.service';
 import { TableService } from '../services/table-service/table.service';
 import { StatesService } from '../services/states-service/states-service.service';
 import { UserService } from '../services/user-service/user.service';
 import { CoordinatorService } from '../services/coordinator/coordinator.service';
+import { EventAttendanceService } from '../services/event-attendance-service/event-attendance.service';
 import { NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { CreateMapPromptComponent } from '../create-map-prompt/create-map-prompt.component';
 import * as firebase from 'firebase/app';
@@ -66,6 +67,7 @@ export class EventMapComponent implements OnInit {
   tempPoint: any = {};
 
   currentUser: firebase.User;
+  userType: string;
   isEventCoordinator: boolean = false;
   coordinator: Coordinator = new Coordinator();
 
@@ -83,6 +85,7 @@ export class EventMapComponent implements OnInit {
               private _UserService: UserService,
               private _StatesService: StatesService,
               private _CoordinatorService: CoordinatorService,
+              private _EventAttendanceService: EventAttendanceService,
               private modalService: NgbModal,
               private renderer: Renderer2,
               private changeRef: ChangeDetectorRef) {
@@ -264,6 +267,22 @@ export class EventMapComponent implements OnInit {
     this.afAuth.authState.subscribe((user) => {
       this.currentUser = user;
       
+      this._UserService.getUserType(this.currentUser.uid).subscribe((userType) => { 
+        if(userType != null)
+        {
+          if (userType.toLowerCase() == "attendee")
+          {
+            this.userType = userType;
+          }
+          else if (userType.toLowerCase() == "company")
+          {
+            this.userType = userType;
+          }
+        } else {
+          userType = null;
+        }
+      });
+
       //check if user logged in is event coordinator
       this.isEventCoordinator = this.mapInfo.event.coordinator.userId == this.currentUser.uid;
     });
@@ -306,8 +325,9 @@ export class EventMapComponent implements OnInit {
     rsvp.UserId = this.currentUser.uid;
     rsvp.UserType = this.userType;
     this._EventAttendanceService.updateRSVP(rsvp).subscribe((rsvp) => {
-      this.updateEvents();
+      if (this.userType.toLowerCase() == 'company'){
+        this.router.navigate([`/event/${this.mapInfo.eventId}`])
+      }
     });    
-}
-
+  }
 }

@@ -1,13 +1,18 @@
-import { Component, OnInit, HostListener, NgZone, Input, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, NgZone, Input, Renderer2, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Table } from "../shared/domain-model/table";
 import { Event } from "../shared/domain-model/event";
 import { Map } from '../shared/domain-model/map';
 import { Coordinator } from '../shared/domain-model/coordinator';
+import { Company } from '../shared/domain-model/company';
+import { State } from '../shared/domain-model/state';
+import { RSVP } from '../shared/filter/rsvp';
 import { MapService } from '../services/map-service/map.service';
 import { TableService } from '../services/table-service/table.service';
+import { StatesService } from '../services/states-service/states-service.service';
 import { UserService } from '../services/user-service/user.service';
 import { CoordinatorService } from '../services/coordinator/coordinator.service';
+import { EventAttendanceService } from '../services/event-attendance-service/event-attendance.service';
 import { NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { CreateMapPromptComponent } from '../create-map-prompt/create-map-prompt.component';
 import * as firebase from 'firebase/app';
@@ -16,6 +21,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs';
 
 import * as SVG from 'svg.js';
+import { AngularFireStorage } from 'angularfire2/storage';
 
 enum tableColor {
   AVAILABLE = '#00ff00',
@@ -26,11 +32,13 @@ enum tableColor {
   selector: 'app-event-map',
   templateUrl: './event-map.component.html',
   styleUrls: ['./event-map.component.css'],
-  providers: [MapService, TableService]
+  providers: [MapService, TableService, StatesService]
 })
 export class EventMapComponent implements OnInit {
 
   @ViewChild('drawing') drawing;
+
+  uploadImage: File;
 
   imagePath:string = '../../assets/SampleMap.png';
   imageHeight:number = 600;
@@ -48,69 +56,90 @@ export class EventMapComponent implements OnInit {
   mapInfo: Map;
 
   editToggle: boolean;
+  deleteToggle: boolean;
   buttonClass: string;
   draw: any;
+
+  states: State[];
 
   mapPopulated: boolean = false;
 
   tempPoint: any = {};
 
   currentUser: firebase.User;
+  userType: string;
   isEventCoordinator: boolean = false;
   coordinator: Coordinator = new Coordinator();
+
+  activeCompany: Company;
+
+  mapImage: File;
 
   constructor(private _ngZone: NgZone,
               private route: ActivatedRoute,
               private router: Router,
               private afAuth: AngularFireAuth,
+              private afStore: AngularFireStorage,
               private _MapService: MapService,
               private _TableService: TableService,
               private _UserService: UserService,
+              private _StatesService: StatesService,
               private _CoordinatorService: CoordinatorService,
+              private _EventAttendanceService: EventAttendanceService,
               private modalService: NgbModal,
-              private renderer: Renderer2) {
+              private renderer: Renderer2,
+              private changeRef: ChangeDetectorRef) {
     this.route.params.subscribe( params => this.eventId = params['id']);
 
     this.editToggle = false;
+    this.deleteToggle = false;
     this.buttonClass = "btn btn-success";
   }
 
   ngOnInit() {
     this.GetMap(this.eventId);
+    this._StatesService.GetStates().subscribe((statesData) => {
+      this.states = statesData;
+    });
+  }
+
+  DrawMap(){
     this.draw = SVG('drawing').size(this.imageWidth, this.imageHeight);
-    let image = this.draw.image(this.imagePath).size(this.imageWidth, this.imageHeight);
+    let image = this.draw.image(this.mapInfo.image).size(this.imageWidth, this.imageHeight);
     let rect = this.draw.rect(this.imageWidth, this.imageHeight).opacity(0).attr({'class': 'unselectable', 'draggable':false});
     rect.id('drawLayer');
 
     let drawingMouseDown = this.renderer.listen(this.drawing.nativeElement, 'mousedown', (evt) => {
-      console.log(evt);
       this.AddPointOne(evt);
     });
     let drawingMouseUp = this.renderer.listen(this.drawing.nativeElement, 'mouseup', (evt) => {
-      console.log(evt);
+      if (evt.target.id.substring(0,7) == 'tableId'){
+        let tableIds = evt.target.id.substring(7,9);
+        let tableId = parseInt(tableIds);
+        for (let i = 0; i < this.eventTables.length; i ++){
+          if (this.eventTables[i].tableId === tableId){
+            this.activeCompany = this.eventTables[i].company;
+          }
+        }
+      }
       this.AddPointTwo(evt);
     });
-    
-
   }
-
-  /*@HostListener('mousedown', ['$event'])
-  onMouseDown(ev:MouseEvent) {
-    this.AddPointOne(ev);
-  }
-
-  @HostListener('mouseup', ['$event'])
-  onMouseUp(ev:MouseEvent){
-    this.AddPointTwo(ev);
-  }*/
 
   toggleEdit(){
     this.editToggle = !this.editToggle;
+    this.deleteToggle = false;
     if (this.editToggle){
       this.buttonClass = "btn btn-warning";
     } else {
       this.buttonClass = "btn btn-success";
     }
+  }
+
+  toggleDelete(){
+    this.deleteToggle = !this.deleteToggle;
+    this.editToggle = false;
+    this.buttonClass = "btn btn-success";
   }
 
   AddPointOne(e){
@@ -119,6 +148,9 @@ export class EventMapComponent implements OnInit {
     if (this.editToggle){
       this.tempPoint.x1 = e.pageX - this.GetElementOffset(document.getElementById('drawLayer')).left;
       this.tempPoint.y1 = e.pageY - this.GetElementOffset(document.getElementById('drawLayer')).top;
+    } else if (this.deleteToggle){
+      console.log('here');
+      this.DeleteTable(parseInt(e.target.id.substring(7,9)));
     }
   }
 
@@ -173,6 +205,18 @@ export class EventMapComponent implements OnInit {
     let tempHeight = (table.height * this.imageHeight) / 1000;
     table.tableSVG = this.draw.rect(tempWidth, tempHeight).fill(tempColor).opacity(.5);
     table.tableSVG.move((table.xCoordinate/1000.0)*this.imageWidth, (table.yCoordinate/1000.0)*this.imageHeight);
+    table.tableSVG.attr({'id': 'tableId' + table.tableId});
+  }
+
+  DeleteTable(tableId: number){
+    console.log("DELETE TABLE");
+    this._MapService.DeleteTable(tableId);
+    for (let i = 0; i < this.eventTables.length; i++){
+      if (this.eventTables[i].tableId == tableId){
+        this.ResetTable(this.eventTables[i]);
+        this.eventTables.splice(i, 1);
+      }
+    }
   }
 
   ResetTable(table: Table){
@@ -193,6 +237,7 @@ export class EventMapComponent implements OnInit {
       this.GetTables(this.mapId);
       this.CheckEditPermissions();
       this.mapPopulated = true;
+      this.DrawMap();
     });
   }
 
@@ -222,11 +267,67 @@ export class EventMapComponent implements OnInit {
     this.afAuth.authState.subscribe((user) => {
       this.currentUser = user;
       
-      //check if user logged in is profile owner
+      this._UserService.getUserType(this.currentUser.uid).subscribe((userType) => { 
+        if(userType != null)
+        {
+          if (userType.toLowerCase() == "attendee")
+          {
+            this.userType = userType;
+          }
+          else if (userType.toLowerCase() == "company")
+          {
+            this.userType = userType;
+          }
+        } else {
+          userType = null;
+        }
+      });
+
+      //check if user logged in is event coordinator
       this.isEventCoordinator = this.mapInfo.event.coordinator.userId == this.currentUser.uid;
-      console.log(this.isEventCoordinator);
-      console.log(this.mapInfo.event.coordinator.userId);
-      console.log(this.currentUser.uid);
     });
+  }
+
+  DetectFiles(event){
+    console.log(event.target.files.item(0));
+    this.uploadImage = event.target.files.item(0);
+  }
+
+  SubmitMapChanges(){
+    this._MapService.UpdateMap(this.mapInfo);
+  }
+
+  SubmitMap(){
+   let storageRef = firebase.storage().ref();
+   console.log(typeof(this.uploadImage));
+   console.log(this.uploadImage);
+   let uploadTask = storageRef.child(`/maps/${this.mapInfo.mapId}/${this.uploadImage.name}`).put(this.uploadImage);
+   uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+      (snapshot) =>  {
+        // upload in progress
+      },
+        (error) => {
+        // upload failed
+        console.log(error)
+      },
+      () => {
+        // upload success
+        console.log(uploadTask.snapshot.downloadURL);
+        this.mapInfo.image = uploadTask.snapshot.downloadURL;
+        this._MapService.UpdateMap(this.mapInfo);
+      }
+    );
+  }
+
+  rsvp(eventId: number){
+    let rsvp = new RSVP();
+    rsvp.Event = eventId;
+    rsvp.UserId = this.currentUser.uid;
+    rsvp.UserType = this.userType;
+    this._EventAttendanceService.updateRSVP(rsvp).subscribe((rsvp) => {
+      if (this.userType.toLowerCase() == 'company'){
+        this.router.navigate([`/event/${this.mapInfo.eventId}`])
+      }
+    });    
   }
 }

@@ -12,7 +12,7 @@ export class Event {
     public street: string;
     public city: string;
     public stateId: number;
-    public zipcode: number;
+    public zipCode: number;
     public eventPic: string;
     public state: State;
     public coordinator: Coordinator;

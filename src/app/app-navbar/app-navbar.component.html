@@ -8,22 +8,23 @@
       <li class="nav-item">
         <a class="nav-link" href="about">About</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Events</a>
+      <li class="nav-item" *ngIf="(isAttendee || isCompany)">
+        <a class="nav-link" href="event-list-view">Events</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Companies</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="attendee-profile">Attendee</a>
+      <li class="nav-item" *ngIf="(isAttendee || isCompany || isCoordinator)">
+        <a class="nav-link" (click)="goToProfile()">My Profile</a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0"  *ngIf="!isUser">
-      <button class="btn btn-primary my-2 my-sm-0" ng-click="login">Log In</button>
-    </form>
-    <form class="form-inline my-2 my-lg-0" *ngIf="isUser">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+
+    <ng-template class="form-inline my-2 my-lg-0" #showLogin>
+      <a class="nav-link" href="login" class="btn btn-primary my-2 my-sm-0">Log In</a>
+    </ng-template>
+    
+    <form class="form-inline my-2 my-lg-0" *ngIf="afAuth.authState | async as user; else showLogin">
+      <a class="navbar-brand" id="title" (click)="goToProfile()">Hello {{ user.displayName }}!</a>  
+      <button class="nav-link" (click)="logout()" class="btn btn-primary my-2 my-sm-0">Log Out</button>
+      <!-- <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button> -->
     </form>
   </div>
 </nav>

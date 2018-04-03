@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  currentUser: firebase.User;
+  items: AngularFireObject<any[]>;
+  msgVal: string = '';
+
+  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase) {
+      this.currentUser = this.afAuth.auth.currentUser;
+  }
+
+  title = 'Maplication';
 }

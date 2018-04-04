@@ -31,7 +31,7 @@ import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
 import { UserService } from './services/user-service/user.service';
 import { AttendeeService } from './services/attendee-service/attendee.service';
 import { CompanyService } from './services/company-service/company.service';
-import {FileUploadService} from './services/file-upload-service/file-upload.service';
+import { FileUploadService } from './services/file-upload-service/file-upload.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { ChipService } from './services/chip-service/chip.service';
 import { EventService } from './services/event-service/event.service';
@@ -78,6 +78,7 @@ import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { EventMapComponent } from './event-map/event-map.component';
 import { AboutComponent } from './about/about.component';
+import { AttendeeListComponent } from './attendee-list/attendee-list.component';
 import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
 import { LoginComponent } from './login/login.component';
 import { NotesComponent } from './notes/notes.component';
@@ -93,6 +94,7 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     HomeComponent,
     AppNavbarComponent,
     AboutComponent,
+    AttendeeListComponent,
     LoginComponent,
     AttendeeProfileComponent,
     EventMapComponent,

@@ -7,12 +7,13 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import * as firebase from 'firebase/app';
-import { StateService } from '../services/state.service';
+import { StatesService } from '../services/states-service/states.service';
 import { Event } from '../shared/domain-model/event';
 import { Attendee } from '../shared/domain-model/attendee';
 import { EventAttendanceService } from '../services/event-attendance-service/event-attendance.service';
 import { UserService } from '../services/user-service/user.service';
 import { AttendeeService } from '../services/attendee-service/attendee.service';
+import { NgbModalOptions, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-attendee-list',
@@ -26,7 +27,7 @@ export class AttendeeListComponent implements OnInit {
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase,
               private _EventAttendanceService: EventAttendanceService, private _UserService:UserService,
-              private _AttendeeService: AttendeeService,
+              private _AttendeeService: AttendeeService, public modalService: NgbModal,
               private route: ActivatedRoute, private router: Router) { 
 
     this.route.params.subscribe( params => this.eventId = params['id']);
@@ -61,6 +62,12 @@ export class AttendeeListComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  openNoteModal(){
+    let options: NgbModalOptions = {size: 'lg'};
+    const modalRef = this.modalService.open(NoteModalComponent, options);
+    // modalRef.componentInstance.eventCoordinator = this.profile.coordinatorId;
   }
 
 }

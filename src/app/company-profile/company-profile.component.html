@@ -1,10 +1,16 @@
-<h1 *ngIf="isProfileUser" class="text-center">Welcome Back!</h1>
+<h1 *ngIf="isProfileUser" class="text-center">Welcome Back {{ profile.companyName }}!</h1>
 
 <div class="card m-3">
     <div class="card-body">
         <div class="row d-flex justify-content-between m-1 align-content-center">
             <h3>About Us:</h3>
-            <button type="button" *ngIf="isProfileUser" class="btn btn-primary" (click)="updateCompany()">Update Profile</button>
+            <div  *ngIf="isProfileUser">
+                <button type="button" class="btn btn-primary" (click)="updateCompany()">Update Profile</button>
+                
+                <label class="btn btn-primary btn- m-2">
+                    Set Logo <input type="file" style="display: none;" (change)="handleFileInputImg($event.target.files)">
+                </label>
+            </div>
         </div>
         <div class="row">
             <div class="col-8">
@@ -75,11 +81,6 @@
             </div>
             <div class="col-4">
                 <img src="{{profile.logo ? profile.logo : '../../assets/placeholder.png' }}" class="w-100"/>
-                <div class="input-group m-3" *ngIf="isProfileUser">
-                    <label for="imgFile" class="custom-file-upload"><h3>Upload Your Logo</h3></label>
-                    <input type="file" id="imgFile"
-                        (change)="handleFileInputImg($event.target.files)" class="inputfile">
-                </div>
             </div>
         </div>
     </div>

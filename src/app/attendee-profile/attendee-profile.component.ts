@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
 import { ChangeDetectorRef } from '@angular/core';
 import { NgModule } from '@angular/core/src/metadata/ng_module';
-import { StateService, stateObj } from '../services/state.service';
+import { StatesService } from '../services/states-service/states.service';
 import { UserService} from '../services/user-service/user.service';
 import {AttendeeService} from '../services/attendee-service/attendee.service';
 import {CompanyService} from '../services/company-service/company.service';
@@ -18,6 +18,8 @@ import {FileUploadService} from '../services/file-upload-service/file-upload.ser
 import { Tags } from '../shared/domain-model/tags';
 import { forEach } from '@angular/router/src/utils/collection';
 import { ChipService } from '../services/chip-service/chip.service';
+import { State } from '../shared/domain-model/state';
+import { Globals } from '../shared/globals';
 
 @Component({
   selector: 'app-attendee-profile',
@@ -49,7 +51,7 @@ export class AttendeeProfileComponent implements OnInit {
   fieldTags: Tags[] =[];
   stringTags: string[] = [];
   currTag: string;
-  stateObjs: stateObj[];
+  stateObjs: State[];
   states: string[];
   profile: Attendee = new Attendee();
   uid: string;
@@ -69,26 +71,24 @@ export class AttendeeProfileComponent implements OnInit {
   
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
-              private cdr: ChangeDetectorRef, private stateService: StateService,
+              private cdr: ChangeDetectorRef, private statesService: StatesService,
               private userService: UserService, private attendeeService: AttendeeService, 
               private companyService: CompanyService, private route: ActivatedRoute, 
               private router: Router, private fileUploadService: FileUploadService,
-              private tagsService: ChipService) {
+              private tagsService: ChipService, public globals: Globals) {
 
       this.route.params.subscribe( params => this.uid = params['id']);
 
-      this.afAuth.authState.subscribe((user) => {
-        this.currentUser = user;
-        
-        //check validity
-        if (this.uid == this.currentUser.uid){
-          this.isValid = true;
-          this.greeting = `Welcome back, ${this.profile.fullName}!`;
-        }else{
-          this.isValid = false;
-          this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;      
-        }
-      });
+      this.currentUser = this.globals.currentUser;
+      
+      //check validity
+      if (this.uid == this.currentUser.uid){
+        this.isValid = true;
+        this.greeting = `Welcome back, ${this.profile.fullName}!`;
+      }else{
+        this.isValid = false;
+        this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;      
+      }
     
 
       this.userService.getUserType(this.uid).subscribe((userType) => {
@@ -164,7 +164,7 @@ export class AttendeeProfileComponent implements OnInit {
   //get states from db
   getStates(){
     var states: string[] = [];
-    this.stateService.getStates().subscribe((data) => {
+    this.statesService.getStates().subscribe((data) => {
       this.stateObjs = data;
       //convert from objects to a string of state names
       this.stateObjs.forEach(state => {

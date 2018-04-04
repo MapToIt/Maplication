@@ -10,6 +10,7 @@ import { EventListViewComponent } from './event-list-view/event-list-view.compon
 import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
+import { AttendeeListComponent } from './attendee-list/attendee-list.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -18,9 +19,9 @@ const routes: Routes = [
   { path: 'attendee-profile/:id', component: AttendeeProfileComponent },
   { path: 'company-profile/:id', component: CompanyProfileComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'notes', component: NotesComponent },
+  { path: 'notes/:id', component: NotesComponent },
   { path: 'event-list-view', component: EventListViewComponent},
-
+  { path: 'attendee-list/:id', component: AttendeeListComponent },
   { path: 'coord-home/:id', component: CoordHomeComponent },
   { path: 'registration', component: RegistrationComponent },
 

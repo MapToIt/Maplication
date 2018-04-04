@@ -5,6 +5,7 @@ import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
+import { Globals } from '../shared/globals';
 import { UserService } from '../services/user-service/user.service';
 
 export class AuthService {
@@ -30,7 +31,7 @@ export class LoginComponent implements OnInit {
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
     private _UserService: UserService, private route: ActivatedRoute, 
-    private router: Router) 
+    private router: Router, private globals:Globals) 
   { 
     
   }
@@ -41,15 +42,23 @@ export class LoginComponent implements OnInit {
   }
 
   successCallback(data: FirebaseUISignInSuccess) {
+    this.globals.currentUser = data.currentUser;
     this._UserService.getUserType(data.currentUser.uid).subscribe((userType) => {
       if(userType != null)
       {
-        if(userType.toLowerCase() == "company" || userType.toLowerCase() == "attendee")
+        if(userType.toLowerCase() == "attendee")
         {
+          this.globals.isAttendee = true;
+          this.router.navigate(['event-list-view']);
+        }
+        else if(userType.toLowerCase() == "company")
+        {
+          this.globals.isCompany = true;
           this.router.navigate(['event-list-view']);
         }
         else if (userType.toLowerCase() == "coordinator")
         {
+          this.globals.isCoordinator = true;
           this.router.navigate(['coord-home', data.currentUser.uid]);
         }
         else

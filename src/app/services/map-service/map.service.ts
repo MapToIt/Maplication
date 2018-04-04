@@ -23,16 +23,16 @@ export class MapService {
               private http: HttpClient, private globals: Globals, private router: Router) { }
 
   GetMapById(eventId:number){
-    return this.http.get<Map>(Globals.apiUrl + `map/details/${eventId}`);
+    return this.http.get<Map>(this.globals.apiUrl + `map/details/${eventId}`);
   }
 
   AddMap(map: Map){
     console.log(JSON.stringify(map));
-    return this.http.post<Map>(Globals.apiUrl + `map/add`, map);
+    return this.http.post<Map>(this.globals.apiUrl + `map/add`, map);
   }
 
   UpdateMap(map: Map){
-    this.http.put(Globals.apiUrl + `map/update`, map)
+    this.http.put(this.globals.apiUrl + `map/update`, map)
       .catch(this.handleError)
       .subscribe(
         data => console.log('success', data),
@@ -41,7 +41,7 @@ export class MapService {
   }
 
   DeleteTable(tableId: number){
-    this.http.delete(Globals.apiUrl + `map/tables/${tableId}`)
+    this.http.delete(this.globals.apiUrl + `map/tables/${tableId}`)
     .subscribe(
       data => console.log('success', data),
       error => console.log('oops', error)

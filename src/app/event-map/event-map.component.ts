@@ -9,7 +9,7 @@ import { State } from '../shared/domain-model/state';
 import { RSVP } from '../shared/filter/rsvp';
 import { MapService } from '../services/map-service/map.service';
 import { TableService } from '../services/table-service/table.service';
-import { StatesService } from '../services/states-service/states-service.service';
+import { StatesService } from '../services/states-service/states.service';
 import { UserService } from '../services/user-service/user.service';
 import { CoordinatorService } from '../services/coordinator/coordinator.service';
 import { EventAttendanceService } from '../services/event-attendance-service/event-attendance.service';
@@ -22,6 +22,7 @@ import { Observable } from 'rxjs';
 
 import * as SVG from 'svg.js';
 import { AngularFireStorage } from 'angularfire2/storage';
+import { Globals } from '../shared/globals';
 
 enum tableColor {
   AVAILABLE = '#00ff00',
@@ -66,7 +67,6 @@ export class EventMapComponent implements OnInit {
 
   tempPoint: any = {};
 
-  currentUser: firebase.User;
   userType: string;
   isEventCoordinator: boolean = false;
   coordinator: Coordinator = new Coordinator();
@@ -88,7 +88,8 @@ export class EventMapComponent implements OnInit {
               private _EventAttendanceService: EventAttendanceService,
               private modalService: NgbModal,
               private renderer: Renderer2,
-              private changeRef: ChangeDetectorRef) {
+              private changeRef: ChangeDetectorRef,
+              public globals: Globals) {
     this.route.params.subscribe( params => this.eventId = params['id']);
 
     this.editToggle = false;
@@ -98,7 +99,7 @@ export class EventMapComponent implements OnInit {
 
   ngOnInit() {
     this.GetMap(this.eventId);
-    this._StatesService.GetStates().subscribe((statesData) => {
+    this._StatesService.getStates().subscribe((statesData) => {
       this.states = statesData;
     });
   }
@@ -263,29 +264,25 @@ export class EventMapComponent implements OnInit {
     modalRef.componentInstance.eventCoordinator = 1;
   }
 
-  CheckEditPermissions(){
-    this.afAuth.authState.subscribe((user) => {
-      this.currentUser = user;
-      
-      this._UserService.getUserType(this.currentUser.uid).subscribe((userType) => { 
-        if(userType != null)
+  CheckEditPermissions(){      
+    this._UserService.getUserType(this.globals.currentUser.uid).subscribe((userType) => { 
+      if(userType != null)
+      {
+        if (userType.toLowerCase() == "attendee")
         {
-          if (userType.toLowerCase() == "attendee")
-          {
-            this.userType = userType;
-          }
-          else if (userType.toLowerCase() == "company")
-          {
-            this.userType = userType;
-          }
-        } else {
-          userType = null;
+          this.userType = userType;
         }
-      });
-
-      //check if user logged in is event coordinator
-      this.isEventCoordinator = this.mapInfo.event.coordinator.userId == this.currentUser.uid;
+        else if (userType.toLowerCase() == "company")
+        {
+          this.userType = userType;
+        }
+      } else {
+        userType = null;
+      }
     });
+
+    //check if user logged in is event coordinator
+    this.isEventCoordinator = this.mapInfo.event.coordinator.userId == this.globals.currentUser.uid;
   }
 
   DetectFiles(event){
@@ -322,7 +319,7 @@ export class EventMapComponent implements OnInit {
   rsvp(eventId: number){
     let rsvp = new RSVP();
     rsvp.Event = eventId;
-    rsvp.UserId = this.currentUser.uid;
+    rsvp.UserId = this.globals.currentUser.uid;
     rsvp.UserType = this.userType;
     this._EventAttendanceService.updateRSVP(rsvp).subscribe((rsvp) => {
       if (this.userType.toLowerCase() == 'company'){

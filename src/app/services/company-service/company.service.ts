@@ -13,19 +13,19 @@ import { Company } from '../../shared/domain-model/company';
 @Injectable()
 export class CompanyService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public globals: Globals) { }
 
   getCompany(id: string) {
-    return this.http.get<Company>(Globals.apiUrl + 'Company/' + id);
+    return this.http.get<Company>(this.globals.apiUrl + 'Company/' + id);
   }
 
   updateCompany(company: Company) {
-    return this.http.post<Company>(Globals.apiUrl + `Company`, company);
+    return this.http.post<Company>(this.globals.apiUrl + `Company`, company);
   }
   
 
   addCompany(company: Company) {
-    return this.http.put<Company>(Globals.apiUrl + 'Company', company)
+    return this.http.put<Company>(this.globals.apiUrl + 'Company', company)
   }
 
 }

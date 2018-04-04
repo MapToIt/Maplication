@@ -12,9 +12,10 @@ import { CompanyService } from '../services/company-service/company.service';
 import { FileUploadService } from '../services/file-upload-service/file-upload.service';
 import { Company } from '../shared/domain-model/company';
 import { State } from '../shared/domain-model/state';
-import { StateService } from '../services/state.service';
+import { StatesService } from '../services/states-service/states.service';
 import { ChipService } from '../services/chip-service/chip.service';
 import { Tags } from '../shared/domain-model/tags';
+import { Globals } from '../shared/globals';
 
 @Component({
   selector: 'app-company-profile',
@@ -53,9 +54,9 @@ export class CompanyProfileComponent implements OnInit {
   formatterTag = (x: {tag: string}) => x.tag;
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
-              private _StateService: StateService, private _ChipService: ChipService,
+              private _StatesService: StatesService, private _ChipService: ChipService,
               private _CompanyService: CompanyService, private _UserService: UserService,
-              private _FileUploadService: FileUploadService,
+              private _FileUploadService: FileUploadService, private globals: Globals,
               private route: ActivatedRoute, private router: Router) {
                
       this.route.params.subscribe( params => this.uid = params['id']);
@@ -78,14 +79,18 @@ export class CompanyProfileComponent implements OnInit {
         }
       });
 
-      this.afAuth.authState.subscribe((user) => {
-        this.currentUser = user;
-        
-        //check if user logged in is profile owner
-        this.isProfileUser = this.uid == this.currentUser.uid;
-      });
+      this.currentUser = this.globals.currentUser;
+      
+      //check if user logged in is profile owner
+      this.isProfileUser = this.uid == this.currentUser.uid;
+      console.log((!this.globals.isAttendee && !this.globals.isCoordinator && !this.isProfileUser), ' = ',
+            !this.globals.isAttendee, !this.globals.isCoordinator, !this.isProfileUser)
+      if(!this.globals.isAttendee && !this.globals.isCoordinator && !this.isProfileUser)
+      {
+        this.router.navigate(['*']);
+      }
 
-      this._StateService.getStates().subscribe((states) => {
+      this._StatesService.getStates().subscribe((states) => {
         this.states = states;
       });
 

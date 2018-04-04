@@ -1,51 +1,95 @@
-<button type="button" class="btn btn-primary m-2" (click)="toggleAddNote()" *ngIf="!addNote">Add Note</button>
-<div class="card p-3 m-3" *ngIf="addNote">
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">Name</span>
+<div class="card m-2">
+    <div class="card-body">
+        <div class="d-flex flex-row">   
+            <div class="d-flex flex-column">              
+                <div class="d-flex flex-row">
+                    <div class="input-group m-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Attendee Name</span>
+                        </div>
+                        <input type="text" class="form-control" [(ngModel)]="attendeeName" 
+                        placeholder="Company Name" aria-label="Name" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group m-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Degree</span>
+                        </div>
+                        <input type="text" class="form-control" [(ngModel)]="degree" 
+                        placeholder="Company Name" aria-label="Name" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group m-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">University</span>
+                        </div>
+                        <input type="text" class="form-control" [(ngModel)]="university" 
+                        placeholder="Company Name" aria-label="Name" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="d-flex flex-row">
+                    <div class="input-group m-2">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Rating</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect01">
+                            <option selected>Choose...</option>
+                            <option *ngFor="let rating of ratingTypes" value="{rating}">{{rating.rating}}</option>
+                        </select>
+                    </div>
+                    <div class="input-group m-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Start Date</span>
+                        </div>
+                        <input class="form-control" [(ngModel)]="start" placeholder="yyyy-mm-dd"
+                            (click)="ds.toggle()" name="dp" ngbDatepicker #ds="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" (click)="ds.toggle()" type="button">
+                                <i class="material-icons">date_range</i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-group m-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">End Date</span>
+                        </div>
+                        <input class="form-control" [(ngModel)]="end" placeholder="yyyy-mm-dd"
+                            (click)="de.toggle()"name="dp" ngbDatepicker #de="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" (click)="de.toggle()" type="button">
+                                <i class="material-icons">date_range</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+                <button type="button" class="btn btn-primary m-2" (click)="updateEntries()">
+                    Update Search
+                </button> 
+            </div>
         </div>
-        <input type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="basic-addon1">
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">Email</span>
-        </div>
-        <input type="text" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1">
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">Major</span>
-        </div>
-        <input type="text" class="form-control" placeholder="Major" aria-label="Major" aria-describedby="basic-addon1">
-    </div>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text">Notes</span>
-        </div>
-        <textarea class="form-control" aria-label="Notes"></textarea>
-    </div>
-    <button type="button" class="btn btn-primary m-2" (click)="submitNote()">Submit</button>
-</div>
+    </div> 
+</div> 
 
 <div class="card p-3 m-3">
     <div class="table-responsive-md">
-        <table class="table table-striped sortStable">
+        <table class="table table-hover
+         sortStable">
             <thead>
                 <tr>
                     <th scope="col">Name</th>
-                    <th scope="col">Major</th>
+                    <th scope="col">Degree</th>
                     <th scope="col">Email</th>
                     <th scope="col">Date</th>
-                    <th scope="col">Notes</th>
+                    <th scope="col">Rating</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let note of entries">
-                    <th scope="row">{{note.name}}</th>
-                    <td>{{note.major}}</td>
-                    <td>{{note.email}}</td>
-                    <td>{{note.date}}</td>
-                    <td>{{note.notes}}</td>
+                    <th (click)="openNoteModal()">{{note.attendee.fullName}}</th>
+                    <td (click)="openNoteModal()">{{note.attendee.degree}}</td>
+                    <td (click)="openNoteModal()">{{note.attendee.email}}</td>
+                    <td (click)="openNoteModal()">{{note.date}}</td>
+                    <td (click)="openNoteModal()">{{note.rating.rating}}</td>
                 </tr>
             </tbody>
         </table>

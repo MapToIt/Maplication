@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModel } from '@angular/forms';
@@ -23,20 +23,21 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { SharedModule } from './shared/shared.module';
 
 import {Ng2AutoCompleteModule} from 'ng2-auto-complete';
-import { StateService } from './services/state.service';
+import { StatesService } from './services/states-service/states.service';
 import { Globals } from './shared/globals';
-
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
 import { UserService } from './services/user-service/user.service';
 import { AttendeeService } from './services/attendee-service/attendee.service';
 import { CompanyService } from './services/company-service/company.service';
-import {FileUploadService} from './services/file-upload-service/file-upload.service';
+import { FileUploadService } from './services/file-upload-service/file-upload.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
 
 import { ChipService } from './services/chip-service/chip.service';
 import { EventService } from './services/event-service/event.service';
 import { EventAttendanceService } from './services/event-attendance-service/event-attendance.service';
+import { NotesService } from './services/notes-service/notes.service';
+import { RatingTypesService } from './services/rating-types-service/rating-types.service';
 
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
@@ -78,6 +79,7 @@ import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { EventMapComponent } from './event-map/event-map.component';
 import { AboutComponent } from './about/about.component';
+import { AttendeeListComponent } from './attendee-list/attendee-list.component';
 import { AttendeeProfileComponent } from './attendee-profile/attendee-profile.component';
 import { LoginComponent } from './login/login.component';
 import { NotesComponent } from './notes/notes.component';
@@ -86,6 +88,7 @@ import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.component';
+import { NoteModalComponent } from './attendee-list/note-modal/note-modal.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +96,7 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     HomeComponent,
     AppNavbarComponent,
     AboutComponent,
+    AttendeeListComponent,
     LoginComponent,
     AttendeeProfileComponent,
     EventMapComponent,
@@ -102,10 +106,12 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
     RegistrationComponent,
     CompanyProfileComponent,
     CreateMapPromptComponent,
+    NoteModalComponent,
 
   ],
   entryComponents: [
-    CreateMapPromptComponent
+    CreateMapPromptComponent,
+    NoteModalComponent
   ],
   imports: [
     BrowserModule,
@@ -130,7 +136,7 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
   providers: [
     Globals,
     UserService,
-    StateService,
+    StatesService,
     AttendeeService,
     CompanyService,
     FileUploadService,
@@ -138,8 +144,9 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
 
     ChipService,
     EventService,
-    EventAttendanceService
-
+    EventAttendanceService,
+    NotesService,
+    RatingTypesService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventFilterPipe } from './pipes/event-filter.pipe';
-//import { CompanyComponent } from './domain-model/company/company.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
-  declarations: [EventFilterPipe, 
-    //CompanyComponent
+  declarations: [
+    EventFilterPipe
   ],
   exports: [
     EventFilterPipe

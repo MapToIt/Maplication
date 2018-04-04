@@ -20,19 +20,19 @@ export class CoordinatorService {
     private http: HttpClient, private globals: Globals) { }
 
   getCoordinators(){
-    return this.http.get<Coordinator[]>(Globals.apiUrl + `Coordinator`);
+    return this.http.get<Coordinator[]>(this.globals.apiUrl + `Coordinator`);
   }
   
   getCoordinatorById(uid:string){
-    return this.http.get<Coordinator>(Globals.apiUrl + `Coordinator/${uid}`);
+    return this.http.get<Coordinator>(this.globals.apiUrl + `Coordinator/${uid}`);
   }
 
   addCoordinator(user:Coordinator){
-    return this.http.post<Coordinator>(Globals.apiUrl + `Coordinator`, user);
+    return this.http.post<Coordinator>(this.globals.apiUrl + `Coordinator`, user);
   }
 
   updateCoordinator(user:Coordinator){
-    return this.http.put<Coordinator>(Globals.apiUrl + `Coordinator`, user);
+    return this.http.put<Coordinator>(this.globals.apiUrl + `Coordinator`, user);
   }
 
 }

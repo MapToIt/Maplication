@@ -18,18 +18,18 @@ import { Attendee } from '../../shared/domain-model/attendee'
 @Injectable()
 export class AttendeeService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public globals: Globals) { }
 
   getAttendee(id: string){
-    return this.http.get<Attendee>(Globals.apiUrl + 'Attendee/' + id)
+    return this.http.get<Attendee>(this.globals.apiUrl + 'Attendee/' + id)
   }
 
   updateAttendee(attendee: Attendee){
-    return this.http.post<Attendee>(Globals.apiUrl + 'Attendee', attendee)
+    return this.http.post<Attendee>(this.globals.apiUrl + 'Attendee', attendee)
   }
 
   addAttendee(attendee: Attendee){
-    return this.http.put<Attendee>(Globals.apiUrl + 'Attendee', attendee);
+    return this.http.put<Attendee>(this.globals.apiUrl + 'Attendee', attendee);
   }
   
 }

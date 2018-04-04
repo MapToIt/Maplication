@@ -22,7 +22,7 @@ export class TableService {
               private http: HttpClient, private globals: Globals) { }
 
   GetTablesByMap(mapId:number){
-    return this.http.get<Table[]>(Globals.apiUrl + `map/tables/${mapId}`);
+    return this.http.get<Table[]>(this.globals.apiUrl + `map/tables/${mapId}`);
   }
 
   AddTable(table:Table){
@@ -31,7 +31,7 @@ export class TableService {
                      Width: table.width, Height: table.height};
     //var toSend = JSON.stringify(tempTable);
     console.log(tempTable);
-    this.http.post(Globals.apiUrl + `map/tables/add`, tempTable)
+    this.http.post(this.globals.apiUrl + `map/tables/add`, tempTable)
       .catch(this.handleError)
       .subscribe(
         data => console.log('success', data),

@@ -69,5 +69,4 @@ export class AttendeeListComponent implements OnInit {
     const modalRef = this.modalService.open(NoteModalComponent, options);
     // modalRef.componentInstance.eventCoordinator = this.profile.coordinatorId;
   }
-
 }

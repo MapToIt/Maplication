@@ -14,6 +14,11 @@ import { EventAttendanceService } from '../services/event-attendance-service/eve
 import { UserService } from '../services/user-service/user.service';
 import { AttendeeService } from '../services/attendee-service/attendee.service';
 import { NgbModalOptions, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NoteModalComponent } from './note-modal/note-modal.component';
+import { Notes } from '../shared/domain-model/notes';
+import { CompanyService } from '../services/company-service/company.service';
+import { Globals } from '../shared/globals';
+import { EventService } from '../services/event-service/event.service';
 
 @Component({
   selector: 'app-attendee-list',
@@ -27,7 +32,9 @@ export class AttendeeListComponent implements OnInit {
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase,
               private _EventAttendanceService: EventAttendanceService, private _UserService:UserService,
-              private _AttendeeService: AttendeeService, public modalService: NgbModal,
+              private _CompanyService: CompanyService, private _AttendeeService: AttendeeService,
+              private _EventService: EventService,
+              public modalService: NgbModal, public globals: Globals,
               private route: ActivatedRoute, private router: Router) { 
 
     this.route.params.subscribe( params => this.eventId = params['id']);
@@ -64,9 +71,20 @@ export class AttendeeListComponent implements OnInit {
   ngOnInit() {
   }
 
-  openNoteModal(){
-    let options: NgbModalOptions = {size: 'lg'};
-    const modalRef = this.modalService.open(NoteModalComponent, options);
-    // modalRef.componentInstance.eventCoordinator = this.profile.coordinatorId;
+  openNoteModal(attendee: Attendee){
+    let note = new Notes();
+    note.attendee = attendee;
+    this._CompanyService.getCompany(this.globals.currentUser.uid).subscribe((company) => {
+      note.company = company
+      this._EventService.GetEventById(this.eventId).subscribe((event) => {
+        note.event = event;
+
+        console.log(typeof(note.event ), typeof(event));
+
+        let options: NgbModalOptions = {size: 'lg'};
+        const modalRef = this.modalService.open(NoteModalComponent, options);
+        modalRef.componentInstance.note = note;
+      });
+    });
   }
 }

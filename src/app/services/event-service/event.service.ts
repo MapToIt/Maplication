@@ -6,7 +6,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { FirebaseUISignInSuccess } from 'firebaseui-angular';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Map } from '../../shared/domain-model/map';
-import { Event } from '../../shared/domain-model/event';
 import { Globals } from '../../shared/globals';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -17,6 +16,7 @@ import 'rxjs/Rx';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { EventFilter } from '../../shared/filter/eventFilter';
 import { State } from '../../shared/domain-model/state';
+import { Event } from '../../shared/domain-model/event';
 
 @Injectable()
 export class EventService {
@@ -30,6 +30,10 @@ export class EventService {
   GetEvents()
   {
     return this.http.get<Event[]>(this.globals.apiUrl + `event/details`);
+  }
+
+  GetEventById(id:number){
+    return this.http.get<Event>(this.globals.apiUrl + `event/Details/${id}`);
   }
 
   GetFutureEvents()

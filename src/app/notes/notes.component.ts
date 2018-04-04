@@ -19,7 +19,6 @@ import { NotesService } from '../services/notes-service/notes.service';
 import { RatingTypesService } from '../services/rating-types-service/rating-types.service';
 import { UserService } from '../services/user-service/user.service';
 import { Globals } from '../shared/globals';
-import { NoteModalComponent } from '../shared/modals/note-modal/note-modal.component';
 
  
 @Component({
@@ -86,9 +85,9 @@ export class NotesComponent implements OnInit {
     
   }
 
-  openNoteModal(){
-    let options: NgbModalOptions = {size: 'lg'};
-    const modalRef = this.modalService.open(NoteModalComponent, options);
-    // modalRef.componentInstance.eventCoordinator = this.profile.coordinatorId;
-  }
+  // openNoteModal(){
+  //   let options: NgbModalOptions = {size: 'lg'};
+  //   const modalRef = this.modalService.open(NoteModalComponent, options);
+  //   // modalRef.componentInstance.eventCoordinator = this.profile.coordinatorId;
+  // }
 }

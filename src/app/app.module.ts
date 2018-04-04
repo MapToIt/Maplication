@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModel } from '@angular/forms';
@@ -25,7 +25,6 @@ import { SharedModule } from './shared/shared.module';
 import {Ng2AutoCompleteModule} from 'ng2-auto-complete';
 import { StatesService } from './services/states-service/states.service';
 import { Globals } from './shared/globals';
-
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { EventFilterPipe } from './shared/pipes/event-filter.pipe'
 import { UserService } from './services/user-service/user.service';
@@ -87,7 +86,7 @@ import { CoordHomeComponent } from './coord-home/coord-home.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.component';
-import { AttendeeListComponent } from './attendee-list/attendee-list.component';
+import { NoteModalComponent } from './attendee-list/note-modal/note-modal.component';
 
 @NgModule({
   declarations: [
@@ -105,11 +104,12 @@ import { AttendeeListComponent } from './attendee-list/attendee-list.component';
     RegistrationComponent,
     CompanyProfileComponent,
     CreateMapPromptComponent,
-    AttendeeListComponent,
+    NoteModalComponent,
 
   ],
   entryComponents: [
-    CreateMapPromptComponent
+    CreateMapPromptComponent,
+    NoteModalComponent
   ],
   imports: [
     BrowserModule,

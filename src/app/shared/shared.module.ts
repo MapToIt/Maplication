@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventFilterPipe } from './pipes/event-filter.pipe';
-import { NoteModalComponent } from './modals/note-modal/note-modal.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   declarations: [
-    EventFilterPipe, 
-    NoteModalComponent
+    EventFilterPipe
   ],
   exports: [
     EventFilterPipe

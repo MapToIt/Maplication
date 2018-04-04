@@ -11,8 +11,8 @@ export class StatesService {
 
   constructor(private http: HttpClient, private globals: Globals) { }
 
-  GetStates(){
-    return this.http.get<State[]>(Globals.apiUrl + `state`);
+  getStates(){
+    return this.http.get<State[]>(this.globals.apiUrl + `state`);
   }
 
 }

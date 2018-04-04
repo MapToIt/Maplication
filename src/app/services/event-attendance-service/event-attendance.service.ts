@@ -23,23 +23,23 @@ export class EventAttendanceService {
   constructor(private http: HttpClient, private globals: Globals) { }
 
   GetAttendeeAttendanceByEvent(eventId:number){
-    return this.http.get<EventAttendance[]>(Globals.apiUrl + `eventattendance/attendee/${eventId}`);
+    return this.http.get<EventAttendance[]>(this.globals.apiUrl + `eventattendance/attendee/${eventId}`);
   }
 
   GetCompanyAttendanceByEvent(eventId:number){
-    return this.http.get<EventAttendance[]>(Globals.apiUrl + `eventattendance/company/${eventId}`);
+    return this.http.get<EventAttendance[]>(this.globals.apiUrl + `eventattendance/company/${eventId}`);
   }
 
   GetAllAttendanceByEvent(eventId:number){
-    return this.http.get<EventAttendance[]>(Globals.apiUrl + `eventattendance/event/${eventId}`);
+    return this.http.get<EventAttendance[]>(this.globals.apiUrl + `eventattendance/event/${eventId}`);
   }
 
   GetEventAttendanceByUser(userId:string){
-    return this.http.get<EventAttendance[]>(Globals.apiUrl + `eventattendance/user/${userId}`);
+    return this.http.get<EventAttendance[]>(this.globals.apiUrl + `eventattendance/user/${userId}`);
   }
 
   updateRSVP(rsvp: RSVP) {
-    return this.http.put<RSVP>(Globals.apiUrl + 'eventattendance', rsvp)
+    return this.http.put<RSVP>(this.globals.apiUrl + 'eventattendance', rsvp)
   }
 
 }

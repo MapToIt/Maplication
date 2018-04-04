@@ -18,6 +18,7 @@ import { CreateMapPromptComponent } from '../create-map-prompt/create-map-prompt
 //import { Event } from './coord';
 import * as  moment from 'moment';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Globals } from '../shared/globals';
 
 
 @Component({
@@ -58,8 +59,11 @@ export class CoordHomeComponent implements OnInit {
   // myEvent = this.evts[0]; 
   
 
-  constructor(private _CoordinatorService: CoordinatorService, private _EventService: EventService,private route: ActivatedRoute, private _UserService: UserService,
-     private router: Router, public afAuth: AngularFireAuth, public af: AngularFireDatabase, public modalService: NgbModal) {  
+  constructor(private _CoordinatorService: CoordinatorService, 
+              private _EventService: EventService,private route: ActivatedRoute, 
+              private _UserService: UserService, private router: Router, 
+              public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
+              public modalService: NgbModal, public globals: Globals) {  
     this.route.params.subscribe( params => this.uId = params['id']);  
     console.log(this.uId);
     this._UserService.getUserType(this.uId).subscribe((userType) => {
@@ -67,8 +71,7 @@ export class CoordHomeComponent implements OnInit {
       {
         if (userType.toLowerCase() == "coordinator" )
         {
-          this.afAuth.authState.subscribe((user) => {
-            if(user.uid == this.uId)
+            if(this.globals.currentUser.uid == this.uId)
             {
               this._CoordinatorService.getCoordinatorById(this.uId).subscribe((profile) => {
                 this.profile = profile;    
@@ -77,13 +80,12 @@ export class CoordHomeComponent implements OnInit {
                   console.log('event', evts);
                  this.pastEvents = evts.filter(event => moment(event.startTime) < this.now);
                  this.futureEvents = evts.filter(event => moment(event.startTime) >= this.now);
-                }) 
+                });
               });
             } else
             {
               this.router.navigate(['*']);
-            };
-          });
+            }
         }
         else
         {

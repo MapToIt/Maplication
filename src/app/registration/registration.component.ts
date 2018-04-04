@@ -11,6 +11,7 @@ import { CompanyService } from '../services/company-service/company.service';
 import { Attendee } from '../shared/domain-model/attendee';
 import { Company } from '../shared/domain-model/company';
 import { Coordinator } from '../shared/domain-model/coordinator';
+import { Globals } from '../shared/globals';
 
 @Component({
   selector: 'app-registration',
@@ -22,31 +23,27 @@ export class RegistrationComponent implements OnInit {
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
     private _CoordinatorService: CoordinatorService, 
     private _AttendeeService: AttendeeService, private _CompanyService: CompanyService, private route: ActivatedRoute, 
-    private router: Router) { }
-
-    currentUser: firebase.User;
+    private router: Router, public globals:Globals) { }
 
   ngOnInit() {
-    this.afAuth.authState.subscribe((user) => {
-      this.currentUser = user;
-    });
+    
   }
 
   createAttendee(){
     var attendee = new Attendee();
 
-    if (this.currentUser){
+    if (this.globals.currentUser){
       attendee.attendeeId = 0;
-      attendee.email = this.currentUser.email;
-      attendee.firstName = this.currentUser.displayName.split(' ')[0];
-      attendee.lastName = this.currentUser.displayName.split(' ')[1];
+      attendee.email = this.globals.currentUser.email;
+      attendee.firstName = this.globals.currentUser.displayName.split(' ')[0];
+      attendee.lastName = this.globals.currentUser.displayName.split(' ')[1];
       attendee.chips = null;
       attendee.degree = null;
       attendee.image = null;
       attendee.phoneNumber = null;
       attendee.resume = null;
       attendee.university = null;
-      attendee.userId = this.currentUser.uid;
+      attendee.userId = this.globals.currentUser.uid;
 
       this._AttendeeService.addAttendee(attendee).subscribe((attendee) => {
         this.router.navigate(['attendee-profile', this.afAuth.auth.currentUser.uid]);
@@ -58,7 +55,7 @@ export class RegistrationComponent implements OnInit {
   createCompany(){
     var company = new Company();
 
-    if (this.currentUser){
+    if (this.globals.currentUser){
       company.chips = null;
       company.city = null;
       company.companyId = 0;
@@ -69,7 +66,7 @@ export class RegistrationComponent implements OnInit {
       company.street = null;
       company.streetNumber = null;
       company.url = null;
-      company.userId = this.currentUser.uid;
+      company.userId = this.globals.currentUser.uid;
       company.zipCode = null;
     }
     this._CompanyService.addCompany(company).subscribe((addedCompany) => {
@@ -81,13 +78,13 @@ export class RegistrationComponent implements OnInit {
   createCoordinator(){
     var coordinator = new Coordinator();
 
-    if(this.currentUser){
+    if(this.globals.currentUser){
       coordinator.coordinatorId = 0;
-      coordinator.email = this.currentUser.email;
-      coordinator.firstName = this.currentUser.displayName.split(' ')[0];
-      coordinator.lastName = this.currentUser.displayName.split(' ')[1];
+      coordinator.email = this.globals.currentUser.email;
+      coordinator.firstName = this.globals.currentUser.displayName.split(' ')[0];
+      coordinator.lastName = this.globals.currentUser.displayName.split(' ')[1];
       coordinator.phoneNumber = null;
-      coordinator.userId = this.currentUser.uid;
+      coordinator.userId = this.globals.currentUser.uid;
 
       this._CoordinatorService.addCoordinator(coordinator).subscribe((user) => {
         this.router.navigate(['coord-home', this.afAuth.auth.currentUser.uid]);

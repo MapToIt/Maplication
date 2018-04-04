@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'attendee-profile/:id', component: AttendeeProfileComponent },
   { path: 'company-profile/:id', component: CompanyProfileComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'notes', component: NotesComponent },
+  { path: 'notes/:id', component: NotesComponent },
   { path: 'event-list-view', component: EventListViewComponent},
 
   { path: 'coord-home/:id', component: CoordHomeComponent },

@@ -23,7 +23,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { SharedModule } from './shared/shared.module';
 
 import {Ng2AutoCompleteModule} from 'ng2-auto-complete';
-import { StateService } from './services/state.service';
+import { StatesService } from './services/states-service/states.service';
 import { Globals } from './shared/globals';
 
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
@@ -36,6 +36,8 @@ import { CoordinatorService } from './services/coordinator/coordinator.service';
 import { ChipService } from './services/chip-service/chip.service';
 import { EventService } from './services/event-service/event.service';
 import { EventAttendanceService } from './services/event-attendance-service/event-attendance.service';
+import { NotesService } from './services/notes-service/notes.service';
+import { RatingTypesService } from './services/rating-types-service/rating-types.service';
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
@@ -128,14 +130,16 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
   providers: [
     Globals,
     UserService,
-    StateService,
+    StatesService,
     AttendeeService,
     CompanyService,
     FileUploadService,
     CoordinatorService,
     ChipService,
     EventService,
-    EventAttendanceService
+    EventAttendanceService,
+    NotesService,
+    RatingTypesService
   ],
   bootstrap: [AppComponent]
 })

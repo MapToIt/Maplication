@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { StatesService } from '../services/states-service/states-service.service';
+import { StatesService } from '../services/states-service/states.service';
 import { MapService } from '../services/map-service/map.service';
 import { State } from '../shared/domain-model/state';
 import { Event } from '../shared/domain-model/event';
@@ -107,7 +107,7 @@ export class CreateMapPromptComponent implements OnInit {
 
   GetStates()
   {
-    this._StatesService.GetStates().subscribe((statesData) => {
+    this._StatesService.getStates().subscribe((statesData) => {
       this.states = statesData;
       console.log(this.states);
     });

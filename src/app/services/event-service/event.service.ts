@@ -24,17 +24,17 @@ export class EventService {
   constructor(private http: HttpClient, private globals: Globals) { }
 
   GetEventByCoordId(coordId:number){
-    return this.http.get<Event[]>(Globals.apiUrl + `event/coordinator/${coordId}`);
+    return this.http.get<Event[]>(this.globals.apiUrl + `event/coordinator/${coordId}`);
   }
 
   GetEvents()
   {
-    return this.http.get<Event[]>(Globals.apiUrl + `event/details`);
+    return this.http.get<Event[]>(this.globals.apiUrl + `event/details`);
   }
 
   GetFutureEvents()
   {
-    return this.http.get<Event[]>(Globals.apiUrl + `event/futureEvents`);
+    return this.http.get<Event[]>(this.globals.apiUrl + `event/futureEvents`);
   }
 
   GetEventsByFilter(start:Date, end:Date, state:State, isCompany:boolean){
@@ -44,6 +44,6 @@ export class EventService {
     filter.State = state;
     filter.IsCompany = isCompany;
 
-    return this.http.post<Event[]>(Globals.apiUrl + `event/filter`, filter);
+    return this.http.post<Event[]>(this.globals.apiUrl + `event/filter`, filter);
   }
 }

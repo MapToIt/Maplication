@@ -1,3 +1,8 @@
 app-navbar{
-    height: 10vh;
+    display: block;
+    height: 5vh;
+}
+
+router-outlet{
+    display: block;
 }

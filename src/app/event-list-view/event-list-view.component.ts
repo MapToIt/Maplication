@@ -8,13 +8,14 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import * as firebase from 'firebase/app';
 import { State } from '../shared/domain-model/state';
-import { StateService } from '../services/state.service';
+import { StatesService } from '../services/states-service/states.service';
 import { Event } from '../shared/domain-model/event';
 import { RSVP } from '../shared/filter/rsvp';
 import { EventService } from '../services/event-service/event.service';
 import { EventAttendanceService } from '../services/event-attendance-service/event-attendance.service';
 import { UserService } from '../services/user-service/user.service';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date';
+import { Globals } from '../shared/globals';
 
 @Component({
   selector: 'app-event-list-view',
@@ -42,43 +43,41 @@ export class EventListViewComponent implements OnInit {
   formatter = (x: {stateName: string}) => x.stateName;
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
-              private _StateService: StateService, private _EventService: EventService,
+              private _StatesService: StatesService, private _EventService: EventService,
               private _EventAttendanceService: EventAttendanceService, private _UserService:UserService,
-              private route: ActivatedRoute, private router: Router) {
+              private route: ActivatedRoute, private router: Router, private globals:Globals) {
                
+                console.log("globals: ", globals.isAttendee, globals.isCompany, globals.isCoordinator);
 
-      this.afAuth.authState.subscribe((user) => {
-        if(user == null){
+      if(this.globals.currentUser == null){
+        this.router.navigate(['*']);
+      }
+
+      this._UserService.getUserType(this.globals.currentUser.uid).subscribe((userType) => { 
+        if(userType != null)
+        {
+          this.userType = userType;
+          console.log(this.userType);
+          if (!(userType.toLowerCase() == "attendee" || userType.toLowerCase() == "company"))
+          {
+            this.router.navigate(['*']);
+          }else{
+            var date = new Date();
+            console.log (date, date.getDate());
+            var ngbDateStruct = { day: date.getDate(), month: date.getMonth(), year: date.getFullYear()};
+            console.log(ngbDateStruct);
+            this.start = new NgbDate(ngbDateStruct.year, ngbDateStruct.month + 1, ngbDateStruct.day);
+            this.end = new NgbDate(ngbDateStruct.year, ngbDateStruct.month + 2, ngbDateStruct.day);
+            this.state = null;
+            
+            this.updateEvents();
+          }
+        } else {
           this.router.navigate(['*']);
         }
-        this.currentUser = user;
-
-        this._UserService.getUserType(this.currentUser.uid).subscribe((userType) => { 
-          if(userType != null)
-          {
-            this.userType = userType;
-            console.log(this.userType);
-            if (!(userType.toLowerCase() == "attendee" || userType.toLowerCase() == "company"))
-            {
-              this.router.navigate(['*']);
-            }else{
-              var date = new Date();
-              console.log (date, date.getDate());
-              var ngbDateStruct = { day: date.getDate(), month: date.getMonth(), year: date.getFullYear()};
-              console.log(ngbDateStruct);
-              this.start = new NgbDate(ngbDateStruct.year, ngbDateStruct.month + 1, ngbDateStruct.day);
-              this.end = new NgbDate(ngbDateStruct.year, ngbDateStruct.month + 2, ngbDateStruct.day);
-              this.state = null;
-              
-              this.updateEvents();
-            }
-          } else {
-            this.router.navigate(['*']);
-          }
-        });
       });
       
-      this._StateService.getStates().subscribe((states) => {
+      this._StatesService.getStates().subscribe((states) => {
         this.states = states;
       });   
      
@@ -117,7 +116,8 @@ export class EventListViewComponent implements OnInit {
     rsvp.Event = eventId;
     rsvp.UserId = this.currentUser.uid;
     rsvp.UserType = this.userType;
-    this._EventAttendanceService.updateRSVP(rsvp).subscribe((rsvp) => {
+    this._EventAttendanceService.updateRSVP(rsvp).subscribe((addedRsvp) => {
+      console.log(addedRsvp);
       this.updateEvents();
     });    
   }

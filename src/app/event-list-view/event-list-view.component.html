@@ -16,7 +16,7 @@
           <span class="input-group-text" id="basic-addon1">Start Date</span>
         </div>
         <input class="form-control" [(ngModel)]="start" placeholder="yyyy-mm-dd"
-             name="dp" ngbDatepicker #ds="ngbDatepicker">
+          (click)="ds.toggle()"name="dp" ngbDatepicker #ds="ngbDatepicker">
         <div class="input-group-append">
           <button class="btn btn-outline-primary" (click)="ds.toggle()" type="button">
             <i class="material-icons">date_range</i>
@@ -28,7 +28,7 @@
           <span class="input-group-text" id="basic-addon1">End Date</span>
         </div>
         <input class="form-control" [(ngModel)]="end" placeholder="yyyy-mm-dd"
-             name="dp" ngbDatepicker #de="ngbDatepicker">
+          (click)="de.toggle()" name="dp" ngbDatepicker #de="ngbDatepicker">
         <div class="input-group-append">
           <button class="btn btn-outline-primary" (click)="de.toggle()" type="button">
             <i class="material-icons">date_range</i>

@@ -1,9 +1,13 @@
+import { Company } from './company';
+import { RatingType } from './ratingType';
+import { Attendee } from './attendee';
+
 export class Notes{
   noteId: number;
   note: string;
-  companyId: number;
-  name: string;
+  company: Company;
+  attendee: Attendee;
+  event: Event;
   date: Date;
-  major: string;
-  email: string;
+  rating: RatingType;
 }

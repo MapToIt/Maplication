@@ -45,7 +45,7 @@ export class EventListViewComponent implements OnInit {
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
               private _StatesService: StatesService, private _EventService: EventService,
               private _EventAttendanceService: EventAttendanceService, private _UserService:UserService,
-              private route: ActivatedRoute, private router: Router, private globals:Globals) {
+              private route: ActivatedRoute, private router: Router, public globals:Globals) {
                
                 console.log("globals: ", globals.isAttendee, globals.isCompany, globals.isCoordinator);
 
@@ -95,7 +95,7 @@ export class EventListViewComponent implements OnInit {
     this._EventService.GetEventsByFilter(start, end, this.state, isCompany).subscribe((events) => {
       this.events = events;
 
-      this._EventAttendanceService.GetEventAttendanceByUser(this.currentUser.uid).subscribe((rsvps) => {
+      this._EventAttendanceService.GetEventAttendanceByUser(this.globals.currentUser.uid).subscribe((rsvps) => {
         this.events.forEach(event => {
           if (rsvps.find(function(rsvp) {
               return rsvp.event.eventId == event.eventId;
@@ -106,6 +106,7 @@ export class EventListViewComponent implements OnInit {
             event.rsvp = false;
           }
         });
+        console.log(this.events);
       });
     });
     
@@ -124,5 +125,9 @@ export class EventListViewComponent implements OnInit {
 
   goToMap(eventId: number){
     this.router.navigate(['event', eventId]);
+  }
+
+  goToAttendeeList(eventId: number){
+    this.router.navigate(['attendee-list', eventId]);
   }
 }

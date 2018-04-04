@@ -48,7 +48,7 @@
       <th scope="col">Start Time</th>
       <th scope="col">End Time</th>
       <th scope="col">Contact</th>
-      <th scope="col">RSVP</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -59,7 +59,13 @@
       <td (click)="goToMap(event.eventId)">{{event.endTime | date: 'medium'}}</td>
       <td (click)="goToMap(event.eventId)">{{event.coordinator.firstName + ' ' + event.coordinator.lastName}} <br> {{event.coordinator.email}}</td>
       <td>
-          <button type="button" class="btn btn-primary m-2" (click)="rsvp(event.eventId)" [disabled]="event.rsvp">RSVP</button>         
+          <div *ngIf="this.globals.isCompany">
+            <ng-template class="form-inline" #showList>
+              <button class="nav-link" (click)="goToAttendeeList(event.eventId)" class="btn btn-primary btn-block">Attendee List</button>
+            </ng-template>  
+            <button type="button" class="btn btn-primary btn-block" *ngIf="!event.rsvp; else showList" (click)="rsvp(event.eventId)">RSVP</button>          
+          </div>
+          <button type="button" class="btn btn-primary btn-block" *ngIf="!this.globals.isCompany" (click)="rsvp(event.eventId)" [disabled]="event.rsvp">RSVP</button>         
       </td>
     </tr>
   </tbody>

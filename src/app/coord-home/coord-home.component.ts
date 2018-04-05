@@ -28,35 +28,20 @@ import { Globals } from '../shared/globals';
 })
  
 export class CoordHomeComponent implements OnInit {
-   public index = 0;
-   public now = moment();
-   cId: number = 0;
-   uId: string;
-   coords: Coordinator[] = new Array();
-   cIdHold: number;
-   totalRec : number;
-   page: number = 1;
-   profile: Coordinator = new Coordinator();
-   pastEvents: Event[] = new Array();
-   futureEvents: Event[] = new Array();
-  // evts = [
-  //   {id: 1, coord: 1, date: '2018/05/01 00:00:00', name: 'Kent Recruitment'},
-  //   {id: 1, coord: 1, date: '2018/05/30 00:00:00', name: 'Portage County Recruitment'},
-  //   {id: 1, coord: 1, date: '2018/06/01 00:00:00', name: 'IBM Recruitment'},
-  //   {id: 1, coord: 1, date: '2018/06/15 00:00:00', name: 'Stark County Recruitment'},
-  //   {id: 1, coord: 1, date: '2018/06/30 00:00:00', name: 'Medical Recruitment'},
-  //   {id: 1, coord: 1, date: '2018/07/01 00:00:00', name: 'Google Recruitment'},
-  //   {id: 2, coord: 2, date: '2017/09/01 00:00:00', name: 'Web Developer Recruitment'},
-  //   {id: 1, coord: 1, date: '2017/09/15 00:00:00', name: 'Educational Recruitment'},
-  //   {id: 1, coord: 1, date: '2017/10/01 00:00:00', name: 'Cleveland Recruitment'},
-  //   {id: 1, coord: 1, date: '2017/10/30 00:00:00', name: 'Engineering Recruitment'},
-  //   {id: 1, coord: 1, date: '2017/11/01 00:00:00', name: 'Network Recruitment'},
-  //   {id: 1, coord: 1, date: '2017/12/01 00:00:00', name: 'Tech Recruitment'},
-  //   {id: 1, coord: 1, date: '2018/01/25 00:00:00', name: 'RN Recruitment'},
-  //   {id: 1, coord: 1, date: '2018/02/01 00:00:00', name: 'Network Recruitment'}
-  // ];
- 
-  // myEvent = this.evts[0]; 
+  public index = 0;
+  public now = moment();
+  cId: number = 0;
+  uId: string;
+  coords: Coordinator[] = new Array();
+  cIdHold: number;
+  totalRec : number;
+  page: number = 1;
+  profile: Coordinator = new Coordinator();
+  pastEvents: Event[] = new Array();
+  futureEvents: Event[] = new Array();
+
+  mask:any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+   
   
 
   constructor(private _CoordinatorService: CoordinatorService, 
@@ -93,27 +78,22 @@ export class CoordHomeComponent implements OnInit {
         }
       }
     });
-
-   // this.pastEvents = this.evts.filter(event => event.date < this.now);
-   // this.futureEvents = this.evts.filter(event => event.date >= this.now);
   }
 
-   updateCoord(){
-   //let coord = new Coordinator(cId,firstName,lastName,this.uId,email,phone);
-    //this.coords.push(coord);
-    //console.log(coord);
+  ngOnInit() {
+    
+  }
+
+  updateCoord(){
     this._CoordinatorService.updateCoordinator(this.profile).subscribe((UpdatedCoordinator) => {
       console.log("Updated Coordinator");
     })
     
   }
-openEventPrompt(){
-  let options: NgbModalOptions = {size: 'lg'};
-  const modalRef = this.modalService.open(CreateMapPromptComponent, options);
-  modalRef.componentInstance.eventCoordinator = this.profile.coordinatorId;
-}
-  ngOnInit() {
-    
-  }
-  
+
+  openEventPrompt(){
+    let options: NgbModalOptions = {size: 'lg'};
+    const modalRef = this.modalService.open(CreateMapPromptComponent, options);
+    modalRef.componentInstance.eventCoordinator = this.profile.coordinatorId;
+  }  
 }

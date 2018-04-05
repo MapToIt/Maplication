@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <h4 class="modal-title">Create New Note</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body container">
+    <div class='form-row m-2'>
+      <div class='col-md-6'>
+        <input type='text' class='form-control' [(ngModel)]='note.attendee.fullName' name='event-title' [disabled]=true>
+      </div>
+      <div class='col-md-6'>
+        <input type='text' class='form-control' [(ngModel)]='note.event.eventTitle' name='event-title' [disabled]=true>
+      </div>
+    </div>
+    <div class='form-row m-2'>
+      <div class="input-group col-md-6">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Rating</label>
+        </div>
+        <select class="custom-select" [(ngModel)]='note.ratingId' id="inputGroupSelect01">
+          <option selected>Choose Rating...</option>
+          <option *ngFor="let rating of ratings" [value]="rating.ratingId">{{rating.rating}}</option>
+        </select>
+      </div>
+      <div class='col-md-6'>
+        <input type='text' class='form-control' [(ngModel)]='note.recruiter' name='recruiter' placeholder="Recruiter Name">
+      </div>
+    </div>
+    <div class='form-row m-2'>
+      <div class="input-group col-md-12">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Notes</label>
+        </div>
+        <textarea rows="5" [(ngModel)]='note.note' >Write you notes here about {{note.attendee.firstName}}</textarea>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="Submit()">Submit Note</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Close</button>
+  </div>

@@ -91,38 +91,29 @@ export class AttendeeProfileComponent implements OnInit {
       }
     
 
-      this.userService.getUserType(this.uid).subscribe((userType) => {
-        if(userType != null)
-        {
-          if (userType.toLowerCase() == "attendee")
-          {
-            this.attendeeService.getAttendee(this.uid).subscribe((attendee) => {
-              this.profile = attendee;
-              if (!this.profile.fullName){
-                this.profile.fullName = attendee.firstName + ' ' + attendee.lastName
-              }
-              if (!this.profile.image){
-                this.profile.image = "/assets/placeholder.png";
-              }
-              this.attendeeChips = attendee.chips ? JSON.parse(attendee.chips) : new Array();
-              //set greeting
-              if (!this.isValid) {
-                this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;
-              } else {
-                this.greeting = `Welcome back, ${this.profile.fullName}!`;
-              }       
-            })
+      if (this.globals.isCompany || (this.globals.isAttendee && this.globals.currentUser.uid == this.uid))
+      {
+        this.attendeeService.getAttendee(this.uid).subscribe((attendee) => {
+          this.profile = attendee;
+          if (!this.profile.fullName){
+            this.profile.fullName = attendee.firstName + ' ' + attendee.lastName
           }
-          else
-          {
-            this.router.navigate(['*']);
+          if (!this.profile.image){
+            this.profile.image = "/assets/placeholder.png";
           }
-        }
-        else 
-        {
-          this.router.navigate(['*']);
-        }
-      });
+          this.attendeeChips = attendee.chips ? JSON.parse(attendee.chips) : new Array();
+          //set greeting
+          if (!this.isValid) {
+            this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;
+          } else {
+            this.greeting = `Welcome back, ${this.profile.fullName}!`;
+          }       
+        })
+      }
+      else
+      {
+        this.router.navigate(['*']);
+      }
 
       this.states = this.getStates();
       this.getTags();

@@ -1,5 +1,5 @@
 <div style="height:5vh"></div>
-<table class="table m-2">
+<table class="table table-hover m-2">
   <thead>
     <tr>
       <th scope="col">Name</th>
@@ -12,11 +12,11 @@
   </thead>
   <tbody>
     <tr *ngFor="let attendee of attendees">
-      <td>{{attendee.fullName}}</td>
-      <td>{{attendee.email}}</td>
-      <td>{{attendee.phoneNumber}}</td>
-      <td>{{attendee.degree}}</td>
-      <td>{{attendee.university}}</td>
+      <td (click)="goToAttendee(attendee.userId)">{{attendee.fullName}}</td>
+      <td (click)="goToAttendee(attendee.userId)">{{attendee.email}}</td>
+      <td (click)="goToAttendee(attendee.userId)">{{attendee.phoneNumber}}</td>
+      <td (click)="goToAttendee(attendee.userId)">{{attendee.degree}}</td>
+      <td (click)="goToAttendee(attendee.userId)">{{attendee.university}}</td>
       <td>
           <button type="button" class="btn btn-primary m-2" (click)="openNoteModal(attendee)">Make Note</button>         
       </td>

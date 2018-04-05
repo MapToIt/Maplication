@@ -61,7 +61,7 @@
 
               <tr *ngFor="let past of pastEvents |  paginate: { id: 'ppast', itemsPerPage: 5, currentPage: p}">
                 <td>{{past.startTime | date: 'medium'}}</td>
-                <td><a href = "./event/{{past.id}}">{{past.eventTitle}}</a></td>
+                <td><a href = "./event/{{past.eventId}}">{{past.eventTitle}}</a></td>
               </tr>
             </tbody>
           </table>
@@ -83,7 +83,7 @@
           <tr *ngFor="let future of futureEvents | paginate: { id: 'ffuture', itemsPerPage: 5, currentPage: f}">
 
             <td>{{future.startTime | date: 'medium'}}</td>
-            <td><a href = "./event/{{future.id}}">{{future.eventTitle}}</a></td>
+            <td><a href = "./event/{{future.eventId}}">{{future.eventTitle}}</a></td>
           </tr>
         </tbody>
       </table>

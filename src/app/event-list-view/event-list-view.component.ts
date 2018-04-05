@@ -67,14 +67,7 @@ export class EventListViewComponent implements OnInit {
     this.end = new NgbDate(ngbDateStruct.year, ngbDateStruct.month + 2, ngbDateStruct.day);
     this.state = null;
 
-    if (this.globals.isCompany){
-      this._CompanyService.getCompany(this.globals.currentUser.uid).subscribe((company) => {
-        this.company = company;
-        this.updateEvents(); 
-      })
-    } else {
-      this.updateEvents();
-    }
+    this.updateEvents();
 
     this._StatesService.getStates().subscribe((states) => {
       this.states = states;
@@ -88,26 +81,47 @@ export class EventListViewComponent implements OnInit {
   updateEvents(){
     var start = this.start ? new Date(this.start.year, this.start.month - 1, this.start.day) : null;
     var end = this.end ? new Date(this.end.year, this.end.month - 1, this.end.day) : null;
-    console.log("in updateEvents(): ", this.userType);
-
-    this._EventService.GetEventsByFilter(start, end, this.state, this.globals.isCompany, this.company.companyId).subscribe((events) => {
-      this.events = events;
-
-      this._EventAttendanceService.GetEventAttendanceByUser(this.globals.currentUser.uid).subscribe((rsvps) => {
-        this.events.forEach(event => {
-          if (rsvps.find(function(rsvp) {
-              return rsvp.event.eventId == event.eventId;
-            })){
-              event.rsvp = true;
-          }
-          else {
-            event.rsvp = false;
-          }
-        });
-        console.log(this.events);
-      });
-    });
     
+    if (this.globals.isCompany){
+      this._CompanyService.getCompany(this.globals.currentUser.uid).subscribe((company) => {
+        this.company = company;
+      })
+      this._EventService.GetEventsByFilter(start, end, this.state, this.globals.isCompany, this.company.companyId).subscribe((events) => {
+        this.events = events;
+  
+        this._EventAttendanceService.GetEventAttendanceByUser(this.globals.currentUser.uid).subscribe((rsvps) => {
+          this.events.forEach(event => {
+            if (rsvps.find(function(rsvp) {
+                return rsvp.event.eventId == event.eventId;
+              })){
+                event.rsvp = true;
+            }
+            else {
+              event.rsvp = false;
+            }
+          });
+          console.log(this.events);
+        });
+      });
+    } else {
+      this._EventService.GetEventsByFilter(start, end, this.state, this.globals.isCompany, null).subscribe((events) => {
+        this.events = events;
+  
+        this._EventAttendanceService.GetEventAttendanceByUser(this.globals.currentUser.uid).subscribe((rsvps) => {
+          this.events.forEach(event => {
+            if (rsvps.find(function(rsvp) {
+                return rsvp.event.eventId == event.eventId;
+              })){
+                event.rsvp = true;
+            }
+            else {
+              event.rsvp = false;
+            }
+          });
+          console.log(this.events);
+        });
+      });
+    }    
   }
 
   rsvp(eventId: number){

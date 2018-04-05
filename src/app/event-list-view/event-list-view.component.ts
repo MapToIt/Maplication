@@ -85,24 +85,25 @@ export class EventListViewComponent implements OnInit {
     if (this.globals.isCompany){
       this._CompanyService.getCompany(this.globals.currentUser.uid).subscribe((company) => {
         this.company = company;
-      })
-      this._EventService.GetEventsByFilter(start, end, this.state, this.globals.isCompany, this.company.companyId).subscribe((events) => {
-        this.events = events;
-  
-        this._EventAttendanceService.GetEventAttendanceByUser(this.globals.currentUser.uid).subscribe((rsvps) => {
-          this.events.forEach(event => {
-            if (rsvps.find(function(rsvp) {
-                return rsvp.event.eventId == event.eventId;
-              })){
-                event.rsvp = true;
-            }
-            else {
-              event.rsvp = false;
-            }
+
+        this._EventService.GetEventsByFilter(start, end, this.state, this.globals.isCompany, this.company.companyId).subscribe((events) => {
+          this.events = events;
+    
+          this._EventAttendanceService.GetEventAttendanceByUser(this.globals.currentUser.uid).subscribe((rsvps) => {
+            this.events.forEach(event => {
+              if (rsvps.find(function(rsvp) {
+                  return rsvp.event.eventId == event.eventId;
+                })){
+                  event.rsvp = true;
+              }
+              else {
+                event.rsvp = false;
+              }
+            });
+            console.log(this.events);
           });
-          console.log(this.events);
         });
-      });
+      })
     } else {
       this._EventService.GetEventsByFilter(start, end, this.state, this.globals.isCompany, null).subscribe((events) => {
         this.events = events;

@@ -11,7 +11,7 @@
       <li class="nav-item" *ngIf="(globals.isAttendee || globals.isCompany)">
         <a class="nav-link" (click)="goToEvents()">Events</a>
       </li>
-      <li class="nav-item" *ngIf="(globals.isAttendee || globals.isCompany || globals.isCoordinator)">
+      <li class="nav-item" *ngIf="globals.isCompany">
           <a class="nav-link" (click)="goToNotes()">Notes</a>
         </li>
       <li class="nav-item" *ngIf="(globals.isAttendee || globals.isCompany || globals.isCoordinator)">

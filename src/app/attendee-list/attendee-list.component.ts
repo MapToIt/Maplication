@@ -87,4 +87,8 @@ export class AttendeeListComponent implements OnInit {
       });
     });
   }
+
+  goToAttendee(attendeeId: string){
+    this.router.navigate(['attendee-profile', attendeeId]);
+  }
 }

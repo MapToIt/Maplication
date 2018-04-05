@@ -15,4 +15,5 @@ export class Notes{
   date: Date;
   rating: RatingType;
   ratingId: number;
+  recruiter: string;
 }

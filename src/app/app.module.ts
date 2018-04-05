@@ -89,6 +89,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.component';
 import { NoteModalComponent } from './attendee-list/note-modal/note-modal.component';
+import { NoteUpdateModalComponent } from './notes/note-update-modal/note-update-modal.component';
 
 @NgModule({
   declarations: [
@@ -107,11 +108,13 @@ import { NoteModalComponent } from './attendee-list/note-modal/note-modal.compon
     CompanyProfileComponent,
     CreateMapPromptComponent,
     NoteModalComponent,
+    NoteUpdateModalComponent,
 
   ],
   entryComponents: [
     CreateMapPromptComponent,
-    NoteModalComponent
+    NoteModalComponent,
+    NoteUpdateModalComponent
   ],
   imports: [
     BrowserModule,

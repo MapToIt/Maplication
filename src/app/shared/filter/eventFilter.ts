@@ -5,4 +5,5 @@ export class EventFilter {
     End:Date;
     State:State;    
     IsCompany: boolean;
+    CompanyId: number;
   }

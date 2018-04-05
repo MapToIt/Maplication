@@ -1,42 +1,42 @@
 <div class="card m-2">
     <div class="card-body">
-        <div class="d-flex flex-row">   
+        <div class="d-flex flex-md-row flex-column">   
             <div class="d-flex flex-column">              
-                <div class="d-flex flex-row">
-                    <div class="input-group m-3">
-                        <div class="input-group-prepend">
+                <div class="d-flex flex-md-row flex-column justify-content-center align-items-center">
+                    <div class="input-group col-md-4 m-1">
+                        <div class="input-group-prepend d-none d-lg-block">
                             <span class="input-group-text" id="basic-addon1">Attendee Name</span>
                         </div>
                         <input type="text" class="form-control" [(ngModel)]="attendeeName" 
                         placeholder="Company Name" aria-label="Name" aria-describedby="basic-addon1">
                     </div>
-                    <div class="input-group m-3">
-                        <div class="input-group-prepend">
+                    <div class="input-group col-md-4 m-1">
+                        <div class="input-group-prepend d-none d-lg-block">
                             <span class="input-group-text" id="basic-addon1">Degree</span>
                         </div>
                         <input type="text" class="form-control" [(ngModel)]="degree" 
                         placeholder="Company Name" aria-label="Name" aria-describedby="basic-addon1">
                     </div>
-                    <div class="input-group m-3">
-                        <div class="input-group-prepend">
+                    <div class="input-group col-md-4 m-1">
+                        <div class="input-group-prepend d-none d-lg-block">
                             <span class="input-group-text" id="basic-addon1">University</span>
                         </div>
                         <input type="text" class="form-control" [(ngModel)]="university" 
                         placeholder="Company Name" aria-label="Name" aria-describedby="basic-addon1">
                     </div>
                 </div>
-                <div class="d-flex flex-row">
-                    <div class="input-group m-2">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupSelect01">Rating</label>
+                <div class="d-flex flex-md-row flex-column justify-content-center align-items-center">
+                    <div class="input-group col-md-4 m-1">
+                        <div class="input-group-prepend d-none d-lg-block">
+                          <label class="input-group-text" for="inputGroupSelect01">Rating</label>
                         </div>
                         <select class="custom-select" id="inputGroupSelect01">
-                            <option selected>Choose...</option>
+                            <option selected>Choose Rating...</option>
                             <option *ngFor="let rating of ratingTypes" value="{rating}">{{rating.rating}}</option>
                         </select>
                     </div>
-                    <div class="input-group m-2">
-                        <div class="input-group-prepend">
+                    <div class="input-group col-md-4 m-1">
+                        <div class="input-group-prepend d-none d-lg-block">
                             <span class="input-group-text" id="basic-addon1">Start Date</span>
                         </div>
                         <input class="form-control" [(ngModel)]="start" placeholder="yyyy-mm-dd"
@@ -47,8 +47,8 @@
                             </button>
                         </div>
                     </div>
-                    <div class="input-group m-2">
-                        <div class="input-group-prepend">
+                    <div class="input-group col-md-4 m-1">
+                        <div class="input-group-prepend d-none d-lg-block">
                             <span class="input-group-text" id="basic-addon1">End Date</span>
                         </div>
                         <input class="form-control" [(ngModel)]="end" placeholder="yyyy-mm-dd"
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center align-items-center">
-                <button type="button" class="btn btn-primary m-2" (click)="updateEntries()">
+                <button type="button" class="btn btn-primary m-1" (click)="updateEntries()">
                     Update Search
                 </button> 
             </div>
@@ -70,28 +70,54 @@
     </div> 
 </div> 
 
-<div class="card p-3 m-3">
-    <div class="table-responsive-md">
-        <table class="table table-hover
-         sortStable">
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Degree</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Rating</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let note of entries">
-                    <th (click)="openNoteModal()">{{note.attendee.fullName}}</th>
-                    <td (click)="openNoteModal()">{{note.attendee.degree}}</td>
-                    <td (click)="openNoteModal()">{{note.attendee.email}}</td>
-                    <td (click)="openNoteModal()">{{note.date}}</td>
-                    <td (click)="openNoteModal()">{{note.rating.rating}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="card m-2">
+    <div class="card-body">
+        <details *ngFor="let attendee of entries">
+            <summary class="d-flex flex-row align-items-center">
+                <div class="d-flex flex-md-row flex-column">
+                    <strong class="col-md-6">{{attendee.notes[0].attendee.fullName}}</strong>
+                    <span class="col-md-12 offset-md-6">Average Rating: {{attendee.averageRating | number: '1.1-2'}}</span>
+                </div>                
+            </summary>
+            <ul>
+                <li>
+                    <div>
+                        <span class="sectionTitle">Degree: </span>
+                        <span>{{attendee.notes[0].attendee.degree}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <span class="sectionTitle">Email: </span>
+                        <span>{{attendee.notes[0].attendee.email}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <span class="sectionTitle">Phone Number: </span>
+                        <span>({{attendee.notes[0].attendee.phoneNumber.slice(0, 3)}}) {{attendee.notes[0].attendee.phoneNumber.slice(3, 6)}} - {{attendee.notes[0].attendee.phoneNumber.slice(6, 10)}}</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="sectionTitle">Notes</span>
+                    <ul>
+                        <li *ngFor="let note of attendee.notes">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <span><span class="recruiter">{{note.recruiter}}:</span> <i>({{note.rating.rating}})</i></span>
+                                    <p>{{note.note}}</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-outline-primary m-2" (click)="openNoteModal(note)">
+                                        Update Note
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </details>
+    </div> 
 </div>

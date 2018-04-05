@@ -19,6 +19,8 @@ import { NotesService } from '../services/notes-service/notes.service';
 import { RatingTypesService } from '../services/rating-types-service/rating-types.service';
 import { UserService } from '../services/user-service/user.service';
 import { Globals } from '../shared/globals';
+import { noteModel } from '../shared/filter/noteModel';
+import { NoteUpdateModalComponent } from './note-update-modal/note-update-modal.component';
 
  
 @Component({
@@ -28,7 +30,7 @@ import { Globals } from '../shared/globals';
 })
 export class NotesComponent implements OnInit {
   
-  entries: Notes[];
+  entries: noteModel[];
   ratingTypes: RatingType[];
   uid: string;
   start: NgbDate;
@@ -38,6 +40,7 @@ export class NotesComponent implements OnInit {
   degree: string;
   university:string;
   ratingType: RatingType;
+  loaded: boolean;
 
   //for autocomplete
   search = (text$: Observable<string>) =>
@@ -61,12 +64,16 @@ export class NotesComponent implements OnInit {
     }else{  
       this._CompanyService.getCompany(this.uid).subscribe((company) => {
         this.company = company;
+        this._RatingTypesService.getRatingTypes().subscribe((ratingTypes) => {
+          this.ratingTypes = ratingTypes;
+          var date = new Date();
+          var ngbDateStruct = { day: date.getDate(), month: date.getMonth(), year: date.getFullYear()};
+          this.start = new NgbDate(ngbDateStruct.year, ngbDateStruct.month, ngbDateStruct.day);
+          this.end = new NgbDate(ngbDateStruct.year, ngbDateStruct.month + 1, ngbDateStruct.day + 1);
+          this.updateEntries();
+        });
       }) 
     }
-
-    this._RatingTypesService.getRatingTypes().subscribe((ratingTypes) => {
-      this.ratingTypes = ratingTypes;
-    });
   }
 
 
@@ -77,17 +84,18 @@ export class NotesComponent implements OnInit {
     var start = this.start ? new Date(this.start.year, this.start.month - 1, this.start.day) : null;
     var end = this.end ? new Date(this.end.year, this.end.month - 1, this.end.day) : null;
 
-
     this._NotesService.getNotesByFilter(this.attendeeName, this.company.companyId, this.degree, 
                       this.university, this.ratingType, start, end).subscribe((entries) => {
       this.entries = entries;
+      console.log(this.entries);
+      this.loaded = true;
     });
     
   }
 
-  // openNoteModal(){
-  //   let options: NgbModalOptions = {size: 'lg'};
-  //   const modalRef = this.modalService.open(NoteModalComponent, options);
-  //   // modalRef.componentInstance.eventCoordinator = this.profile.coordinatorId;
-  // }
+  openNoteModal(note: Notes){
+    let options: NgbModalOptions = {size: 'lg'};
+    const modalRef = this.modalService.open(NoteUpdateModalComponent, options);
+    modalRef.componentInstance.note = note;
+  }
 }

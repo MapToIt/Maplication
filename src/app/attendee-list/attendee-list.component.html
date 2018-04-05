@@ -1,3 +1,35 @@
+<div class="card m-2">
+  <div class="card-body">           
+    <div class="d-flex flex-md-row flex-column justify-content-center align-items-center">
+        <div class="input-group m-1">
+            <div class="input-group-prepend d-none d-lg-block">
+                <span class="input-group-text" id="basic-addon1">Attendee Name</span>
+            </div>
+            <input type="text" class="form-control" [(ngModel)]="attendeeName" 
+            placeholder="Attendee Name" aria-label="Name" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group m-1">
+            <div class="input-group-prepend d-none d-lg-block">
+                <span class="input-group-text" id="basic-addon1">Degree</span>
+            </div>
+            <input type="text" class="form-control" [(ngModel)]="degree" 
+            placeholder="Degree" aria-label="Name" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group m-1">
+            <div class="input-group-prepend d-none d-lg-block">
+                <span class="input-group-text" id="basic-addon1">University</span>
+            </div>
+            <input type="text" class="form-control" [(ngModel)]="university" 
+            placeholder="University" aria-label="Name" aria-describedby="basic-addon1">
+        </div>
+        <div class="m-1">
+            <button type="button" class="btn btn-primary m-1" (click)="updateList()">
+                Filter
+            </button> 
+        </div>
+      </div>
+  </div> 
+</div>
 <div style="height:5vh"></div>
 <table class="table table-hover m-2">
   <thead>

@@ -29,6 +29,10 @@ export class AttendeeListComponent implements OnInit {
 
   eventId:number;
   attendees: Attendee[] = new Array();
+  attendeeName: string;
+  university: string;
+  degree: string;
+  displayList: Attendee[] = new Array();
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase,
               private _EventAttendanceService: EventAttendanceService, private _UserService:UserService,
@@ -86,6 +90,25 @@ export class AttendeeListComponent implements OnInit {
         modalRef.componentInstance.note = note;
       });
     });
+  }
+
+  updateList(){
+    //empty list
+    this.displayList.splice(0,this.displayList.length);
+
+    this.attendees.forEach(attendee => {
+      if (this.matches(attendee)){
+        this.displayList.push(attendee);
+      }
+    });
+  }
+
+  matches(attendee: Attendee){
+    let matchesName = attendee.fullName.toLowerCase().includes(this.attendeeName.toLowerCase());
+    let matchesSchool = attendee.university.toLowerCase().includes(this.university.toLowerCase());
+    let matchesDegree = attendee.degree.toLowerCase().includes(this.degree.toLowerCase());
+
+    return (matchesName && matchesSchool && matchesDegree);
   }
 
   goToAttendee(attendeeId: string){

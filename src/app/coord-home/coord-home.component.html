@@ -25,7 +25,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="">Phone</span>
                     </div>
-                    <input type="email" class="form-control" [(ngModel)]="profile.phoneNumber" [textMask]="{mask:mask}" placeholder="Phone Number">
+                    <input type="text" class="form-control" [(ngModel)]="profile.phoneNumber" placeholder="Phone Number" [textMask]="{mask:mask}">
                 </div>
                 <div class="text-center">
                   <button (click)="updateCoord()">Update</button>

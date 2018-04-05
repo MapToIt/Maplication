@@ -21,7 +21,8 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "../node_modules/firebaseui/dist/firebaseui.css"
+        "../node_modules/firebaseui/dist/firebaseui.css",
+        "../node_modules/flatpickr/dist/flatpickr.min.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

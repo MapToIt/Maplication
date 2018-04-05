@@ -17,6 +17,8 @@ import { NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-boot
 import { CreateMapPromptComponent } from '../create-map-prompt/create-map-prompt.component';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { FlatpickrOptions } from 'ng2-flatpickr';
+
 
 import { Observable } from 'rxjs';
 
@@ -55,6 +57,7 @@ export class EventMapComponent implements OnInit {
   eventId: number;
   mapId: number;
   mapInfo: Map;
+  dateTime: FlatpickrOptions;
 
   editToggle: boolean;
   deleteToggle: boolean;
@@ -102,6 +105,14 @@ export class EventMapComponent implements OnInit {
     this._StatesService.getStates().subscribe((statesData) => {
       this.states = statesData;
     });
+
+    this.dateTime = {
+      enableTime: true,
+      altInput: true,
+      altFormat: 'M d, Y h:i K',
+      dateFormat: 'Y-m-d h:i'
+    };
+
   }
 
   DrawMap(){

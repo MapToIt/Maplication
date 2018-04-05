@@ -37,6 +37,7 @@ import { EventService } from './services/event-service/event.service';
 import { EventAttendanceService } from './services/event-attendance-service/event-attendance.service';
 import { NotesService } from './services/notes-service/notes.service';
 import { RatingTypesService } from './services/rating-types-service/rating-types.service';
+import { Ng2FlatpickrModule } from 'ng2-flatpickr';
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
@@ -129,7 +130,8 @@ import { NoteModalComponent } from './attendee-list/note-modal/note-modal.compon
     Ng2SearchPipeModule,
     SharedModule,
     NgxPaginationModule,
-    TextMaskModule
+    TextMaskModule,
+    Ng2FlatpickrModule
   ],
   providers: [
     Globals,

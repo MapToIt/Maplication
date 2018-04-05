@@ -59,6 +59,12 @@
         </div>
         <div class='input-group m-4'>
           <div class='input-group-prepend'>
+              <span class='input-group-text' id='basic-addon1'>Start Time</span>
+          </div>
+          <ng2-flatpickr [config]='dateTime' [(ngModel)]='mapInfo.event.startTime' aria-describedby='basic-addon1'></ng2-flatpickr>
+        </div>
+        <div class='input-group m-4'>
+          <div class='input-group-prepend'>
             <span class='input-group-text' id='basic-addon1'>Zip Code</span>
           </div>
           <input type="number" class="row form-control" [(ngModel)]="mapInfo.event.zipCode" aria-label="Zip Code" aria-describedby="basic-addon1">

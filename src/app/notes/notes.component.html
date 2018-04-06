@@ -62,7 +62,7 @@
     </div> 
 </div> 
 
-<div class="card m-2" *ngIf="entries.length > 0">
+<div class="card m-2" *ngIf="entries == null || entries.length > 0">
     <div class="card-body">
         <details *ngFor="let attendee of entries">
             <summary class="d-flex flex-row align-items-center">

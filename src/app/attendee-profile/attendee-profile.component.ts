@@ -91,7 +91,7 @@ export class AttendeeProfileComponent implements OnInit {
       }
     
 
-      if (this.globals.isCompany || (this.globals.isAttendee && this.globals.currentUser.uid == this.uid))
+      if (this.globals.isCompany || this.globals.currentUser.uid == this.uid)
       {
         this.attendeeService.getAttendee(this.uid).subscribe((attendee) => {
           this.profile = attendee;

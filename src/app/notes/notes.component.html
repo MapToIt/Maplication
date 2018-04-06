@@ -87,7 +87,7 @@
                 <li>
                     <div>
                         <span class="sectionTitle">Phone Number: </span>
-                        <span>({{attendee.notes[0].attendee.phoneNumber.slice(0, 3)}}) {{attendee.notes[0].attendee.phoneNumber.slice(3, 6)}} - {{attendee.notes[0].attendee.phoneNumber.slice(6, 10)}}</span>
+                        <span *ngIf="attendee.notes[0].attendee.phoneNumber != null">({{attendee.notes[0].attendee.phoneNumber.slice(0, 3)}}) {{attendee.notes[0].attendee.phoneNumber.slice(3, 6)}} - {{attendee.notes[0].attendee.phoneNumber.slice(6, 10)}}</span>
                     </div>
                 </li>
                 <li>

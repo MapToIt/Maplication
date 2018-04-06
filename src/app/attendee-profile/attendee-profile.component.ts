@@ -228,7 +228,6 @@ export class AttendeeProfileComponent implements OnInit {
     {
       return false;
     }
-    if ((prof.image == null || prof.resume == null)){ return false }
     if (prof.chips == ""){ return false}
     return true;
   }

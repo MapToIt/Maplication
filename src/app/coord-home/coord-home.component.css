@@ -1,4 +1,6 @@
-.container {
+@import '~material-design-icons/iconfont/material-icons.css';
+
+/* .container {
   background:#e2e2e2;
   padding: 3em;
   font-family: 'Raleway', 'Arial';
@@ -41,4 +43,4 @@ body {
     padding: 3em;
     font-family: 'Raleway', 'Arial';
     color:#fff;
-}
+} */

@@ -23,7 +23,11 @@ export class RegistrationComponent implements OnInit {
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
     private _CoordinatorService: CoordinatorService, 
     private _AttendeeService: AttendeeService, private _CompanyService: CompanyService, private route: ActivatedRoute, 
-    private router: Router, public globals:Globals) { }
+    private router: Router, public globals:Globals) {
+      if(this.globals.isAttendee || this.globals.isCompany || this.globals.isCoordinator){
+        this.router.navigate(['*']);
+      }
+     }
 
   ngOnInit() {
     

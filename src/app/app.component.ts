@@ -19,27 +19,29 @@ export class AppComponent {
               public globals: Globals, private _UserService: UserService) {
       this.afAuth.authState.subscribe((user) => {
         if(user == null) { this.globals.appLoaded = true; }
-        this.globals.currentUser = user;
-        this._UserService.getUserType(user.uid).subscribe((userType) => {
-          if(userType != null)
-          {
-            if(userType.toLowerCase() == "attendee")
+        else{
+          this.globals.currentUser = user;
+          this._UserService.getUserType(user.uid).subscribe((userType) => {
+            if(userType != null)
             {
-              this.globals.isAttendee = true;
-              this.globals.appLoaded = true;
-            }
-            else if(userType.toLowerCase() == "company")
-            {
-              this.globals.isCompany = true;
-              this.globals.appLoaded = true;
-            }
-            else if (userType.toLowerCase() == "coordinator")
-            {
-              this.globals.isCoordinator = true;
-              this.globals.appLoaded = true;
-            }
-          }  
-        });
+              if(userType.toLowerCase() == "attendee")
+              {
+                this.globals.isAttendee = true;
+                this.globals.appLoaded = true;
+              }
+              else if(userType.toLowerCase() == "company")
+              {
+                this.globals.isCompany = true;
+                this.globals.appLoaded = true;
+              }
+              else if (userType.toLowerCase() == "coordinator")
+              {
+                this.globals.isCoordinator = true;
+                this.globals.appLoaded = true;
+              }
+            }  
+          });
+        }
       });
       
       

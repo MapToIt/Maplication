@@ -41,12 +41,13 @@ export class EventService {
     return this.http.get<Event[]>(this.globals.apiUrl + `event/futureEvents`);
   }
 
-  GetEventsByFilter(start:Date, end:Date, state:State, isCompany:boolean){
+  GetEventsByFilter(start:Date, end:Date, state:State, isCompany:boolean, companyId: number){
     var filter = new EventFilter();
     filter.Start = start;
     filter.End = end;
     filter.State = state;
     filter.IsCompany = isCompany;
+    filter.CompanyId = companyId;
 
     return this.http.post<Event[]>(this.globals.apiUrl + `event/filter`, filter);
   }

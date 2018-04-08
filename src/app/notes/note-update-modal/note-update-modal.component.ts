@@ -9,29 +9,28 @@ import { RatingTypesService } from '../../services/rating-types-service/rating-t
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-note-modal',
-  templateUrl: './note-modal.component.html',
-  styleUrls: ['./note-modal.component.css'],
+  selector: 'app-note-update-modal',
+  templateUrl: './note-update-modal.component.html',
+  styleUrls: ['./note-update-modal.component.css']
 })
-export class NoteModalComponent implements OnInit {
+export class NoteUpdateModalComponent implements OnInit {
+//note components
+@Input () note: Notes;
+
+//view vars
+ratings: RatingType[];
+
+
+
+constructor(public activeModal: NgbActiveModal, private _NotesService: NotesService,
+            private _RatingTypesService: RatingTypesService, private router: Router,
+            public globals: Globals) {
   
-  //note components
-  @Input () note: Notes;
-
-  //view vars
-  ratings: RatingType[];
-
-
-
-  constructor(public activeModal: NgbActiveModal, private _NotesService: NotesService,
-              private _RatingTypesService: RatingTypesService, private router: Router,
-              public globals: Globals) {
-    
-      this._RatingTypesService.getRatingTypes().subscribe((ratings) => {
-        this.ratings = ratings;
-        console.log(ratings);
-      })
-    }
+    this._RatingTypesService.getRatingTypes().subscribe((ratings) => {
+      this.ratings = ratings;
+      console.log(ratings);
+    })
+  }
 
   ngOnInit() {
   }
@@ -43,30 +42,30 @@ export class NoteModalComponent implements OnInit {
       validForm = false;
       alert('Please enter an note for this attendee.');
     }
-    console.log(this.note.ratingId);
+
     if (this.note.ratingId == null){
       validForm = false;
       alert('Please enter a rating.');
     }
+
     if (this.note.recruiter == null){
       validForm = false;
       alert('Please enter the recruiter\'s name.');
     }
+    
     if (validForm)
     {
       let newNote = new Notes();
-      newNote.noteId = 0;
+      newNote.noteId = this.note.noteId;
       newNote.note = this.note.note;
-      newNote.companyId = this.note.company.companyId;
-      newNote.attendeeId = this.note.attendee.attendeeId;
-      newNote.eventId = this.note.event.eventId;
+      newNote.companyId = this.note.companyId;
+      newNote.attendeeId = this.note.attendeeId;
+      newNote.eventId = this.note.eventId;
       newNote.ratingId = this.note.ratingId;
       newNote.recruiter = this.note.recruiter;
-      newNote.date = new Date();
+      newNote.date = this.note.date;
 
-      console.log(JSON.stringify(newNote));
-
-      this._NotesService.addNote(newNote).subscribe((addedNote) => {
+      this._NotesService.updateNote(newNote).subscribe((addedNote) => {
         if (addedNote != null){
           this.activeModal.close();
         }

@@ -23,7 +23,11 @@ export class RegistrationComponent implements OnInit {
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
     private _CoordinatorService: CoordinatorService, 
     private _AttendeeService: AttendeeService, private _CompanyService: CompanyService, private route: ActivatedRoute, 
-    private router: Router, public globals:Globals) { }
+    private router: Router, public globals:Globals) {
+      if(this.globals.isAttendee || this.globals.isCompany || this.globals.isCoordinator){
+        this.router.navigate(['*']);
+      }
+     }
 
   ngOnInit() {
     
@@ -46,7 +50,7 @@ export class RegistrationComponent implements OnInit {
       attendee.userId = this.globals.currentUser.uid;
 
       this._AttendeeService.addAttendee(attendee).subscribe((attendee) => {
-        this.router.navigate(['attendee-profile', this.afAuth.auth.currentUser.uid]);
+        this.router.navigate(['attendee-profile', this.globals.currentUser.uid]);
       });
     }
 
@@ -70,7 +74,7 @@ export class RegistrationComponent implements OnInit {
       company.zipCode = null;
     }
     this._CompanyService.addCompany(company).subscribe((addedCompany) => {
-      this.router.navigate(['company-profile', this.afAuth.auth.currentUser.uid]);
+      this.router.navigate(['company-profile', this.globals.currentUser.uid]);
     });    
 
   }
@@ -87,7 +91,7 @@ export class RegistrationComponent implements OnInit {
       coordinator.userId = this.globals.currentUser.uid;
 
       this._CoordinatorService.addCoordinator(coordinator).subscribe((user) => {
-        this.router.navigate(['coord-home', this.afAuth.auth.currentUser.uid]);
+        this.router.navigate(['coord-home', this.globals.currentUser.uid]);
       })
     }
   }

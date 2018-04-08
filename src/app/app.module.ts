@@ -32,12 +32,14 @@ import { AttendeeService } from './services/attendee-service/attendee.service';
 import { CompanyService } from './services/company-service/company.service';
 import { FileUploadService } from './services/file-upload-service/file-upload.service';
 import { CoordinatorService } from './services/coordinator/coordinator.service';
+
 import { ChipService } from './services/chip-service/chip.service';
 import { EventService } from './services/event-service/event.service';
 import { EventAttendanceService } from './services/event-attendance-service/event-attendance.service';
 import { NotesService } from './services/notes-service/notes.service';
 import { RatingTypesService } from './services/rating-types-service/rating-types.service';
 import { Ng2FlatpickrModule } from 'ng2-flatpickr';
+
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
   provider: AuthProvider.Facebook,
@@ -88,6 +90,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.component';
 import { NoteModalComponent } from './attendee-list/note-modal/note-modal.component';
+import { NoteUpdateModalComponent } from './notes/note-update-modal/note-update-modal.component';
 
 @NgModule({
   declarations: [
@@ -106,11 +109,13 @@ import { NoteModalComponent } from './attendee-list/note-modal/note-modal.compon
     CompanyProfileComponent,
     CreateMapPromptComponent,
     NoteModalComponent,
+    NoteUpdateModalComponent,
 
   ],
   entryComponents: [
     CreateMapPromptComponent,
-    NoteModalComponent
+    NoteModalComponent,
+    NoteUpdateModalComponent
   ],
   imports: [
     BrowserModule,
@@ -141,6 +146,7 @@ import { NoteModalComponent } from './attendee-list/note-modal/note-modal.compon
     CompanyService,
     FileUploadService,
     CoordinatorService,
+
     ChipService,
     EventService,
     EventAttendanceService,

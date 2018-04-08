@@ -11,6 +11,7 @@ import 'rxjs/Rx';
 import { Notes } from '../../shared/domain-model/notes';
 import { NotesFilter } from '../../shared/filter/notesFilter';
 import { RatingType } from '../../shared/domain-model/ratingType';
+import { noteModel } from '../../shared/filter/noteModel';
 
 @Injectable()
 export class NotesService {
@@ -41,7 +42,7 @@ export class NotesService {
     filter.start = start;
     filter.end = end;
 
-    return this.http.post<Notes[]>(this.globals.apiUrl + `notes/filter/`, filter);
+    return this.http.post<noteModel[]>(this.globals.apiUrl + `notes/filter/`, filter);
   }
 
   addNote(note: Notes){

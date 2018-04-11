@@ -39,31 +39,38 @@ export class AppNavbarComponent implements OnInit {
     if (this.globals.isAttendee)
     {
       this.router.navigate(['attendee-profile', this.afAuth.auth.currentUser.uid]);
+      this.navbarCollapsed=true;
     }
     else if (this.globals.isCompany)
     {
       this.router.navigate(['company-profile', this.afAuth.auth.currentUser.uid]);
+      this.navbarCollapsed=true;
     }
     else
     {
       this.router.navigate(['coord-home', this.afAuth.auth.currentUser.uid]);
+      this.navbarCollapsed=true;
     }
   }
 
   goToNotes(){
     this.router.navigate(['notes', this.afAuth.auth.currentUser.uid]);          
+    this.navbarCollapsed=true;
   }
 
   goToLogin(){
     this.router.navigate(['login']);
+    this.navbarCollapsed=true;
   }
 
   goToEvents(){
     this.router.navigate(['event-list-view']);
+    this.navbarCollapsed=true;
   }
 
   goToAbout(){
     this.router.navigate(['about']);
+    this.navbarCollapsed=true;
   }
 
 }

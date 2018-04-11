@@ -15,6 +15,8 @@ import { Globals } from '../shared/globals';
 })
 export class AppNavbarComponent implements OnInit {
 
+  navbarCollapsed: boolean = true;
+
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase,
     private route: ActivatedRoute, private router: Router, 
     private _UserService: UserService, public globals: Globals) {

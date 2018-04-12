@@ -1,42 +1,31 @@
 <div class="card m-2">
-  <div class="card-body">
-    <div class="d-flex flex-row">
-      <div class="input-group m-2">
-        <div class="input-group-prepend">
+  <div class="card-body d-flex flex-md-row flex-column justify-content-center align-items-center">
+      <div class="input-group m-1">
+        <div class="input-group-prepend d-none d-lg-block">
             <span class="input-group-text" id="basic-addon1">State</span>
         </div>
         <ng-template #stateTemplate let-r="result" let-t="term">
             {{ r.stateName }}
         </ng-template>
-        <input id="typeahead-template" type="text" class="form-control" [(ngModel)]="state" [ngbTypeahead]="search" [resultTemplate]="stateTemplate"
+        <input id="typeahead-template" type="text" class="form-control" [(ngModel)]="state" 
+        [ngbTypeahead]="search" [resultTemplate]="stateTemplate"
         [inputFormatter]="formatter" />
       </div>
-      <div class="input-group m-2">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">Start Date</span>
+      <div class="input-group m-1">
+        <div class="input-group-prepend d-none d-lg-block">
+          <span class="input-group-text" id="basic-addon1">Start</span>
         </div>
         <input class="form-control" [(ngModel)]="start" placeholder="yyyy-mm-dd"
           (click)="ds.toggle()"name="dp" ngbDatepicker #ds="ngbDatepicker">
-        <div class="input-group-append">
-          <button class="btn btn-outline-primary" (click)="ds.toggle()" type="button">
-            <i class="material-icons">date_range</i>
-          </button>
-        </div>
       </div>
-      <div class="input-group m-2">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">End Date</span>
+      <div class="input-group m-1">
+        <div class="input-group-prepend d-none d-lg-block">
+          <span class="input-group-text" id="basic-addon1">End</span>
         </div>
         <input class="form-control" [(ngModel)]="end" placeholder="yyyy-mm-dd"
           (click)="de.toggle()" name="dp" ngbDatepicker #de="ngbDatepicker">
-        <div class="input-group-append">
-          <button class="btn btn-outline-primary" (click)="de.toggle()" type="button">
-            <i class="material-icons">date_range</i>
-          </button>
-        </div>
       </div>
-        <button type="button" class="btn btn-primary m-2" (click)="updateEvents()">Update Search</button> 
-    </div> 
+        <button type="button" class="btn btn-primary m-1" (click)="updateEvents()">Update Search</button> 
   </div>
 </div>
 
@@ -47,7 +36,7 @@
       <th scope="col">Location</th>
       <th scope="col">Start Time</th>
       <th scope="col">End Time</th>
-      <th scope="col">Contact</th>
+      <th scope="col" class="d-none d-md-block">Contact</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -55,9 +44,9 @@
     <tr *ngFor="let event of events">
       <td (click)="goToMap(event.eventId)">{{event.eventTitle}}</td>
       <td (click)="goToMap(event.eventId)">{{event.streetNumber + ' ' + event.street}} <br> {{event.city + ', ' + event.state.stateName + ' ' + (event.zipcode ? event.zipcode : '')}}</td>
-      <td (click)="goToMap(event.eventId)">{{event.startTime | date: 'medium'}}</td>
-      <td (click)="goToMap(event.eventId)">{{event.endTime | date: 'medium'}}</td>
-      <td (click)="goToMap(event.eventId)">{{event.coordinator.firstName + ' ' + event.coordinator.lastName}} <br> {{event.coordinator.email}}</td>
+      <td (click)="goToMap(event.eventId)">{{event.startTime | date: 'short'}}</td>
+      <td (click)="goToMap(event.eventId)">{{event.endTime | date: 'short'}}</td>
+      <td (click)="goToMap(event.eventId)" class="d-none d-md-block">{{event.coordinator.firstName + ' ' + event.coordinator.lastName}} <br> {{event.coordinator.email}}</td>
       <td>
           <div *ngIf="this.globals.isCompany">
             <ng-template class="form-inline" #showList>

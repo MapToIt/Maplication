@@ -29,14 +29,14 @@
   </div>
 </div>
 
-<table class="table table-hover m-2">
+<table class="table table-hover table-responsive-md m-2">
   <thead>
     <tr>
       <th scope="col">Title</th>
       <th scope="col">Location</th>
       <th scope="col">Start Time</th>
       <th scope="col">End Time</th>
-      <th scope="col" class="d-none d-md-block">Contact</th>
+      <th scope="col">Contact</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -46,7 +46,7 @@
       <td (click)="goToMap(event.eventId)">{{event.streetNumber + ' ' + event.street}} <br> {{event.city + ', ' + event.state.stateName + ' ' + (event.zipcode ? event.zipcode : '')}}</td>
       <td (click)="goToMap(event.eventId)">{{event.startTime | date: 'short'}}</td>
       <td (click)="goToMap(event.eventId)">{{event.endTime | date: 'short'}}</td>
-      <td (click)="goToMap(event.eventId)" class="d-none d-md-block">{{event.coordinator.firstName + ' ' + event.coordinator.lastName}} <br> {{event.coordinator.email}}</td>
+      <td (click)="goToMap(event.eventId)">{{event.coordinator.firstName + ' ' + event.coordinator.lastName}} <br> {{event.coordinator.email}}</td>
       <td>
           <div *ngIf="this.globals.isCompany">
             <ng-template class="form-inline" #showList>

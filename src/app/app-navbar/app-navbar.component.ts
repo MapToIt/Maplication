@@ -35,6 +35,7 @@ export class AppNavbarComponent implements OnInit {
     this.globals.isAttendee = false;
     this.globals.isCompany = false;
     this.globals.isCoordinator = false;
+    this.navbarCollapsed=true;
     this.router.navigate(['*']);
   }
 

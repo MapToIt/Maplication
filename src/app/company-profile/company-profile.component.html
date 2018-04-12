@@ -85,3 +85,34 @@
         </div>
     </div>
 </div>
+
+<div class="card m-2" *ngIf="events != null && isProfileUser">
+    <div class="card-body">
+        <h3>Our Events:</h3>
+        <details *ngFor="let event of events">
+            <summary class="d-flex flex-row align-items-center">
+                <div class="d-flex flex-md-row flex-column">
+                    <strong><u>{{event.event.eventTitle}}</u></strong>
+                </div>                
+            </summary>
+            <ul>
+                <li>
+                    <div>
+                        <span class="sectionTitle">Start Date: </span>
+                        <span>{{event.event.startTime | date:'mediumDate'}} @ {{event.event.startTime | date:'shortTime'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <span class="sectionTitle">End Date: </span>
+                        <span>{{event.event.endTime | date:'mediumDate'}} @ {{event.event.endTime | date:'shortTime'}}</span>
+                    </div>
+                </li>
+                <li>
+                    <button class="btn btn-primary" (click)="goToEvent(event.event.eventId)">Go to Event Page</button>
+                    <button class="btn btn-primary" (click)="goToAttendee(event.event.eventId)">Go to Attendee List</button>
+                </li>
+            </ul>
+        </details>
+    </div> 
+</div>

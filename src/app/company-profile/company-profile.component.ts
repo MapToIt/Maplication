@@ -8,6 +8,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import * as firebase from 'firebase/app';
 import { UserService } from '../services/user-service/user.service';
+import { EventAttendanceService } from '../services/event-attendance-service/event-attendance.service';
 import { CompanyService } from '../services/company-service/company.service';
 import { FileUploadService } from '../services/file-upload-service/file-upload.service';
 import { Company } from '../shared/domain-model/company';
@@ -16,6 +17,7 @@ import { StatesService } from '../services/states-service/states.service';
 import { ChipService } from '../services/chip-service/chip.service';
 import { Tags } from '../shared/domain-model/tags';
 import { Globals } from '../shared/globals';
+import { EventAttendance } from '../shared/domain-model/eventAttendance';
 
 @Component({
   selector: 'app-company-profile',
@@ -34,6 +36,7 @@ export class CompanyProfileComponent implements OnInit {
   chips: Tags[];
   newTag: Tags;
   companyChips: String[];
+  events: EventAttendance[];
   file:any;
   mask:any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
@@ -56,6 +59,7 @@ export class CompanyProfileComponent implements OnInit {
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
               private _StatesService: StatesService, private _ChipService: ChipService,
               private _CompanyService: CompanyService, private _UserService: UserService,
+              private _EventAttendanceService: EventAttendanceService,
               private _FileUploadService: FileUploadService, private globals: Globals,
               private route: ActivatedRoute, private router: Router) {
                
@@ -96,7 +100,12 @@ export class CompanyProfileComponent implements OnInit {
 
       this._ChipService.getChips().subscribe((chips) => {
         this.chips = chips;
-      });      
+      });   
+      
+      this._EventAttendanceService.GetEventAttendanceByUser(this.globals.currentUser.uid).subscribe((rsvps) => {
+        this.events = rsvps;
+        console.log(this.events);
+      });
    }
 
   ngOnInit() {
@@ -144,6 +153,14 @@ export class CompanyProfileComponent implements OnInit {
         this.updateCompany();
       }
     )
+  }
+
+  goToEvent(eventId){
+    this.router.navigate(['event', eventId]); 
+  }
+
+  goToAttendee(eventId){
+    this.router.navigate(['attendee-list', eventId]); 
   }
 
 }

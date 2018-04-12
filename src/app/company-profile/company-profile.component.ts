@@ -17,6 +17,7 @@ import { StatesService } from '../services/states-service/states.service';
 import { ChipService } from '../services/chip-service/chip.service';
 import { Tags } from '../shared/domain-model/tags';
 import { Globals } from '../shared/globals';
+import * as  moment from 'moment';
 import { EventAttendance } from '../shared/domain-model/eventAttendance';
 
 @Component({
@@ -31,12 +32,15 @@ export class CompanyProfileComponent implements OnInit {
   currentUser: firebase.User;
   isProfileUser: boolean;
   changeMade: boolean = false;
+  isProfile: boolean = true;
   profile: Company = new Company();
+  now: Date = new Date();
   states: State[];
   chips: Tags[];
   newTag: Tags;
   companyChips: String[];
   events: EventAttendance[];
+  futureEvents: EventAttendance[] = [];
   file:any;
   mask:any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
@@ -102,9 +106,11 @@ export class CompanyProfileComponent implements OnInit {
         this.chips = chips;
       });   
       
-      this._EventAttendanceService.GetEventAttendanceByUser(this.globals.currentUser.uid).subscribe((rsvps) => {
+      this._EventAttendanceService.GetEventAttendanceByUser(this.uid).subscribe((rsvps) => {
         this.events = rsvps;
-        console.log(this.events);
+        this.futureEvents=rsvps.filter(event => moment(event.event.startTime) >= moment());
+        console.log("rsvps: ",rsvps);
+        console.log("future Events", this.futureEvents);
       });
    }
 

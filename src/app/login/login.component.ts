@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
 import { Globals } from '../shared/globals';
 import { UserService } from '../services/user-service/user.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 export class AuthService {
   private currentUser: firebase.User = null;
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
   private currentUser: firebase.User = null;
   
 
-  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
+  constructor(public activeModal: NgbActiveModal,
+    public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
     private _UserService: UserService, private route: ActivatedRoute, 
     private router: Router, private globals:Globals) 
   { 
@@ -49,25 +51,30 @@ export class LoginComponent implements OnInit {
         if(userType.toLowerCase() == "attendee")
         {
           this.globals.isAttendee = true;
+          this.activeModal.close();
           this.router.navigate(['event-list-view']);
         }
         else if(userType.toLowerCase() == "company")
         {
           this.globals.isCompany = true;
+          this.activeModal.close();
           this.router.navigate(['event-list-view']);
         }
         else if (userType.toLowerCase() == "coordinator")
         {
           this.globals.isCoordinator = true;
+          this.activeModal.close();
           this.router.navigate(['coord-home', data.currentUser.uid]);
         }
         else
         {
+          this.activeModal.close();
           this.router.navigate(['*']);
         }
       } 
       else 
       {
+        this.activeModal.close();
         this.router.navigate(['registration']);
       }      
     });

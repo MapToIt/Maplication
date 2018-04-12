@@ -7,6 +7,8 @@ import { Observable } from 'rxjs/Observable';
 import { UserService } from '../services/user-service/user.service';
 import * as firebase from 'firebase/app';
 import { Globals } from '../shared/globals';
+import { LoginComponent } from '../login/login.component';
+import { NgbModalOptions, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-navbar',
@@ -19,6 +21,7 @@ export class AppNavbarComponent implements OnInit {
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase,
     private route: ActivatedRoute, private router: Router, 
+    public modalService: NgbModal,
     private _UserService: UserService, public globals: Globals) {
    }
 
@@ -59,7 +62,8 @@ export class AppNavbarComponent implements OnInit {
   }
 
   goToLogin(){
-    this.router.navigate(['login']);
+    let options: NgbModalOptions = {size: 'sm',  windowClass: 'dark-modal'};
+    const modalRef = this.modalService.open(LoginComponent, options);
     this.navbarCollapsed=true;
   }
 

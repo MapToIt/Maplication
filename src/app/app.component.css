@@ -2,9 +2,3 @@
     display: flex;
     flex-direction: column;
 }
-
-@media (min-width: 600px) {
-    router-outlet{
-        margin-top: 5vh;
-    }
-}

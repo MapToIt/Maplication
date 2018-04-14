@@ -76,53 +76,12 @@ div[class=header]{
     text-align: center;
 }
 
-.tag{
-    display: block;
-    background-color: rgba(76,77,142,0.7);
-    padding: 4px 10px;
-    margin: 5px 0px;
-
-}
-
-.tag:hover {
-    cursor: pointer;
-}
-
-.tagAdded:hover{
-    cursor: pointer;
-}
-
 h6{
     text-align: center;
     margin: 0px 50px;
     margin-bottom: 10px;
 }
 
-
-.comments-wrapper .comment-body p, .comments-wrapper .squarespace-comments .new-comment-area .input form.comment-form textarea {
-    color: white;
- }
-
-textarea::-webkit-input-placeholder {
-    color: white;
-    text-align: center;
-}
-
-textarea:-moz-placeholder { /* Firefox 18- */
-    color: white;
-    text-align: center; 
-}
-
-textarea::-moz-placeholder {  /* Firefox 19+ */
-    color: white; 
-    text-align: center; 
-}
-
-textarea:-ms-input-placeholder {
-    color: white;  
-    text-align: center;
-}
-
-textarea::selection {color:white; }
-::-moz-selection { color:white; }
-::-webkit-selection {color:white; }
+ul {
+    list-style-type: none;
+  }

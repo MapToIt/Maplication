@@ -20,6 +20,9 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { ChipService } from '../services/chip-service/chip.service';
 import { State } from '../shared/domain-model/state';
 import { Globals } from '../shared/globals';
+import { EventAttendance } from '../shared/domain-model/eventAttendance';
+import { EventAttendanceService } from '../services/event-attendance-service/event-attendance.service';
+import * as  moment from 'moment';
 
 @Component({
   selector: 'app-attendee-profile',
@@ -59,7 +62,8 @@ export class AttendeeProfileComponent implements OnInit {
   mask:any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   attendeeChips: String[];
   newTag: Tags;
-
+  events: EventAttendance[];
+  futureEvents: EventAttendance[] = [];
 
   searchTags = (text$: Observable<string>) =>
     text$
@@ -75,23 +79,29 @@ export class AttendeeProfileComponent implements OnInit {
               private userService: UserService, private attendeeService: AttendeeService, 
               private companyService: CompanyService, private route: ActivatedRoute, 
               private router: Router, private fileUploadService: FileUploadService,
-              private tagsService: ChipService, public globals: Globals) {
+              private tagsService: ChipService, public globals: Globals,
+              private _EventAttendanceService: EventAttendanceService,) {
 
       this.route.params.subscribe( params => this.uid = params['id']);
 
       this.currentUser = this.globals.currentUser;
       
       //check validity
-      if (this.uid == this.currentUser.uid){
-        this.isValid = true;
-        this.greeting = `Welcome back, ${this.profile.fullName}!`;
+      if (this.currentUser){
+        if (this.uid == this.currentUser.uid){
+          this.isValid = true;
+          this.greeting = `Welcome back, ${this.profile.fullName}!`;
+        }else{
+          this.isValid = false;
+          this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;      
+        }
       }else{
         this.isValid = false;
         this.greeting = `Here's a look at ${this.profile.fullName}'s profile`;      
       }
     
 
-      if (this.globals.isCompany || this.globals.currentUser.uid == this.uid)
+      if ((this.globals.currentUser != null) && (this.globals.isAttendee || this.globals.currentUser.uid == this.uid))
       {
         this.attendeeService.getAttendee(this.uid).subscribe((attendee) => {
           this.profile = attendee;
@@ -117,19 +127,15 @@ export class AttendeeProfileComponent implements OnInit {
 
       this.states = this.getStates();
       this.getTags();
-      
+
+      this._EventAttendanceService.GetEventAttendanceByUser(this.uid).subscribe((rsvps) => {
+        this.events = rsvps;
+        this.futureEvents=rsvps.filter(event => moment(event.event.startTime) >= moment());
+      });
     
     }
 
-    ngOnInit() {
-
-    // /*DEBUGGING*/
-    // this.uid = this.myUID;
-    // // this.profile.id = "NOT MY ID";
-    // this.profile.type = "Company";
-    // /*END DEBUGGING*/
-
-  }
+  ngOnInit() { }
 
   handleFileInputImg(files) {
     var file: File = files[0];
@@ -232,32 +238,13 @@ export class AttendeeProfileComponent implements OnInit {
     return true;
   }
 
-
-  // //debug user object
-  debug(files){
-    console.log(files);
+  goToEvent(eventId){
+    this.router.navigate(['event', eventId]); 
   }
 
-
-
-  // //add career tag to user
-  // addTag(){
-  //   if(this.viewMode){
-  //     //get tag object that matches string tag
-  //     var tag: Tags = this.fieldTags.find((tag: Tags) => {return this.currTag == tag.tag});
-  //     var str = JSON.stringify(tag);
-  //     this.profile.chips += str;
-  //   }
-  // }
-
-  // removeTag(tag: string){
-  //   if(this.viewMode){
-  //     var userTags: Tags[] = this.profile.chips != "" ? JSON.parse(this.profile.chips) : [];
-  //     userTags.splice(userTags.findIndex((index) => { return index.tag == tag}), 1)
-  //     document.getElementById(tag).remove
-  //     this.profile.chips = JSON.stringify(userTags);
-  //   }
-  // }
+  goToAttendee(eventId){
+    this.router.navigate(['attendee-list', eventId]); 
+  }
 
 
 }

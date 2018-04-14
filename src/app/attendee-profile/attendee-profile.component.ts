@@ -20,6 +20,10 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { ChipService } from '../services/chip-service/chip.service';
 import { State } from '../shared/domain-model/state';
 import { Globals } from '../shared/globals';
+import * as  moment from 'moment';
+import { EventAttendance } from '../shared/domain-model/eventAttendance';
+import { EventAttendanceService } from '../services/event-attendance-service/event-attendance.service';
+
 
 @Component({
   selector: 'app-attendee-profile',
@@ -59,7 +63,8 @@ export class AttendeeProfileComponent implements OnInit {
   mask:any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   attendeeChips: String[];
   newTag: Tags;
-
+  events: EventAttendance[];
+  futureEvents: EventAttendance[] = [];
 
   searchTags = (text$: Observable<string>) =>
     text$
@@ -75,7 +80,9 @@ export class AttendeeProfileComponent implements OnInit {
               private userService: UserService, private attendeeService: AttendeeService, 
               private companyService: CompanyService, private route: ActivatedRoute, 
               private router: Router, private fileUploadService: FileUploadService,
-              private tagsService: ChipService, public globals: Globals) {
+              private tagsService: ChipService, public globals: Globals,
+              private _EventAttendanceService: EventAttendanceService,
+            ) {
 
       this.route.params.subscribe( params => this.uid = params['id']);
 
@@ -117,6 +124,10 @@ export class AttendeeProfileComponent implements OnInit {
 
       this.states = this.getStates();
       this.getTags();
+      this._EventAttendanceService.GetEventAttendanceByUser(this.uid).subscribe((rsvps) => {
+        this.events = rsvps;
+        this.futureEvents=rsvps.filter(event => moment(event.event.startTime) >= moment());
+      });
       
     
     }
@@ -130,6 +141,10 @@ export class AttendeeProfileComponent implements OnInit {
     // /*END DEBUGGING*/
 
   }
+  goToEvent(eventId){
+    this.router.navigate(['event', eventId]); 
+  }
+
 
   handleFileInputImg(files) {
     var file: File = files[0];

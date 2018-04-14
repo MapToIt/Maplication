@@ -63,7 +63,7 @@
               (change)="handleFileInputRes($event.target.files)" class="inputfile">
     </div>
     <div *ngIf="profile.resume" class="row justify-content-center">
-      <a href="{{profile.resume}}" download>
+      <a href="{{profile.resume}}" download target="_blank">
         <br>
       <button class="btn btn-primary align-middle" type="button" style="text-align:center;">
         <h4>Download Resume</h4>
@@ -103,7 +103,6 @@
                     </div>
                 </div>
                 
-                <button class="btn btn-primary m-1" (click)="goToAttendee(event.event.eventId)">Go to Attendee List</button>
                 <button class="btn btn-primary m-1" (click)="goToEvent(event.event.eventId)">Go to Event Page</button>
             </div>
         </li>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotesService } from '../../services/notes-service/notes.service';
@@ -17,6 +17,8 @@ export class NoteModalComponent implements OnInit {
   
   //note components
   @Input () note: Notes;
+  @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+  @Output() fail: EventEmitter<string> = new EventEmitter<string>();
 
   //view vars
   ratings: RatingType[];
@@ -68,7 +70,11 @@ export class NoteModalComponent implements OnInit {
 
       this._NotesService.addNote(newNote).subscribe((addedNote) => {
         if (addedNote != null){
+          this.notify.emit('Note successfully created.');
           this.activeModal.close();
+        }
+        else{
+          this.fail.emit('Note failed.');
         }
       })
     }

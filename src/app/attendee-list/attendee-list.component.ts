@@ -19,6 +19,8 @@ import { Notes } from '../shared/domain-model/notes';
 import { CompanyService } from '../services/company-service/company.service';
 import { Globals } from '../shared/globals';
 import { EventService } from '../services/event-service/event.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-attendee-list',
@@ -33,6 +35,11 @@ export class AttendeeListComponent implements OnInit {
   university: string;
   degree: string;
   displayList: Attendee[] = new Array();
+  
+  successMessage: string;
+  failMessage: string;
+  private _success = new Subject<string>();
+  private _fail = new Subject<string>();
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase,
               private _EventAttendanceService: EventAttendanceService, private _UserService:UserService,
@@ -72,7 +79,11 @@ export class AttendeeListComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this._success.subscribe((message) => this.successMessage = message);
+    this._fail.subscribe((message) => this.failMessage = message);
+    debounceTime.call(this._success, 5000).subscribe(() => this.successMessage = null);
+    debounceTime.call(this._fail, 5000).subscribe(() => this.failMessage = null);
   }
 
   openNoteModal(attendee: Attendee){
@@ -88,6 +99,12 @@ export class AttendeeListComponent implements OnInit {
         let options: NgbModalOptions = {size: 'lg'};
         const modalRef = this.modalService.open(NoteModalComponent, options);
         modalRef.componentInstance.note = note;
+        modalRef.componentInstance.notify.subscribe(($e) => {
+          this._success.next($e);
+        })
+        modalRef.componentInstance.fail.subscribe(($e) => {
+          this._fail.next($e);
+        })
       });
     });
   }

@@ -4,6 +4,8 @@ import { FirebaseUISignInSuccess } from 'firebaseui-angular';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+import {debounceTime} from 'rxjs/operator/debounceTime';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import * as firebase from 'firebase/app';
@@ -41,6 +43,11 @@ export class NotesComponent implements OnInit {
   university:string;
   ratingType: RatingType;
   loaded: boolean;
+  successMessage: string;
+  failMessage: string;
+  private _success = new Subject<string>();
+  private _fail = new Subject<string>();
+
 
   //for autocomplete
   search = (text$: Observable<string>) =>
@@ -77,7 +84,15 @@ export class NotesComponent implements OnInit {
   }
 
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this._success.subscribe((message) => this.successMessage = message);
+    this._fail.subscribe((message) => this.failMessage = message);
+    debounceTime.call(this._success, 5000).subscribe(() => this.successMessage = null);
+    debounceTime.call(this._fail, 5000).subscribe(() => this.failMessage = null);
+  }
+
+  public changeSuccessMessage() {
+    this._success.next(`${new Date()} - Message successfully changed.`);
   }
 
   updateEntries(){
@@ -97,5 +112,11 @@ export class NotesComponent implements OnInit {
     let options: NgbModalOptions = {size: 'lg'};
     const modalRef = this.modalService.open(NoteUpdateModalComponent, options);
     modalRef.componentInstance.note = note;
+    modalRef.componentInstance.notify.subscribe(($e) => {
+      this._success.next($e);
+    })
+    modalRef.componentInstance.fail.subscribe(($e) => {
+      this._fail.next($e);
+    })
   }
 }

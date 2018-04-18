@@ -122,6 +122,15 @@ export class EventMapComponent implements OnInit {
       this.AddPointOne(evt);
     });
     let drawingMouseUp = this.renderer.listen(this.drawing.nativeElement, 'mouseup', (evt) => {
+      if (evt.target.id.substring(0,7) == 'tableId'){
+        let tableIdString = evt.target.id.substring(7,evt.target.id.length);
+        let tableId = parseInt(tableIdString);
+        for (let i = 0; i < this.eventTables.length; i ++){
+          if (this.eventTables[i].tableId === tableId){
+            this.router.navigate(['company-profile', this.eventTables[i].company.userId]);
+          }
+        }
+      }
       this.AddPointTwo(evt);
     });
     let drawingMouseOver = this.renderer.listen(this.drawing.nativeElement, 'mouseover', (evt) => {

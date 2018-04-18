@@ -61,13 +61,15 @@
           <div class='input-group-prepend'>
               <span class='input-group-text' id='basic-addon1'>Start Time</span>
           </div>
-          <ng2-flatpickr [config]='dateTime' [(ngModel)]='mapInfo.event.startTime' aria-describedby='basic-addon1'></ng2-flatpickr>
+          <input [(ngModel)]='mapInfo.event.startTime' [owlDateTimeTrigger]="dtstart" [owlDateTime]="dtstart" aria-describedby="basic-addon1">
+          <owl-date-time #dtstart></owl-date-time>
         </div>
         <div class='input-group m-4'>
           <div class='input-group-prepend'>
               <span class='input-group-text' id='basic-addon1'>End Time</span>
           </div>
-          <ng2-flatpickr [config]='dateTime' [(ngModel)]='mapInfo.event.endTime' aria-describedby='basic-addon1'></ng2-flatpickr>
+          <input [(ngModel)]='mapInfo.event.endTime' [owlDateTimeTrigger]="dtend" [owlDateTime]="dtend" aria-describedby="basic-addon1">
+          <owl-date-time #dtend></owl-date-time>
         </div>
         <div class='input-group m-4'>
           <div class='input-group-prepend'>

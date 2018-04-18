@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -92,6 +93,8 @@ import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.
 import { NoteModalComponent } from './attendee-list/note-modal/note-modal.component';
 import { NoteUpdateModalComponent } from './notes/note-update-modal/note-update-modal.component';
 
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -137,7 +140,10 @@ import { NoteUpdateModalComponent } from './notes/note-update-modal/note-update-
     SharedModule,
     NgxPaginationModule,
     TextMaskModule,
-    Ng2FlatpickrModule
+    Ng2FlatpickrModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    BrowserAnimationsModule
   ],
   providers: [
     Globals,

@@ -16,6 +16,7 @@ import { EventAttendanceService } from '../services/event-attendance-service/eve
 import { NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { CreateMapPromptComponent } from '../create-map-prompt/create-map-prompt.component';
 import * as firebase from 'firebase/app';
+import * as $ from 'jquery';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FlatpickrOptions } from 'ng2-flatpickr';
 
@@ -106,13 +107,6 @@ export class EventMapComponent implements OnInit {
       this.states = statesData;
     });
 
-    this.dateTime = {
-      enableTime: true,
-      altInput: true,
-      altFormat: 'M d, Y h:i K',
-      dateFormat: 'Y-m-d h:i'
-    };
-
   }
 
   DrawMap(){
@@ -128,7 +122,7 @@ export class EventMapComponent implements OnInit {
     });
     let drawingMouseUp = this.renderer.listen(this.drawing.nativeElement, 'mouseup', (evt) => {
       if (evt.target.id.substring(0,7) == 'tableId'){
-        let tableIds = evt.target.id.substring(7,9);
+        let tableIds = evt.target.id.substring(7,evt.target.id.length);
         let tableId = parseInt(tableIds);
         for (let i = 0; i < this.eventTables.length; i ++){
           if (this.eventTables[i].tableId === tableId){

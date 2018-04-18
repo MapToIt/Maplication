@@ -1,5 +1,8 @@
 @import '~material-design-icons/iconfont/material-icons.css';
 
+.wrapper{position:relative;}
+.bottom{position:absolute; bottom:0; width:100%;}
+
 /* .container {
   background:#e2e2e2;
   padding: 3em;

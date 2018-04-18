@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <div class="card text-center px-2 m-1 wrapper">
+  <div class="card text-center px-2 m-1 wrapper align-items-stretch d-flex flex-column">
     <div>
       <h3><strong>Past Event</strong></h3>
       <div>
@@ -71,11 +71,13 @@
   </div>
 
 
-  <div class="card text-center px-2 m-1 wrapper">
+  <div class="card text-center px-2 m-1 wrapper align-items-stretch d-flex flex-column">
     <div>
+      <h3>
+        <strong>Future Event</strong>
+      </h3>
       <div>
-        <h3><strong>Future Event</strong></h3>
-        <div><input class = "form-control" type="text" placeholder = "Enter Search Date">
+        <input class = "form-control" type="text" placeholder = "Enter Search Date">
       </div>
       <table class="table table-striped table-bordered" cellspacing = "0" width="100%" *ngIf="futureEventsPage">
         <thead>

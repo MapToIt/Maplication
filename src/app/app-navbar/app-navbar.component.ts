@@ -7,6 +7,8 @@ import { Observable } from 'rxjs/Observable';
 import { UserService } from '../services/user-service/user.service';
 import * as firebase from 'firebase/app';
 import { Globals } from '../shared/globals';
+import { LoginComponent } from '../login/login.component';
+import { NgbModalOptions, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-navbar',
@@ -15,8 +17,11 @@ import { Globals } from '../shared/globals';
 })
 export class AppNavbarComponent implements OnInit {
 
+  navbarCollapsed: boolean = true;
+
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase,
     private route: ActivatedRoute, private router: Router, 
+    public modalService: NgbModal,
     private _UserService: UserService, public globals: Globals) {
    }
 
@@ -30,6 +35,7 @@ export class AppNavbarComponent implements OnInit {
     this.globals.isAttendee = false;
     this.globals.isCompany = false;
     this.globals.isCoordinator = false;
+    this.navbarCollapsed=true;
     this.router.navigate(['*']);
   }
 
@@ -37,31 +43,39 @@ export class AppNavbarComponent implements OnInit {
     if (this.globals.isAttendee)
     {
       this.router.navigate(['attendee-profile', this.afAuth.auth.currentUser.uid]);
+      this.navbarCollapsed=true;
     }
     else if (this.globals.isCompany)
     {
       this.router.navigate(['company-profile', this.afAuth.auth.currentUser.uid]);
+      this.navbarCollapsed=true;
     }
     else
     {
       this.router.navigate(['coord-home', this.afAuth.auth.currentUser.uid]);
+      this.navbarCollapsed=true;
     }
   }
 
   goToNotes(){
     this.router.navigate(['notes', this.afAuth.auth.currentUser.uid]);          
+    this.navbarCollapsed=true;
   }
 
   goToLogin(){
-    this.router.navigate(['login']);
+    let options: NgbModalOptions = {size: 'sm',  windowClass: 'dark-modal'};
+    const modalRef = this.modalService.open(LoginComponent, options);
+    this.navbarCollapsed=true;
   }
 
   goToEvents(){
     this.router.navigate(['event-list-view']);
+    this.navbarCollapsed=true;
   }
 
   goToAbout(){
     this.router.navigate(['about']);
+    this.navbarCollapsed=true;
   }
 
 }

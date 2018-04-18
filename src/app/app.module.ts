@@ -68,7 +68,7 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
   ],
   method: AuthMethods.Popup,
   tos: '<your-tos-link>',
-  credentialHelper: CredentialHelper.AccountChooser
+  credentialHelper: CredentialHelper.None
 };
 
 import { environment } from './../../environments/environment';
@@ -115,7 +115,8 @@ import { NoteUpdateModalComponent } from './notes/note-update-modal/note-update-
   entryComponents: [
     CreateMapPromptComponent,
     NoteModalComponent,
-    NoteUpdateModalComponent
+    NoteUpdateModalComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -146,7 +147,6 @@ import { NoteUpdateModalComponent } from './notes/note-update-modal/note-update-
     CompanyService,
     FileUploadService,
     CoordinatorService,
-
     ChipService,
     EventService,
     EventAttendanceService,

@@ -8,6 +8,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import * as firebase from 'firebase/app';
 import { UserService } from '../services/user-service/user.service';
+import { EventAttendanceService } from '../services/event-attendance-service/event-attendance.service';
 import { CompanyService } from '../services/company-service/company.service';
 import { FileUploadService } from '../services/file-upload-service/file-upload.service';
 import { Company } from '../shared/domain-model/company';
@@ -16,6 +17,8 @@ import { StatesService } from '../services/states-service/states.service';
 import { ChipService } from '../services/chip-service/chip.service';
 import { Tags } from '../shared/domain-model/tags';
 import { Globals } from '../shared/globals';
+import * as  moment from 'moment';
+import { EventAttendance } from '../shared/domain-model/eventAttendance';
 
 @Component({
   selector: 'app-company-profile',
@@ -29,11 +32,15 @@ export class CompanyProfileComponent implements OnInit {
   currentUser: firebase.User;
   isProfileUser: boolean;
   changeMade: boolean = false;
+  isProfile: boolean = true;
   profile: Company = new Company();
+  now: Date = new Date();
   states: State[];
   chips: Tags[];
   newTag: Tags;
   companyChips: String[];
+  events: EventAttendance[];
+  futureEvents: EventAttendance[] = [];
   file:any;
   mask:any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
@@ -56,6 +63,7 @@ export class CompanyProfileComponent implements OnInit {
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
               private _StatesService: StatesService, private _ChipService: ChipService,
               private _CompanyService: CompanyService, private _UserService: UserService,
+              private _EventAttendanceService: EventAttendanceService,
               private _FileUploadService: FileUploadService, private globals: Globals,
               private route: ActivatedRoute, private router: Router) {
                
@@ -96,7 +104,14 @@ export class CompanyProfileComponent implements OnInit {
 
       this._ChipService.getChips().subscribe((chips) => {
         this.chips = chips;
-      });      
+      });   
+      
+      this._EventAttendanceService.GetEventAttendanceByUser(this.uid).subscribe((rsvps) => {
+        this.events = rsvps;
+        this.futureEvents=rsvps.filter(event => moment(event.event.startTime) >= moment());
+        console.log("rsvps: ",rsvps);
+        console.log("future Events", this.futureEvents);
+      });
    }
 
   ngOnInit() {
@@ -144,6 +159,14 @@ export class CompanyProfileComponent implements OnInit {
         this.updateCompany();
       }
     )
+  }
+
+  goToEvent(eventId){
+    this.router.navigate(['event', eventId]); 
+  }
+
+  goToAttendee(eventId){
+    this.router.navigate(['attendee-list', eventId]); 
   }
 
 }

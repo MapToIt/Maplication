@@ -108,7 +108,6 @@ export class EventMapComponent implements OnInit {
     this._StatesService.getStates().subscribe((statesData) => {
       this.states = statesData;
     });
-    this.checkAttendance();
   }
 
   DrawMap(){
@@ -255,6 +254,7 @@ export class EventMapComponent implements OnInit {
         this.DrawMap();
         this.GetTables(this.mapId);
       }
+      this.checkAttendance();
     });
   }
 
@@ -353,6 +353,10 @@ export class EventMapComponent implements OnInit {
         }
       }
     });
+  }
+
+  GoToAttendeeList(eventId: number){
+    this.router.navigate(['attendee-list', eventId]);
   }
 
 }

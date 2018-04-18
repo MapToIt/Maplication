@@ -10,6 +10,7 @@
     </div>
     <div class='eventInfo' *ngIf='mapPopulated' class='col-4'>
       <button class='btn btn-primary' *ngIf='userType && !isAttending' (click)='rsvp(this.mapInfo.eventId)'>RSVP</button>
+      <button class='btn btn-primary' *ngIf='globals.isCompany && isAttending' (click)='GoToAttendeeList(mapInfo.eventId)'>Attendee List</button>
       <div class='row' *ngIf='!isEventCoordinator'>
         <h3>{{mapInfo.event.eventTitle}}</h3>
         <h5>{{mapInfo.event.description}}</h5>

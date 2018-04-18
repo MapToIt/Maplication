@@ -155,4 +155,8 @@ export class CoordHomeComponent implements OnInit {
       this.futureEventsPage.push(this.futureEvents[i]);
     }
   }
+
+  goToEvent(eventId){
+    this.router.navigate(['event', eventId]);
+  }
 }

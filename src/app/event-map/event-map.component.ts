@@ -79,6 +79,8 @@ export class EventMapComponent implements OnInit {
 
   mapImage: File;
 
+  isAttending: boolean = false;
+
   constructor(private _ngZone: NgZone,
               private route: ActivatedRoute,
               private router: Router,
@@ -106,7 +108,7 @@ export class EventMapComponent implements OnInit {
     this._StatesService.getStates().subscribe((statesData) => {
       this.states = statesData;
     });
-
+    this.checkAttendance();
   }
 
   DrawMap(){
@@ -342,4 +344,15 @@ export class EventMapComponent implements OnInit {
       }
     });    
   }
+
+  checkAttendance(){
+    this._EventAttendanceService.GetEventAttendanceByUser(this.globals.currentUser.uid).subscribe((data) => {
+      for (var i = 0; i < data.length; i++){
+        if (data[i].event.eventId == this.mapInfo.eventId){
+          this.isAttending = true;
+        }
+      }
+    });
+  }
+
 }

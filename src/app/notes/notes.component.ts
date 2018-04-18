@@ -91,10 +91,6 @@ export class NotesComponent implements OnInit {
     debounceTime.call(this._fail, 5000).subscribe(() => this.failMessage = null);
   }
 
-  public changeSuccessMessage() {
-    this._success.next(`${new Date()} - Message successfully changed.`);
-  }
-
   updateEntries(){
     var start = this.start ? new Date(this.start.year, this.start.month - 1, this.start.day) : null;
     var end = this.end ? new Date(this.end.year, this.end.month - 1, this.end.day) : null;

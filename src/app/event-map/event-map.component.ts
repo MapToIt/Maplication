@@ -123,8 +123,8 @@ export class EventMapComponent implements OnInit {
     });
     let drawingMouseUp = this.renderer.listen(this.drawing.nativeElement, 'mouseup', (evt) => {
       if (evt.target.id.substring(0,7) == 'tableId'){
-        let tableIds = evt.target.id.substring(7,evt.target.id.length);
-        let tableId = parseInt(tableIds);
+        let tableIdString = evt.target.id.substring(7,evt.target.id.length);
+        let tableId = parseInt(tableIdString);
         for (let i = 0; i < this.eventTables.length; i ++){
           if (this.eventTables[i].tableId === tableId){
             this.activeCompany = this.eventTables[i].company;
@@ -340,9 +340,16 @@ export class EventMapComponent implements OnInit {
     rsvp.UserType = this.userType;
     this._EventAttendanceService.updateRSVP(rsvp).subscribe((rsvp) => {
       if (this.userType.toLowerCase() == 'company'){
-        this.router.navigate([`/event/${this.mapInfo.eventId}`])
+        this.isAttending = true;
+        if (this.globals.isCompany){
+          for (var i = 0; i < this.eventTables.length; i++){
+            this.ResetTable(this.eventTables[i]);
+          }
+          this.eventTables = null;
+          this.GetTables(this.mapId);
+        }  
       }
-    });    
+    });  
   }
 
   checkAttendance(){

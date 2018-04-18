@@ -122,6 +122,9 @@ export class EventMapComponent implements OnInit {
       this.AddPointOne(evt);
     });
     let drawingMouseUp = this.renderer.listen(this.drawing.nativeElement, 'mouseup', (evt) => {
+      this.AddPointTwo(evt);
+    });
+    let drawingMouseOver = this.renderer.listen(this.drawing.nativeElement, 'mouseover', (evt) => {
       if (evt.target.id.substring(0,7) == 'tableId'){
         let tableIdString = evt.target.id.substring(7,evt.target.id.length);
         let tableId = parseInt(tableIdString);
@@ -131,8 +134,7 @@ export class EventMapComponent implements OnInit {
           }
         }
       }
-      this.AddPointTwo(evt);
-    });
+    })
   }
 
   toggleEdit(){

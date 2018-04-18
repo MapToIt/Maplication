@@ -63,7 +63,7 @@
               (change)="handleFileInputRes($event.target.files)" class="inputfile">
     </div>
     <div *ngIf="profile.resume" class="row justify-content-center">
-      <a href="{{profile.resume}}" download>
+      <a href="{{profile.resume}}" download target="_blank">
         <br>
       <button class="btn btn-primary align-middle" type="button" style="text-align:center;">
         <h4>Download Resume</h4>
@@ -82,7 +82,58 @@
       </div>
     </div>
   </div>
-
+  <div class="p-2">  
+    <h3>My Events:</h3>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item" *ngFor="let event of events">
+            <div>
+                <strong><u>{{event.event.eventTitle}}</u></strong>
+            </div> 
+            <div class="d-flex flex-md-row flex-column  align-content-center justify-content-between">
+                <div class="d-flex flex-row  align-content-center justify-content-between col-6">
+                    <div class="d-flex flex-md-row flex-column m-1 align-content-center">
+                        <span>Start: </span>
+                        <span>{{event.event.startTime | date:'mediumDate'}}</span>
+                        <span>@ {{event.event.startTime | date:'shortTime'}}</span>
+                    </div>
+                    <div class="d-flex flex-md-row flex-column m-1 align-content-center">
+                        <span>End: </span>
+                        <span>{{event.event.endTime | date:'mediumDate'}}</span>
+                        <span> @ {{event.event.endTime | date:'shortTime'}}</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary m-1" (click)="goToEvent(event.event.eventId)">Go to Event Page</button>
+            </div>
+        </li>
+    </ul>
+</div>
+  <div class="p-2">
+    <h3>My Future Events:</h3>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" *ngFor="let event of futureEvents">
+          <div>
+              <strong><u>{{event.event.eventTitle}}</u></strong>
+          </div> 
+          <div class="d-flex flex-md-row flex-column  align-content-center justify-content-between">
+              <div class="d-flex flex-row  align-content-center justify-content-between col-6">
+                  <div class="d-flex flex-md-row flex-column m-1 align-content-center">
+                      <span>Start: </span>
+                      <span>{{event.event.startTime | date:'mediumDate'}}</span>
+                      <span>@ {{event.event.startTime | date:'shortTime'}}</span>
+                  </div>
+                  <div class="d-flex flex-md-row flex-column m-1 align-content-center">
+                      <span>End: </span>
+                      <span>{{event.event.endTime | date:'mediumDate'}}</span>
+                      <span> @ {{event.event.endTime | date:'shortTime'}}</span>
+                  </div>
+              </div>
+              <button class="btn btn-primary m-1" (click)="goToAttendee(event.event.eventId)" *ngIf="isProfileUser"> Go to Attendee List</button>
+              <button class="btn btn-primary m-1" (click)="goToEvent(event.event.eventId)">Go to Event Page</button>
+          </div>
+      </li>
+  </ul>
+</div>
 </div>
 
 

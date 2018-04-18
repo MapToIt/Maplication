@@ -3,7 +3,7 @@ import * as firebase from 'firebase/app';
 
 @Injectable()
 export class Globals {
-  readonly apiUrl: string = 'http://192.241.142.82:5000/api/';
+  apiUrl: string = 'http://192.241.142.82:5000/api/';
   isAttendee: boolean = false;
   isCoordinator: boolean = false;
   isCompany: boolean = false;

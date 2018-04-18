@@ -117,7 +117,9 @@ export class EventMapComponent implements OnInit {
 
   DrawMap(){
     this.draw = SVG('drawing').size(this.imageWidth, this.imageHeight);
+    //this.draw = SVG('drawing').size(window.screen.width, window.screen.height / 2)
     let image = this.draw.image(this.mapInfo.image).size(this.imageWidth, this.imageHeight);
+    //let image = this.draw.image(this.mapInfo.image).size(window.screen.width, window.screen.height /2 );
     let rect = this.draw.rect(this.imageWidth, this.imageHeight).opacity(0).attr({'class': 'unselectable', 'draggable':false});
     rect.id('drawLayer');
 
@@ -188,6 +190,11 @@ export class EventMapComponent implements OnInit {
     height = Math.round((height/this.imageHeight) * 1000);
     if (width != 0 && height != 0){
       this.eventTables.push(new Table(0, this.mapId, null, x, y, width, height));
+      if (this.eventTables.length > 1){ //Are there more than tables than the one we just added
+        this.eventTables[this.eventTables.length - 1].tableId = this.eventTables[this.eventTables.length-2].tableId + 1;
+      } else {
+        this.eventTables[this.eventTables.length - 1].tableId = 1;
+      }
       this.DrawTable(this.eventTables[this.eventTables.length-1]);
       console.log(this.eventTables[this.eventTables.length-1]);
       this.AddTable(this.eventTables[this.eventTables.length-1]);
@@ -246,10 +253,12 @@ export class EventMapComponent implements OnInit {
       this.mapInfo.event.startTime = new Date(Date.UTC(sd.getFullYear(), sd.getMonth(), sd.getDate(), sd.getHours(), sd.getMinutes(), sd.getSeconds()));
       let ed = new Date(this.mapInfo.event.endTime);
       this.mapInfo.event.endTime = new Date(Date.UTC(ed.getFullYear(), ed.getMonth(), ed.getDate(), ed.getHours(),ed.getMinutes(), ed.getSeconds()));
-      this.GetTables(this.mapId);
       this.CheckEditPermissions();
       this.mapPopulated = true;
-      this.DrawMap();
+      if (this.mapInfo.image != null){
+        this.DrawMap();
+        this.GetTables(this.mapId);
+      }
     });
   }
 
@@ -323,6 +332,7 @@ export class EventMapComponent implements OnInit {
         console.log(uploadTask.snapshot.downloadURL);
         this.mapInfo.image = uploadTask.snapshot.downloadURL;
         this._MapService.UpdateMap(this.mapInfo);
+        this.DrawMap();
       }
     );
   }

@@ -65,6 +65,12 @@
         </div>
         <div class='input-group m-4'>
           <div class='input-group-prepend'>
+              <span class='input-group-text' id='basic-addon1'>End Time</span>
+          </div>
+          <ng2-flatpickr [config]='dateTime' [(ngModel)]='mapInfo.event.endTime' aria-describedby='basic-addon1'></ng2-flatpickr>
+        </div>
+        <div class='input-group m-4'>
+          <div class='input-group-prepend'>
             <span class='input-group-text' id='basic-addon1'>Zip Code</span>
           </div>
           <input type="number" class="row form-control" [(ngModel)]="mapInfo.event.zipCode" aria-label="Zip Code" aria-describedby="basic-addon1">
@@ -73,7 +79,7 @@
       </div>
       <div class='row' id='companyInfo' *ngIf='activeCompany'>
         <h3>Company Info:</h3>
-        <h5>Name: <a href='/company-profile/{{activeCompany.companyId}}'>{{activeCompany.companyName}}</a></h5>
+        <h5>Name: <a href='/company-profile/{{activeCompany.userId}}'>{{activeCompany.companyName}}</a></h5>
         <h5>Phone: {{activeCompany.phoneNumber}}</h5>
         <h5>Location: {{activeCompany.streetNumber}} {{activeCompany.street}} {{activeCompany.city}} {{activeCompany.state.stateName}} {{activeCompany.zipCode}}</h5>
         <h5>Website: {{activeCompany.url}}</h5>

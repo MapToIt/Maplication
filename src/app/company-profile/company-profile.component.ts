@@ -19,6 +19,8 @@ import { Tags } from '../shared/domain-model/tags';
 import { Globals } from '../shared/globals';
 import * as  moment from 'moment';
 import { EventAttendance } from '../shared/domain-model/eventAttendance';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operator/debounceTime';
 
 @Component({
   selector: 'app-company-profile',
@@ -43,6 +45,12 @@ export class CompanyProfileComponent implements OnInit {
   futureEvents: EventAttendance[] = [];
   file:any;
   mask:any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+
+
+  successMessage: string;
+  failMessage: string;
+  private _success = new Subject<string>();
+  private _fail = new Subject<string>();
 
   search = (text$: Observable<string>) =>
     text$
@@ -114,10 +122,12 @@ export class CompanyProfileComponent implements OnInit {
       });
    }
 
-  ngOnInit() {
-  }
-
-  
+   ngOnInit(): void {
+    this._success.subscribe((message) => this.successMessage = message);
+    this._fail.subscribe((message) => this.failMessage = message);
+    debounceTime.call(this._success, 5000).subscribe(() => this.successMessage = null);
+    debounceTime.call(this._fail, 5000).subscribe(() => this.failMessage = null);
+  }  
 
   updateCompany(){
     this.profile.chips = JSON.stringify(this.companyChips);
@@ -127,12 +137,18 @@ export class CompanyProfileComponent implements OnInit {
           this.profile.state && this.profile.street && this.profile.streetNumber)){
       alert("Please complete all fields of your profile before saving.");
     } else {
-      this._CompanyService.updateCompany(this.profile).subscribe((addedCompany) => {
-        if(addedCompany != null){
-          this.changeMade = false;
-          this.router.navigate(['company-profile', this.afAuth.auth.currentUser.uid]);
+      this._CompanyService.updateCompany(this.profile).subscribe(
+        data => {
+          if(data != null){
+            this.changeMade = false;
+            this._success.next('Company successfully updated');
+            this.router.navigate(['company-profile', this.afAuth.auth.currentUser.uid]);
+          }
+        },
+        err => {
+          this._fail.next('Failed to update profile.');
         }
-      });
+      );
     }
   }
 

@@ -147,7 +147,7 @@ export class CoordHomeComponent implements OnInit {
     let page = this.futurePage - 1;
     let size = this.itemsPerPage;
     let start = page * size;
-    let end = start+size > this.pastEvents.length ? this.pastEvents.length : start + size;
+    let end = start+size > this.futureEvents.length ? this.futureEvents.length : start + size;
     
     this.futureEventsPage = new Array();
 

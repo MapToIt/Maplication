@@ -13,6 +13,7 @@ import { StatesService } from '../services/states-service/states.service';
 import { UserService } from '../services/user-service/user.service';
 import { CoordinatorService } from '../services/coordinator/coordinator.service';
 import { EventAttendanceService } from '../services/event-attendance-service/event-attendance.service';
+import { CompanyService } from '../services/company-service/company.service';
 import { NgbModal, NgbActiveModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { CreateMapPromptComponent } from '../create-map-prompt/create-map-prompt.component';
 import * as firebase from 'firebase/app';
@@ -75,6 +76,7 @@ export class EventMapComponent implements OnInit {
   isEventCoordinator: boolean = false;
   coordinator: Coordinator = new Coordinator();
 
+  attendingCompanies: Company[] = [];
   activeCompany: Company;
 
   mapImage: File;
@@ -92,6 +94,7 @@ export class EventMapComponent implements OnInit {
               private _StatesService: StatesService,
               private _CoordinatorService: CoordinatorService,
               private _EventAttendanceService: EventAttendanceService,
+              private _CompanyService: CompanyService,
               private modalService: NgbModal,
               private renderer: Renderer2,
               private changeRef: ChangeDetectorRef,
@@ -266,6 +269,7 @@ export class EventMapComponent implements OnInit {
         this.GetTables(this.mapId);
       }
       this.checkAttendance();
+      this.GetEventAttendance();
     });
   }
 
@@ -370,6 +374,17 @@ export class EventMapComponent implements OnInit {
           this.isAttending = true;
         }
       }
+    });
+  }
+
+  GetEventAttendance(){
+    this._EventAttendanceService.GetCompanyAttendanceByEvent(this.mapInfo.eventId).subscribe((data) => {
+      for (var i = 0; i < data.length; i++){
+        this._CompanyService.getCompany(data[i].userId).subscribe((company) => {
+          this.attendingCompanies.push(company);
+        });
+      }
+      console.log(this.attendingCompanies);
     });
   }
 

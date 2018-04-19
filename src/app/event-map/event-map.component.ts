@@ -392,4 +392,16 @@ export class EventMapComponent implements OnInit {
     this.router.navigate(['attendee-list', eventId]);
   }
 
+  HighlightCompany(companyId: number){
+    for(let i = 0; i < this.eventTables.length; i++){
+      if (this.eventTables[i].companyId == companyId){
+        this.eventTables[i].tableSVG.fill('#428bca');
+      } else if (this.eventTables[i].company != null){
+        this.eventTables[i].tableSVG.fill(tableColor.OCCUPIED);
+      } else {
+        this.eventTables[i].tableSVG.fill(tableColor.AVAILABLE);
+      }
+    }
+  }
+
 }

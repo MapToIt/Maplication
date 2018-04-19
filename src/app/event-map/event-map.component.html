@@ -93,4 +93,9 @@
     <button [ngClass]="buttonClass" (click)="toggleEdit()">Add tables</button>
     <button class='btn btn-danger' (click)="toggleDelete()">Delete Tables</button>
   </div>
+  <div class='row'>
+    <ul>
+      <li *ngFor='let attendingCompany of attendingCompanies'><p (click)='HighlightCompany(attendingCompany.companyId)'>{{attendingCompany.companyName}}</p></li>
+    </ul>
+  </div>
 </div>

@@ -21,6 +21,10 @@ import * as  moment from 'moment';
 import { EventAttendance } from '../shared/domain-model/eventAttendance';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operator/debounceTime';
+import { EmploymentTypes } from '../shared/domain-model/employment-types';
+import { SalaryTypes } from '../shared/domain-model/salary-types';
+import { SalaryTypeService } from '../services/salary-type-service/salary-type.service';
+import { EmploymentTypeService } from '../services/employment-type-service/employment-type.service';
 
 @Component({
   selector: 'app-company-profile',
@@ -41,6 +45,8 @@ export class CompanyProfileComponent implements OnInit {
   chips: Tags[];
   newTag: Tags;
   companyChips: String[];
+  employmentTypes: EmploymentTypes[];
+  salaryTypes: SalaryTypes[];
   events: EventAttendance[];
   futureEvents: EventAttendance[] = [];
   file:any;
@@ -72,6 +78,8 @@ export class CompanyProfileComponent implements OnInit {
               private _StatesService: StatesService, private _ChipService: ChipService,
               private _CompanyService: CompanyService, private _UserService: UserService,
               private _EventAttendanceService: EventAttendanceService,
+              private _SalaryTypesService: SalaryTypeService,
+              private _EmploymentTypesService: EmploymentTypeService,
               private _FileUploadService: FileUploadService, private globals: Globals,
               private route: ActivatedRoute, private router: Router) {
                
@@ -117,8 +125,14 @@ export class CompanyProfileComponent implements OnInit {
       this._EventAttendanceService.GetEventAttendanceByUser(this.uid).subscribe((rsvps) => {
         this.events = rsvps;
         this.futureEvents=rsvps.filter(event => moment(event.event.startTime) >= moment());
-        console.log("rsvps: ",rsvps);
-        console.log("future Events", this.futureEvents);
+      });
+
+      this._EmploymentTypesService.getEmploymentTypes().subscribe((types) => {
+        this.employmentTypes = types;
+      });
+
+      this._SalaryTypesService.getSalaryTypes().subscribe((types) => {
+        this.salaryTypes = types;
       });
    }
 

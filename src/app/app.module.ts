@@ -90,6 +90,10 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
 import { CreateMapPromptComponent } from './create-map-prompt/create-map-prompt.component';
 import { NoteModalComponent } from './attendee-list/note-modal/note-modal.component';
 import { NoteUpdateModalComponent } from './notes/note-update-modal/note-update-modal.component';
+import { SalaryTypeService } from './services/salary-type-service/salary-type.service';
+import { JobService } from './services/job-service/job.service';
+import { RecruiterService } from './services/recruiter-service/recruiter.service';
+import { EmploymentTypeService } from './services/employment-type-service/employment-type.service';
 
 @NgModule({
   declarations: [
@@ -149,7 +153,11 @@ import { NoteUpdateModalComponent } from './notes/note-update-modal/note-update-
     EventService,
     EventAttendanceService,
     NotesService,
-    RatingTypesService
+    RatingTypesService,
+    SalaryTypeService,
+    JobService,
+    RecruiterService,
+    EmploymentTypeService
   ],
   bootstrap: [AppComponent]
 })

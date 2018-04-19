@@ -55,7 +55,7 @@ export class EventMapComponent implements OnInit {
   events: Event[];
   eventInfo: Event;
 
-  eventTables: Table[];
+  eventTables: Table[] = [];
   eventId: number;
   mapId: number;
   mapInfo: Map;
@@ -129,7 +129,7 @@ export class EventMapComponent implements OnInit {
         let tableIdString = evt.target.id.substring(7,evt.target.id.length);
         let tableId = parseInt(tableIdString);
         for (let i = 0; i < this.eventTables.length; i ++){
-          if (this.eventTables[i].tableId === tableId){
+          if (this.eventTables[i].tableId === tableId && !this.deleteToggle){
             this.router.navigate(['company-profile', this.eventTables[i].company.userId]);
           }
         }
@@ -173,7 +173,7 @@ export class EventMapComponent implements OnInit {
       this.tempPoint.y1 = e.pageY - this.GetElementOffset(document.getElementById('drawLayer')).top;
     } else if (this.deleteToggle){
       console.log('here');
-      this.DeleteTable(parseInt(e.target.id.substring(7,9)));
+      this.DeleteTable(parseInt(e.target.id.substring(7,e.target.id.length)));
     }
   }
 
@@ -198,15 +198,8 @@ export class EventMapComponent implements OnInit {
     width = Math.round((width/this.imageWidth) * 1000);
     height = Math.round((height/this.imageHeight) * 1000);
     if (width != 0 && height != 0){
-      this.eventTables.push(new Table(0, this.mapId, null, x, y, width, height));
-      if (this.eventTables.length > 1){ //Are there more than tables than the one we just added
-        this.eventTables[this.eventTables.length - 1].tableId = this.eventTables[this.eventTables.length-2].tableId + 1;
-      } else {
-        this.eventTables[this.eventTables.length - 1].tableId = 1;
-      }
-      this.DrawTable(this.eventTables[this.eventTables.length-1]);
-      console.log(this.eventTables[this.eventTables.length-1]);
-      this.AddTable(this.eventTables[this.eventTables.length-1]);
+      let newTable = new Table(0, this.mapId, null, x, y, width, height);
+      this.AddTable(newTable);
     } else {
       console.log("Table invalid");
     }
@@ -237,7 +230,6 @@ export class EventMapComponent implements OnInit {
   }
 
   DeleteTable(tableId: number){
-    console.log("DELETE TABLE");
     this._MapService.DeleteTable(tableId);
     for (let i = 0; i < this.eventTables.length; i++){
       if (this.eventTables[i].tableId == tableId){
@@ -286,7 +278,13 @@ export class EventMapComponent implements OnInit {
 
   AddTable(table:Table)
   {
-    this._TableService.AddTable(table);
+    this._TableService.AddTable(table).subscribe((data) => {
+        table = data;
+        this.DrawTable(table);
+        this.eventTables.push(table);
+        console.log(table);
+        console.log(this.eventTables);
+    });
   }
 
   openEventPrompt() {
@@ -354,8 +352,8 @@ export class EventMapComponent implements OnInit {
     rsvp.UserId = this.globals.currentUser.uid;
     rsvp.UserType = this.userType;
     this._EventAttendanceService.updateRSVP(rsvp).subscribe((rsvp) => {
+      this.isAttending = true;
       if (this.userType.toLowerCase() == 'company'){
-        this.isAttending = true;
         if (this.globals.isCompany){
           for (var i = 0; i < this.eventTables.length; i++){
             this.ResetTable(this.eventTables[i]);

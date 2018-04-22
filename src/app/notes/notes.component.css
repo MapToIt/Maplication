@@ -20,3 +20,10 @@ ul {
 .card{
     width: 100%;
 }
+
+ngb-alert{
+    z-index: 999;
+    position: fixed;
+    top: 10vh;
+    right: 0;
+}

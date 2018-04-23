@@ -99,3 +99,6 @@
     </ul>
   </div>
 </div>
+
+<ngb-alert *ngIf="successMessage" type="success" class="alert" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
+<ngb-alert *ngIf="failMessage" type="warning" class="alert" (close)="failMessage = null">{{ failMessage }}</ngb-alert>

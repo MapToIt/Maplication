@@ -20,6 +20,8 @@ import * as firebase from 'firebase/app';
 import * as $ from 'jquery';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FlatpickrOptions } from 'ng2-flatpickr';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operator/debounceTime';
 
 
 import { Observable } from 'rxjs';
@@ -83,6 +85,11 @@ export class EventMapComponent implements OnInit {
 
   isAttending: boolean = false;
 
+  successMessage: string;
+  failMessage: string;
+  private _success = new Subject<string>();
+  private _fail = new Subject<string>();
+
   constructor(private _ngZone: NgZone,
               private route: ActivatedRoute,
               private router: Router,
@@ -111,6 +118,12 @@ export class EventMapComponent implements OnInit {
     this._StatesService.getStates().subscribe((statesData) => {
       this.states = statesData;
     });
+
+    this._success.subscribe((message) => this.successMessage = message);
+    this._fail.subscribe((message) => this.failMessage = message);
+    debounceTime.call(this._success, 5000).subscribe(() => this.successMessage = null);
+    debounceTime.call(this._fail, 5000).subscribe(() => this.failMessage = null);
+
   }
 
   DrawMap(){
@@ -230,7 +243,13 @@ export class EventMapComponent implements OnInit {
   }
 
   DeleteTable(tableId: number){
-    this._MapService.DeleteTable(tableId);
+    this._MapService.DeleteTable(tableId).subscribe(
+      data => {
+        this._success.next("Successfully deleted table.");
+      },
+      err => {
+        this._fail.next("Failed to delete table.");
+      });
     for (let i = 0; i < this.eventTables.length; i++){
       if (this.eventTables[i].tableId == tableId){
         this.ResetTable(this.eventTables[i]);
@@ -279,11 +298,15 @@ export class EventMapComponent implements OnInit {
   AddTable(table:Table)
   {
     this._TableService.AddTable(table).subscribe((data) => {
+      this._success.next("Added table successfully.");
         table = data;
         this.DrawTable(table);
         this.eventTables.push(table);
         console.log(table);
         console.log(this.eventTables);
+    },
+    err => {
+      this._fail.next("Failed to add table.");
     });
   }
 
@@ -320,7 +343,13 @@ export class EventMapComponent implements OnInit {
   }
 
   SubmitMapChanges(){
-    this._MapService.UpdateMap(this.mapInfo);
+    this._MapService.UpdateMap(this.mapInfo).subscribe(
+      data => {
+        this._success.next("Successfully updated event information.")
+      },
+      err => {
+        this._fail.next("Failed to update event information.");
+      });
   }
 
   SubmitMap(){
@@ -340,7 +369,13 @@ export class EventMapComponent implements OnInit {
         // upload success
         console.log(uploadTask.snapshot.downloadURL);
         this.mapInfo.image = uploadTask.snapshot.downloadURL;
-        this._MapService.UpdateMap(this.mapInfo);
+        this._MapService.UpdateMap(this.mapInfo).subscribe(
+          data => {
+            this._success.next("Map added to event.")
+          },
+          err => {
+            this._fail.next("Map upload failed.");
+          });
         this.DrawMap();
       }
     );
@@ -352,6 +387,7 @@ export class EventMapComponent implements OnInit {
     rsvp.UserId = this.globals.currentUser.uid;
     rsvp.UserType = this.userType;
     this._EventAttendanceService.updateRSVP(rsvp).subscribe((rsvp) => {
+      this._success.next("Successfully RSVP'd to event.");
       this.isAttending = true;
       if (this.userType.toLowerCase() == 'company'){
         if (this.globals.isCompany){
@@ -362,6 +398,9 @@ export class EventMapComponent implements OnInit {
           this.GetTables(this.mapId);
         }  
       }
+    },
+    err => {
+      this._fail.next("Failed to RSVP to event.");
     });  
   }
 

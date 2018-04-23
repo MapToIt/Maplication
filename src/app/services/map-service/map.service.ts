@@ -32,20 +32,11 @@ export class MapService {
   }
 
   UpdateMap(map: Map){
-    this.http.put(this.globals.apiUrl + `map/update`, map)
-      .catch(this.handleError)
-      .subscribe(
-        data => console.log('success', data),
-        error => console.log('oops', error)
-      )
+    return this.http.put(this.globals.apiUrl + `map/update`, map);
   }
 
   DeleteTable(tableId: number){
-    this.http.delete(this.globals.apiUrl + `map/tables/${tableId}`)
-    .subscribe(
-      data => console.log('success', data),
-      error => console.log('oops', error)
-    );
+    return this.http.delete(this.globals.apiUrl + `map/tables/${tableId}`);
   }
 
   private handleError(error: HttpErrorResponse) {

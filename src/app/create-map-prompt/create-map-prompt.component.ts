@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StatesService } from '../services/states-service/states.service';
 import { MapService } from '../services/map-service/map.service';
@@ -6,6 +6,7 @@ import { State } from '../shared/domain-model/state';
 import { Event } from '../shared/domain-model/event';
 import { Map } from '../shared/domain-model/map';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-map-prompt',
@@ -15,6 +16,9 @@ import { Router } from '@angular/router';
 })
 export class CreateMapPromptComponent implements OnInit {
   @Input () eventCoordinator;
+
+  @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+  @Output() fail: EventEmitter<string> = new EventEmitter<string>();
 
   eventTitle: string;
   eventDescription: string;
@@ -27,9 +31,17 @@ export class CreateMapPromptComponent implements OnInit {
   eventStreetNumber: number;
   eventStreetName: string;
   eventCity: string;
-  eventState: number;
+  eventState: State;
   eventZipCode: number;
   states: State[];
+
+  search = (text$: Observable<string>) =>
+    text$
+      .debounceTime(200)
+      .map(term => term === '' ? []
+        : this.states.filter(v => v.stateName.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+
+  formatter = (x: {stateName: string}) => x.stateName;
 
   constructor(public activeModal: NgbActiveModal, 
               private _StatesService: StatesService, 
@@ -75,8 +87,8 @@ export class CreateMapPromptComponent implements OnInit {
     }
     if (validForm)
     {
-      this.eventStart = this.CombineDateAndTime(this.startDate, this.startTime);
-      this.eventEnd = this.CombineDateAndTime(this.endDate, this.endTime);
+      //this.eventStart = this.CombineDateAndTime(this.startDate, this.startTime);
+      //this.eventEnd = this.CombineDateAndTime(this.endDate, this.endTime);
       let addMap = new Map();
       addMap.event = new Event();
       addMap.mapId = 0;
@@ -91,16 +103,20 @@ export class CreateMapPromptComponent implements OnInit {
       addMap.event.streetNumber = this.eventStreetNumber;
       addMap.event.street = this.eventStreetName;
       addMap.event.city = this.eventCity;
-      addMap.event.stateId = this.eventState;
+      addMap.event.stateId = this.eventState.stateId;
       addMap.event.zipCode = this.eventZipCode;
-      addMap.event.eventPic = "";
+      //addMap.event.eventPic = "";
       
       console.log(typeof(this.eventStart));
       console.log(addMap);
       this._MapService.AddMap(addMap).subscribe((addedMap) => {
         if (addedMap != null){
+          this.notify.emit("Successfully created new event.");
           this.router.navigate(['event', addedMap.eventId]);
         }
+      },
+      err => {
+        this.fail.emit("Failed to create new event.");
       });
     }
   }

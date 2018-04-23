@@ -49,14 +49,14 @@
               <span class='input-group-text' id='basic-addon1'>City</span>
           </div>
           <input type="text" class="row form-control" [(ngModel)]="mapInfo.event.city" aria-label="City" aria-describedby="basic-addon1">
-          <div class='input-group-prepend'>
-              <span class='input-group-text' id='basic-addon1'>State</span>
+          <div class="input-group-prepend  d-none d-lg-block">
+              <span class="input-group-text" id="basic-addon1">State</span>
           </div>
-            <select [(ngModel)]='mapInfo.event.state.stateId' value='{{mapInfo.event.state.stateId}}' name='event-state' aria-lavel='State' aria-describedby='basic-addon1'>
-              <option *ngFor='let state of states' value={{state.stateId}} type='number'>
-                {{state.stateName}}
-              </option>
-            </select>
+          <ng-template #stateTemplate let-r="result" let-t="term">
+              {{ r.stateName }}
+          </ng-template>
+          <input id="typeahead-template" type="text" class="form-control"  [(ngModel)]="mapInfo.event.state" [ngbTypeahead]="search" [resultTemplate]="stateTemplate"
+          [inputFormatter]="formatter" />
         </div>
         <div class='input-group m-4'>
           <div class='input-group-prepend'>

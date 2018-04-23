@@ -19,6 +19,8 @@ import { CreateMapPromptComponent } from '../create-map-prompt/create-map-prompt
 import * as  moment from 'moment';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Globals } from '../shared/globals';
+import { Subject } from 'rxjs/Subject';
+import { debounceTime } from 'rxjs/operator/debounceTime';
 
 
 @Component({
@@ -56,7 +58,10 @@ export class CoordHomeComponent implements OnInit {
 
   mask:any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
-
+  successMessage: string;
+  failMessage: string;
+  private _success = new Subject<string>();
+  private _fail = new Subject<string>();
 
   constructor(private _CoordinatorService: CoordinatorService,
               private _EventService: EventService,private route: ActivatedRoute,
@@ -99,7 +104,10 @@ export class CoordHomeComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this._success.subscribe((message) => this.successMessage = message);
+    this._fail.subscribe((message) => this.failMessage = message);
+    debounceTime.call(this._success, 5000).subscribe(() => this.successMessage = null);
+    debounceTime.call(this._fail, 5000).subscribe(() => this.failMessage = null);
   }
 
   updateCoord(){
@@ -113,6 +121,12 @@ export class CoordHomeComponent implements OnInit {
     let options: NgbModalOptions = {size: 'lg'};
     const modalRef = this.modalService.open(CreateMapPromptComponent, options);
     modalRef.componentInstance.eventCoordinator = this.profile.coordinatorId;
+    modalRef.componentInstance.notify.subscribe(($e) => {
+      this._success.next($e);
+    });
+    modalRef.componentInstance.fail.subscribe(($e) => {
+      this._fail.next($e);
+    });
   }
 
   loadPastPage(page){

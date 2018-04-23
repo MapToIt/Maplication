@@ -90,6 +90,14 @@ export class EventMapComponent implements OnInit {
   private _success = new Subject<string>();
   private _fail = new Subject<string>();
 
+  search = (text$: Observable<string>) =>
+    text$
+      .debounceTime(200)
+      .map(term => term === '' ? []
+        : this.states.filter(v => v.stateName.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+
+  formatter = (x: {stateName: string}) => x.stateName;
+
   constructor(private _ngZone: NgZone,
               private route: ActivatedRoute,
               private router: Router,

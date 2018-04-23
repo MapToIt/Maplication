@@ -23,7 +23,8 @@ import { Globals } from '../shared/globals';
 import * as  moment from 'moment';
 import { EventAttendance } from '../shared/domain-model/eventAttendance';
 import { EventAttendanceService } from '../services/event-attendance-service/event-attendance.service';
-
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operator/debounceTime'
 
 @Component({
   selector: 'app-attendee-profile',
@@ -32,8 +33,11 @@ import { EventAttendanceService } from '../services/event-attendance-service/eve
 })
 export class AttendeeProfileComponent implements OnInit { 
 
-  //debug
-  myUID: string = "1XZbEmGQfJPAVwLh1KjzgMchiUd2";
+  successMessage: string;
+  failMessage: string;
+  private _success = new Subject<string>();
+  private _fail = new Subject<string>();
+
 
   //string for ui
   greeting: string = "Let's Get Started With Your Profile!";
@@ -134,11 +138,10 @@ export class AttendeeProfileComponent implements OnInit {
 
     ngOnInit() {
 
-    // /*DEBUGGING*/
-    // this.uid = this.myUID;
-    // // this.profile.id = "NOT MY ID";
-    // this.profile.type = "Company";
-    // /*END DEBUGGING*/
+      this._success.subscribe((message) => this.successMessage = message);
+      this._fail.subscribe((message) => this.failMessage = message);
+      debounceTime.call(this._success, 5000).subscribe(() => this.successMessage = null);
+      debounceTime.call(this._fail, 5000).subscribe(() => this.failMessage = null);
 
   }
   goToEvent(eventId){
@@ -152,7 +155,9 @@ export class AttendeeProfileComponent implements OnInit {
       this.fileUploadService.uploadFile(file).subscribe(
         (data) => {
           this.profile.image = data;
-        }
+        },
+        (err) => {this._fail.next('Failed to upload image.');},
+        () => {this._success.next('Image successfully updated');}
       )
   }
 
@@ -162,7 +167,9 @@ export class AttendeeProfileComponent implements OnInit {
     this.fileUploadService.uploadFile(file).subscribe(
       (data) => {
         this.profile.resume = data;
-      }
+      },
+      (err) => {this._fail.next('Failed to upload resume.');},
+      () => {this._success.next('Resume successfully updated');}
     )
   }
 
@@ -176,7 +183,7 @@ export class AttendeeProfileComponent implements OnInit {
       this.stateObjs.forEach(state => {
         states.push(state.stateName);
       });
-    }), err => { console.log(err)}
+    }), err => {this._fail.next('Failed to upload image.');}
     
     return states;
   }
@@ -189,7 +196,7 @@ export class AttendeeProfileComponent implements OnInit {
       this.fieldTags.forEach(
         (tag: Tags) => {this.stringTags.push(tag.tag)}
     )
-    }), err => { console.log(err) }
+    }), err => { this._fail.next('Failed to get tag resources.'); }
   }
   
   addChip(newChip){
@@ -209,9 +216,9 @@ export class AttendeeProfileComponent implements OnInit {
     if (this.authentication()){
       this.profile.chips = JSON.stringify(this.attendeeChips);
       this.attendeeService.updateAttendee(this.profile).subscribe(
-        (data) => {console.log("Submitting to db")},
-        (err) => {console.log(err)},
-        () => {console.log("Success")}
+        (data) => {},
+        (err) => {this._fail.next('Failed to update profile.');},
+        () => {this._success.next('Profile successfully updated');}
       )
       //switch to view mode
       this.switchMode();

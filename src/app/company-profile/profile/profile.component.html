@@ -1,0 +1,83 @@
+<div class="d-flex flex-md-row flex-column justify-content-between p-2 align-content-center">
+  <h3>About Us:</h3>
+  <div  *ngIf="isProfileUser" align="center">
+      <button type="button" class="btn btn-primary" (click)="updateCompany()">Update Profile</button>
+      <button type="button" class="btn btn-primary" (click)="AddJobPosting(profile.companyId)">Add Job Posting</button>
+  </div>
+</div>
+<div class="d-flex flex-md-row flex-column justify-content-center align-items-center">
+      <div class="col-4">
+      <img src="{{profile.logo ? profile.logo : '../../assets/placeholder.png' }}" class="w-100"/>
+      <label class="btn btn-primary mt-1" *ngIf="isProfileUser">
+        Set Logo <input type="file" style="display: none;" (change)="handleFileInputImg($event.target.files)">
+    </label>
+  </div>
+  <div class="col">
+      <div class="input-group m-1">
+          <div class="input-group-prepend  d-none d-lg-block">
+              <span class="input-group-text" id="basic-addon1">Company Name</span>
+          </div>
+          <input type="text" class="form-control" [(ngModel)]="profile.companyName" [disabled]="!isProfileUser" placeholder="Company Name" aria-label="Name" aria-describedby="basic-addon1">
+      </div>
+      <div class="input-group m-1">
+          <div class="input-group-prepend  d-none d-lg-block">
+              <span class="input-group-text" id="basic-addon1">Company Website</span>
+          </div>
+          <input type="text" class="form-control" [(ngModel)]="profile.url" [disabled]="!isProfileUser" placeholder="Company Website" aria-label="Name" aria-describedby="basic-addon1">
+      </div>
+      <div class="d-flex flex-md-row flex-column justify-content-center align-items-center">
+          <div class="input-group m-1 ">
+              <div class="input-group-prepend  d-none d-lg-block">
+                  <span class="input-group-text" id="basic-addon1"><i class="material-icons">call</i></span>
+              </div>
+              <input type="text" class="form-control" [textMask]="{mask:mask}"  [(ngModel)]="profile.phoneNumber" [disabled]="!isProfileUser" placeholder="Phone Number" aria-label="Phone Number" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group m-1">
+              <div class="input-group-prepend  d-none d-lg-block">
+                  <span class="input-group-text" id="basic-addon1"><i class="material-icons">location_on</i></span>
+              </div>
+              <input type="text" class="form-control" [(ngModel)]="streetAddress" [disabled]="!isProfileUser" placeholder="Street Number" aria-label="Major" aria-describedby="basic-addon1">
+          </div>
+      </div>
+      <div class="d-flex flex-md-row flex-column justify-content-center align-items-center">
+              <div class="input-group m-1">
+              <div class="input-group-prepend  d-none d-lg-block">
+                  <span class="input-group-text" id="basic-addon1">City</span>
+              </div>
+              <input type="text" class="form-control" [(ngModel)]="profile.city" [disabled]="!isProfileUser" placeholder="City" aria-label="Major" aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group m-1">
+              <div class="input-group-prepend  d-none d-lg-block">
+                  <span class="input-group-text" id="basic-addon1">State</span>
+              </div>
+              <ng-template #stateTemplate let-r="result" let-t="term">
+                  {{ r.stateName }}
+              </ng-template>
+              <input id="typeahead-template" type="text" class="form-control"  [disabled]="!isProfileUser" [(ngModel)]="profile.state" [ngbTypeahead]="search" [resultTemplate]="stateTemplate"
+              [inputFormatter]="formatter" />
+          </div>
+          <div class="input-group m-1">
+              <div class="input-group-prepend  d-none d-lg-block">
+                  <span class="input-group-text" id="basic-addon1">Zipcode</span>
+              </div>
+              <input type="text" class="form-control" [(ngModel)]="profile.zipCode" [disabled]="!isProfileUser" placeholder="Zipcode" aria-label="Major" aria-describedby="basic-addon1">
+          </div>
+      </div>
+      <div class="input-group m-1" *ngIf="isProfileUser">
+          <ng-template #chipsTemplate let-r="result" let-t="term">
+              {{ r.tag }}
+          </ng-template>
+          <input id="typeahead-template" type="text" class="form-control" [(ngModel)]="newTag" [ngbTypeahead]="searchTags" [resultTemplate]="chipsTemplate"
+          [inputFormatter]="formatterTag" />
+          <div class="input-group-append">
+              <button class="btn btn-outline-primary" type="button" (click)="addChip(newTag)">Add Tag</button>
+          </div>
+      </div>
+      <div class="row m-2" *ngIf="isProfileUser">
+          <ngb-alert *ngFor="let chip of companyChips" type='info' class="m-1" (close)=deleteChip(chip)>{{chip}}</ngb-alert>
+      </div>
+      <div class="row m-2" *ngIf="!isProfileUser">
+          <ngb-alert *ngFor="let chip of companyChips" type='info' class="m-1" [dismissible]="false">{{chip}}</ngb-alert>
+      </div>
+  </div>
+</div>

@@ -17,5 +17,6 @@
  }
 
  .cdk-overlay-container {
-    z-index: 2000 !important;
+  position: fixed;
+  z-index: 1090;
 }

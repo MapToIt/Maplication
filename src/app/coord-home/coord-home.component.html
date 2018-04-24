@@ -1,6 +1,13 @@
 <h1 class="text-center"><strong>Welcome to the Coordinator Page</strong></h1>
-<div class="card-group d-flex flex-md-row flex-column justify-content-start flex-wrap">
-  <div>
+<div class="d-flex flex-row-reverse">
+  <button class="btn btn-primary m-2" (click)="resetSearchDates()">Reset Search Dates</button>
+</div>
+
+<ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
+        
+<div class="card-group d-flex justify-content-start flex-wrap">
+  <div class="card text-center px-2 m-1 wrapper align-items-stretch d-flex flex-column">
+
     <div>
       <div class="card text-center m-1">
         <h3><strong>Coordinator Info</strong></h3>
@@ -42,9 +49,8 @@
   <div class="card text-center px-2 m-1 wrapper align-items-stretch d-flex flex-column">
     <div>
       <h3><strong>Past Event</strong></h3>
-      <div>
-        <input class = "form-control" type="text" placeholder = "Enter Search Date"/>
-      </div>
+      <input (dateTimeChange)="filterPast(past)" [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2" [selectMode]="'range'" class='form-control' placeholder = "Enter Search Date" #past>
+      <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
       <table class="table table-bordered table-sm table-hover" width="100%" *ngIf="pastEventsPage">
         <thead>
           <tr>
@@ -76,9 +82,8 @@
       <h3>
         <strong>Future Event</strong>
       </h3>
-      <div>
-        <input class = "form-control" type="text" placeholder = "Enter Search Date">
-      </div>
+      <input (dateTimeChange)="filterFuture(future)" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" [selectMode]="'range'" class='form-control' placeholder = "Enter Search Date" #future>
+      <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
       <table class="table table-bordered table-sm table-hover" width="100%" *ngIf="futureEventsPage">
         <thead>
           <tr>

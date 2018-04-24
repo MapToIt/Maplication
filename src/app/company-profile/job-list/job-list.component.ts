@@ -38,6 +38,9 @@ export class JobListComponent implements OnInit {
     modalRef.componentInstance.job = job;
     modalRef.componentInstance.notify.subscribe(($e) => {
       this._success.emit($e);
+      this._JobService.GetJobPostingsByCompanyId(this.profile.companyId).subscribe((jobs) => {
+        this.jobs = jobs;
+      });
     })
     modalRef.componentInstance.fail.subscribe(($e) => {
       this._fail.emit($e);
@@ -54,6 +57,9 @@ export class JobListComponent implements OnInit {
     modalRef.componentInstance.selectedMoments = selectedMoments;
     modalRef.componentInstance.notify.subscribe(($e) => {
       this._success.emit($e);
+      this._JobService.GetJobPostingsByCompanyId(this.profile.companyId).subscribe((jobs) => {
+        this.jobs = jobs;
+      });
     })
     modalRef.componentInstance.fail.subscribe(($e) => {
       this._fail.emit($e);

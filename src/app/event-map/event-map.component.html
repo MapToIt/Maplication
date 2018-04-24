@@ -1,55 +1,39 @@
-<div class='container'>
-  <div class='row spacing'></div>
-  <div class='row content'>
-    <div class='col-8'>
-      <div #drawing id='drawing'></div>
-      <div *ngIf='mapPopulated && !mapInfo.image'>
-        <input type='file' accept='image/*' name='mapFile' (change)='DetectFiles($event)'>
-        <button type="button" (click)="SubmitMap()">Add Event</button>
-      </div>
-    </div>
-    <div class='eventInfo' *ngIf='mapPopulated' class='col-4'>
-      <button class='btn btn-primary' *ngIf='userType && !isAttending' (click)='rsvp(this.mapInfo.eventId)'>RSVP</button>
-      <button class='btn btn-primary' *ngIf='globals.isCompany && isAttending' (click)='GoToAttendeeList(mapInfo.eventId)'>Attendee List</button>
-      <div class='row' *ngIf='!isEventCoordinator'>
-        <h3>{{mapInfo.event.eventTitle}}</h3>
-        <h5>{{mapInfo.event.description}}</h5>
-        <h5>Start Time: {{mapInfo.event.startTime.toLocaleDateString()}} {{mapInfo.event.startTime.toLocaleTimeString()}}</h5>
-        <h5>End Time: {{mapInfo.event.endTime.toLocaleDateString()}} {{mapInfo.event.endTime.toLocaleTimeString()}}</h5>
-        <h5>Coordinator: {{mapInfo.event.coordinator.firstName}} {{mapInfo.event.coordinator.lastName}}</h5>
-        <h5>Location: {{mapInfo.event.streetNumber}} {{mapInfo.event.street}} {{mapInfo.event.city}} {{mapInfo.event.state.stateName}} {{mapInfo.event.zipCode}}</h5>
-      </div>
-      <div class='row' *ngIf='isEventCoordinator'>
-        <div class="input-group m-4">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Event Title</span>
+<div class="row">
+<div class="col-8" *ngIf="isEventCoordinator">
+  <div class="card m-2" *ngIf="mapInfo">
+    <div class="card-body">           
+      <div class="d-flex flex-column justify-content-between align-items-center">
+        <div class="d-flex flex-md-row flex-column justify-content-between align-items-center">
+          <div class="input-group m-1">
+            <div class="input-group-prepend d-none d-lg-block">
+                <span class="input-group-text" id="basic-addon1">Title</span>
             </div>
-            <input type="text" class="form-control" [(ngModel)]="mapInfo.event.eventTitle" aria-label="EventTitle" aria-describedby="basic-addon1">
-        </div>
-        <div class="input-group m-4">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Event Description</span>
-            </div>
-            <textarea class="form-control" [(ngModel)]="mapInfo.event.description" aria-label="EventDescription" aria-describedby="basic-addon1"></textarea>
-        </div>
-        <div class='input-group m-4'>
-          <div class='input-group-prepend'>
-            <span class='input-group-text' id='basic-addon1'>#</span>
+            <input type="text" class="form-control" [(ngModel)]="mapInfo.event.eventTitle" 
+              placeholder="Event Title" aria-label="Name" aria-describedby="basic-addon1">
           </div>
-          <input type="number" class="row form-control" [(ngModel)]="mapInfo.event.streetNumber" aria-label="Street Number" aria-describedby="basic-addon1">
         </div>
-        <div class='input-group m-4'>
-          <div class='input-group-prepend'>
-              <span class='input-group-text' id='basic-addon1'>Street Name</span>
+        <div class="d-flex flex-md-row flex-column justify-content-between align-items-center">
+          <div class="input-group m-1">
+            <textarea rows="5" class="form-control" [(ngModel)]="mapInfo.event.description" 
+            placeholder="University" aria-label="Name" aria-describedby="basic-addon1"></textarea>
           </div>
-          <input type="text" class="row form-control" [(ngModel)]="mapInfo.event.street" aria-label="Street Name" aria-describedby="basic-addon1">
         </div>
-        <div class='input-group m-4'>
-          <div class='input-group-prepend'>
-              <span class='input-group-text' id='basic-addon1'>City</span>
+      </div>
+      <div class="d-flex flex-md-row flex-column justify-content-between align-items-center">
+        <div class="input-group m-1">
+          <div class="input-group-prepend d-none d-lg-block">
+            <span class="input-group-text" id="basic-addon1"><i class="material-icons">location_on</i></span>
           </div>
-          <input type="text" class="row form-control" [(ngModel)]="mapInfo.event.city" aria-label="City" aria-describedby="basic-addon1">
-          <div class="input-group-prepend  d-none d-lg-block">
+          <input type="text" class="form-control" [(ngModel)]="streetAddress" placeholder="Street Number" aria-label="Major" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group m-1">
+          <div class="input-group-prepend d-none d-lg-block">
+            <span class="input-group-text" id="basic-addon1">City</span>
+          </div>
+          <input type="text" class="form-control" [(ngModel)]="mapInfo.event.city" placeholder="City" aria-label="Major" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group m-1">
+          <div class="input-group-prepend d-none d-lg-block">
               <span class="input-group-text" id="basic-addon1">State</span>
           </div>
           <ng-template #stateTemplate let-r="result" let-t="term">
@@ -58,46 +42,89 @@
           <input id="typeahead-template" type="text" class="form-control"  [(ngModel)]="mapInfo.event.state" [ngbTypeahead]="search" [resultTemplate]="stateTemplate"
           [inputFormatter]="formatter" />
         </div>
-        <div class='input-group m-4'>
-          <div class='input-group-prepend'>
-              <span class='input-group-text' id='basic-addon1'>Start Time</span>
+        <div class="input-group m-1">
+          <div class="input-group-prepend d-none d-lg-block">
+              <span class="input-group-text" id="basic-addon1">Zipcode</span>
           </div>
-          <input [(ngModel)]='mapInfo.event.startTime' [owlDateTimeTrigger]="dtstart" [owlDateTime]="dtstart" aria-describedby="basic-addon1">
-          <owl-date-time #dtstart></owl-date-time>
+          <input type="text" class="form-control" [(ngModel)]="mapInfo.event.zipCode" placeholder="Zipcode" aria-label="Major" aria-describedby="basic-addon1">
         </div>
-        <div class='input-group m-4'>
-          <div class='input-group-prepend'>
-              <span class='input-group-text' id='basic-addon1'>End Time</span>
-          </div>
-          <input [(ngModel)]='mapInfo.event.endTime' [owlDateTimeTrigger]="dtend" [owlDateTime]="dtend" aria-describedby="basic-addon1">
-          <owl-date-time #dtend></owl-date-time>
-        </div>
-        <div class='input-group m-4'>
-          <div class='input-group-prepend'>
-            <span class='input-group-text' id='basic-addon1'>Zip Code</span>
-          </div>
-          <input type="number" class="row form-control" [(ngModel)]="mapInfo.event.zipCode" aria-label="Zip Code" aria-describedby="basic-addon1">
-        </div>
-        <button class=' btn btn-success' (click)='SubmitMapChanges()'>Submit Changes</button>
       </div>
-      <div class='row' id='companyInfo' *ngIf='activeCompany'>
-        <h3>Company Info:</h3>
-        <h5>Name: <a href='/company-profile/{{activeCompany.userId}}'>{{activeCompany.companyName}}</a></h5>
-        <h5>Phone: {{activeCompany.phoneNumber}}</h5>
-        <h5>Location: {{activeCompany.streetNumber}} {{activeCompany.street}} {{activeCompany.city}} {{activeCompany.state.stateName}} {{activeCompany.zipCode}}</h5>
-        <h5>Website: {{activeCompany.url}}</h5>
+      <div class="row">
+        <div class="col-8 row">
+          <div class=" col input-group m-1">
+            <div class='input-group-prepend  d-none d-lg-block'>
+              <span class='input-group-text' id='basic-addon2'>Start Time</span>
+            </div>
+            <input [(ngModel)]='mapInfo.event.startTime' [owlDateTimeTrigger]="dtstart" [owlDateTime]="dtstart" aria-describedby="basic-addon2">
+            <owl-date-time #dtstart></owl-date-time>
+          </div>
+          <div class="col input-group m-1">
+            <div class='input-group-prepend  d-none d-lg-block'>
+              <span class='input-group-text' id='basic-addon2'>End Time</span>
+            </div>
+            <input [(ngModel)]='mapInfo.event.endTime' [owlDateTimeTrigger]="dtend" [owlDateTime]="dtend" aria-describedby="basic-addon2">
+            <owl-date-time #dtend></owl-date-time>
+          </div>
+        </div>
+        <div class="col-4 d-flex flex-row-reverse">
+          <button type="button" class="btn btn-primary m-1" (click)="SubmitMapChanges()">
+              Submit Changes
+          </button> 
+        </div>
       </div>
     </div>
   </div>
-  <div *ngIf='isEventCoordinator' class='row'>
-    <button [ngClass]="buttonClass" (click)="toggleEdit()">Add tables</button>
-    <button class='btn btn-danger' (click)="toggleDelete()">Delete Tables</button>
+</div>
+<div class="col-8" *ngIf="!isEventCoordinator">
+  <h2>{{mapInfo.event.eventTitle}}</h2>
+  <div class="d-flex flex-md-row flex-column justify-content-between align-items-center">
+    <span>
+      Description:
+      <p>{{mapInfo.event.description}}</p>
+    </span>
   </div>
-  <div class='row'>
-    <ul>
-      <li *ngFor='let attendingCompany of attendingCompanies'><p (click)='HighlightCompany(attendingCompany.companyId)'>{{attendingCompany.companyName}}</p></li>
-    </ul>
+  <div class="d-flex flex-md-row flex-column justify-content-between align-items-start">
+    <span>
+      Address:
+      <h5>{{mapInfo.event.streetNumber}} {{mapInfo.event.street}}</h5>
+      <h5>{{mapInfo.event.city}} {{mapInfo.event.state.stateName}}, {{mapInfo.event.zipCode}}</h5>
+    </span>
+    <span>
+      Event Time:
+      <h5>Start: {{mapInfo.event.startTime | date:'medium'}}</h5>
+      <h5>End: {{mapInfo.event.endTime | date:'medium'}}</h5>
+    </span>
+    <span>
+      Coordinator:
+      <h5>Name: {{mapInfo.event.coordinator.firstName}} {{mapInfo.event.coordinator.lastName}}</h5>
+      <h5>Email: {{mapInfo.event.coordinator.email}}</h5>
+      <h5>Phone: {{mapInfo.event.coordinator.phoneNumber}}</h5>
+    </span>
   </div>
+</div>
+<div class='col-4' id='companyInfo' *ngIf='activeCompany'>
+  <h3>Company Info:</h3>
+  <h5>Name: <a href='/company-profile/{{activeCompany.userId}}'>{{activeCompany.companyName}}</a></h5>
+  <h5>Phone: {{activeCompany.phoneNumber}}</h5>
+  <h5>Location: {{activeCompany.streetNumber}} {{activeCompany.street}} {{activeCompany.city}} {{activeCompany.state.stateName}} {{activeCompany.zipCode}}</h5>
+  <h5>Website: {{activeCompany.url}}</h5>
+</div>
+</div>
+<div class='col-8'>
+    <div #drawing id='drawing'></div>
+    <div *ngIf='mapPopulated && !mapInfo.image'>
+      <input type='file' accept='image/*' name='mapFile' (change)='DetectFiles($event)'>
+      <button type="button" (click)="SubmitMap()">Add Event</button>
+    </div>
+  </div>
+<div *ngIf='isEventCoordinator' class='row'>
+  <button [ngClass]="buttonClass" (click)="toggleEdit()">Add tables</button>
+  <button class='btn btn-danger' (click)="toggleDelete()">Delete Tables</button>
+</div>
+<div class='row'>
+  <ul>
+    <li *ngFor='let attendingCompany of attendingCompanies'><p (click)='HighlightCompany(attendingCompany.companyId)'>{{attendingCompany.companyName}}</p></li>
+  </ul>
 </div>
 
 <ngb-alert *ngIf="successMessage" type="success" class="alert" (close)="successMessage = null">{{ successMessage }}</ngb-alert>

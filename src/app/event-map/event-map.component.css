@@ -42,3 +42,14 @@ button{
   top: 10vh;
   right: 0;
 }
+.d-flex{
+  width: 100%;
+}
+
+.card{
+  width: 98%;
+}
+
+textarea{
+  width: 88%;
+}

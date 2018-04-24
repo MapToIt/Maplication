@@ -56,6 +56,7 @@ export class EventMapComponent implements OnInit {
   tables: Table[];
   events: Event[];
   eventInfo: Event;
+  streetAddress:string;
 
   eventTables: Table[] = [];
   eventId: number;
@@ -91,10 +92,10 @@ export class EventMapComponent implements OnInit {
   private _fail = new Subject<string>();
 
   search = (text$: Observable<string>) =>
-    text$
-      .debounceTime(200)
-      .map(term => term === '' ? []
-        : this.states.filter(v => v.stateName.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+  text$
+    .debounceTime(200)
+    .map(term => term === '' ? []
+      : this.states.filter(v => v.stateName.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
 
   formatter = (x: {stateName: string}) => x.stateName;
 
@@ -281,6 +282,7 @@ export class EventMapComponent implements OnInit {
       this.mapInfo.event.startTime = new Date(Date.UTC(sd.getFullYear(), sd.getMonth(), sd.getDate(), sd.getHours(), sd.getMinutes(), sd.getSeconds()));
       let ed = new Date(this.mapInfo.event.endTime);
       this.mapInfo.event.endTime = new Date(Date.UTC(ed.getFullYear(), ed.getMonth(), ed.getDate(), ed.getHours(),ed.getMinutes(), ed.getSeconds()));
+      this.streetAddress = this.mapInfo.event.streetNumber + " " + this.mapInfo.event.street;
       this.CheckEditPermissions();
       this.mapPopulated = true;
       if (this.mapInfo.image != null){
@@ -351,6 +353,8 @@ export class EventMapComponent implements OnInit {
   }
 
   SubmitMapChanges(){
+    this.mapInfo.event.streetNumber = parseInt(this.streetAddress.slice(0, this.streetAddress.indexOf(' ')));
+    this.mapInfo.event.street = this.streetAddress.slice(this.streetAddress.indexOf(' ')+1, this.streetAddress.length);
     this._MapService.UpdateMap(this.mapInfo).subscribe(
       data => {
         this._success.next("Successfully updated event information.")

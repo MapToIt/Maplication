@@ -42,7 +42,6 @@ export class CoordHomeComponent implements OnInit {
   totalFutureItems: any;
   futurePage: any = 1;
   previousFuturePage: any = 0;
-
   itemsPerPage: number = 5;
 
   pastItemsPerPage: number;
@@ -55,9 +54,9 @@ export class CoordHomeComponent implements OnInit {
   futureEvents: Event[] = new Array();
   futureEventsPage: Event[];
   pastEventsPage: Event[];
-  pastSearch: Event[] = this.pastEvents;
+  pastSearch: Event[];
   tempPast: Event[] ;
-  futureSearch: Event[] = this.futureEvents;
+  futureSearch: Event[];
   tempFuture: Event[];
 
   mask:any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
@@ -84,14 +83,14 @@ export class CoordHomeComponent implements OnInit {
                 this._EventService.GetEventByCoordId(this.profile.coordinatorId).subscribe((evts) => {
                   console.log('event', evts);
                  this.pastEvents = evts.filter(event => moment(event.startTime) < this.now);
-                 this.searchPast(this.now);
-               //  this.totalPastItems = this.pastEvents.length;
-               //  this.loadPastPage(1);
+                  this.totalPastItems = this.pastEvents.length;           
+                  this.pastSearch = this.pastEvents;
+                  this.loadPastPage(1);
 
                  this.futureEvents = evts.filter(event => moment(event.startTime) >= this.now);
-                 this.searchFuture(this.now);
-               //  this.totalFutureItems = this.futureEvents.length;
-              //   this.loadFuturePage(1);
+                  this.totalFutureItems = this.futureEvents.length;
+                  this.futureSearch = this.futureEvents; 
+                  this.loadFuturePage(1);
                 });
               });
             } else
@@ -130,48 +129,24 @@ export class CoordHomeComponent implements OnInit {
     modalRef.componentInstance.eventCoordinator = this.profile.coordinatorId;
   }
 
-  searchFuture(futureValue){
-    
-    this.tempFuture = new Array();
-    if (futureValue == ""){
-      futureValue = this.now;
-    }
-    for(let i = 0; i < this.futureEvents.length; i++){
-     if(moment(this.futureEvents[i].startTime) >= moment(futureValue)) {
-        this.tempFuture.push(this.futureEvents[i]);
-      }
-    }
-    if (this.tempFuture.length > 0){
-       this.futureSearch = this.tempFuture;
-       this.previousFuturePage = 0;
-    }
-    this.totalFutureItems = this.futureSearch.length;
+  filterFuture(futureDates){
+    const dateStrings = futureDates.value.split('~').map(dateString => dateString.trim());
+    const startTime = new Date(dateStrings[0]).getTime();
+    const endTime = new Date(dateStrings[1]).getTime();
+    this.futureSearch = this.futureEvents.filter(event => ((moment(event.startTime).valueOf() >= startTime) && (moment(event.startTime).valueOf() <= endTime)));
     this.loadFuturePage(1);
   }
 
-
-  searchPast(pastValue){
-    this.tempPast = new Array();
-    if (pastValue == ""){
-      pastValue = this.now;
-    }
-    for(let i = 0; i < this.pastEvents.length; i++){
-      console.log(moment(pastValue));
-     //if(moment(this.pastEvents[i].startTime) <= moment(pastValue)) {
-      if (moment(this.pastEvents[i].startTime).isBefore(pastValue)){
-        this.tempPast.push(this.pastEvents[i]);
-      }
-    }
-    if (this.tempPast.length > 0){
-       this.pastSearch = this.tempPast;
-       this.previousPastPage = 0;
-    }
-    this.totalPastItems = this.pastSearch.length;
+  filterPast(pastDates){
+    const dateStrings = pastDates.value.split('~').map(dateString => dateString.trim());
+    const startTime = new Date(dateStrings[0]).getTime();
+    const endTime = new Date(dateStrings[1]).getTime();
+    this.pastSearch = this.pastEvents.filter(event => ((moment(event.startTime).valueOf() >= startTime) && (moment(event.startTime).valueOf() <= endTime)));
     this.loadPastPage(1);
   }
 
   loadPastPage(page){
-    if (page !== this.previousPastPage && !isNaN(page)) {
+    if (!isNaN(page)) {
       this.previousPastPage  = page;
       this.loadPastData();
      
@@ -191,7 +166,7 @@ export class CoordHomeComponent implements OnInit {
   }
 
   loadFuturePage(page){
-    if (page !== this.previousFuturePage && !isNaN(page)) {
+    if (!isNaN(page)) {
       this.previousFuturePage = page;
       this.loadFutureData();
      

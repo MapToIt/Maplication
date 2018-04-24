@@ -129,11 +129,24 @@ export class CoordHomeComponent implements OnInit {
     modalRef.componentInstance.eventCoordinator = this.profile.coordinatorId;
   }
 
+  resetSearchDates(){
+    this.router.routeReuseStrategy.shouldReuseRoute = function(){return false;};
+
+  let currentUrl = this.router.url + '?';
+
+  this.router.navigateByUrl(currentUrl)
+    .then(() => {
+      this.router.navigated = false;
+      this.router.navigate([this.router.url]);
+    });
+  }
+
   filterFuture(futureDates){
     const dateStrings = futureDates.value.split('~').map(dateString => dateString.trim());
     const startTime = new Date(dateStrings[0]).getTime();
     const endTime = new Date(dateStrings[1]).getTime();
     this.futureSearch = this.futureEvents.filter(event => ((moment(event.startTime).valueOf() >= startTime) && (moment(event.startTime).valueOf() <= endTime)));
+    this.totalFutureItems = this.futureSearch.length;
     this.loadFuturePage(1);
   }
 
@@ -142,6 +155,7 @@ export class CoordHomeComponent implements OnInit {
     const startTime = new Date(dateStrings[0]).getTime();
     const endTime = new Date(dateStrings[1]).getTime();
     this.pastSearch = this.pastEvents.filter(event => ((moment(event.startTime).valueOf() >= startTime) && (moment(event.startTime).valueOf() <= endTime)));
+    this.totalPastItems = this.pastSearch.length;
     this.loadPastPage(1);
   }
 

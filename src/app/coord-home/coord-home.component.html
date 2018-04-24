@@ -1,4 +1,7 @@
 <h1 class="text-center"><strong>Welcome to the Coordinator Page</strong></h1>
+<div class="d-flex flex-row-reverse">
+  <button class="btn btn-primary m-2" (click)="resetSearchDates()">Reset Search Dates</button>
+</div>
 
 <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
         

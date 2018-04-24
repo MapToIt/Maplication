@@ -32,10 +32,11 @@
     <ngb-tab title="Open Jobs" *ngIf="jobs != null || isProfileUser">
         <ng-template ngbTabContent> 
             <app-job-list
-                (jobsFilter)="updateJobs($event)"
                 [jobs]="jobs"
                 [isProfileUser]="isProfileUser"
                 [profile]="profile"
+                (_success)="succeedMessage($event)"
+                (_fail)="failedMessage($event)"
             ></app-job-list>
         </ng-template>
     </ngb-tab>

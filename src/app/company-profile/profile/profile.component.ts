@@ -31,11 +31,9 @@ export class ProfileComponent implements OnInit {
   @Input () states: State[];
   @Input () chips: Tags[];
   @Input () isProfileUser: boolean;
-  private _success = new Subject<string>();
-  private _fail = new Subject<string>();
   newTag: Tags;
-  @Output() notify: EventEmitter<string> = new EventEmitter<string>();
-  @Output() fail: EventEmitter<string> = new EventEmitter<string>();
+  @Output() _success: EventEmitter<string> = new EventEmitter<string>();
+  @Output() _fail: EventEmitter<string> = new EventEmitter<string>();
   changeMade: boolean = false;
   mask:any[] = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
@@ -88,12 +86,12 @@ export class ProfileComponent implements OnInit {
         data => {
           if(data != null){
             this.changeMade = false;
-            this.notify.emit('Note successfully updated.');
+            this._success.emit('Profile successfully updated.');
             this.router.navigate(['company-profile', this.afAuth.auth.currentUser.uid]);
           }
         },
         err => {
-          this.fail.emit('Note successfully updated.');
+          this._fail.emit('Profile failed to update.');
         }
       );
     }
@@ -104,6 +102,7 @@ export class ProfileComponent implements OnInit {
       this.companyChips.push(newChip.tag);
       this.newTag = null;
       this.changeMade = true;
+      this.updateCompany();
     }
   }
 
@@ -111,6 +110,7 @@ export class ProfileComponent implements OnInit {
     const index: number = this.companyChips.indexOf(chip);
     this.companyChips.splice(index, 1);
     this.changeMade = true;
+    this.updateCompany();
   }
 
   handleFileInputImg(files: any[]) {
@@ -124,17 +124,17 @@ export class ProfileComponent implements OnInit {
     )
   }
 
-  AddJobPosting(){
+  AddJobPosting(companyId: number){
     let job = new JobPostings();
     job.companyId = this.profile.companyId;
     let options: NgbModalOptions = {size: 'lg'};
     const modalRef = this.modalService.open(JobModalComponent, options);
     modalRef.componentInstance.job = job;
     modalRef.componentInstance.notify.subscribe(($e) => {
-      this.notify.emit(this._success.next($e));
+      this._success.emit($e);
     })
     modalRef.componentInstance.fail.subscribe(($e) => {
-      this.fail.emit(this._fail.next($e));
+      this._fail.emit($e);
     })
   }
 }

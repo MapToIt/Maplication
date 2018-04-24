@@ -2,7 +2,7 @@
   <h3>About Us:</h3>
   <div  *ngIf="isProfileUser" align="center">
       <button type="button" class="btn btn-primary" (click)="updateCompany()">Update Profile</button>
-      <button type="button" class="btn btn-primary" (click)="AddJobPosting()">Add Job Posting</button>
+      <button type="button" class="btn btn-primary" (click)="AddJobPosting(profile.companyId)">Add Job Posting</button>
   </div>
 </div>
 <div class="d-flex flex-md-row flex-column justify-content-center align-items-center">

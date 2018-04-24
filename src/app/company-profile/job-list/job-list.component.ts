@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { JobPostings } from '../../shared/domain-model/jobPostings';
 import { NgbModalOptions, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { JobModalComponent } from '../job-modal/job-modal.component';
@@ -18,8 +18,8 @@ export class JobListComponent implements OnInit {
   @Input () profile: Company;
   successMessage: string;
   failMessage: string;
-  private _success = new Subject<string>();
-  private _fail = new Subject<string>();
+  @Output() _success: EventEmitter<string> = new EventEmitter<string>();
+  @Output() _fail: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private modalService: NgbModal,
               private _JobService: JobService) { 
@@ -32,17 +32,16 @@ export class JobListComponent implements OnInit {
 
   addJobPosting(companyId: number){
     let job = new JobPostings();
-    job.companyId = companyId;
-
+    job.companyId = this.profile.companyId;
     let options: NgbModalOptions = {size: 'lg'};
     const modalRef = this.modalService.open(JobModalComponent, options);
     modalRef.componentInstance.job = job;
     modalRef.componentInstance.notify.subscribe(($e) => {
-      this._success.next($e);
+      this._success.emit($e);
     })
     modalRef.componentInstance.fail.subscribe(($e) => {
-      this._fail.next($e);
-    });
+      this._fail.emit($e);
+    })
   }
 
   updateJobPosting(job: JobPostings){
@@ -54,11 +53,11 @@ export class JobListComponent implements OnInit {
     modalRef.componentInstance.job = job;
     modalRef.componentInstance.selectedMoments = selectedMoments;
     modalRef.componentInstance.notify.subscribe(($e) => {
-      this._success.next($e);
+      this._success.emit($e);
     })
     modalRef.componentInstance.fail.subscribe(($e) => {
-      this._fail.next($e);
-    });3
+      this._fail.emit($e);
+    })
   }
 
 }

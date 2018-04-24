@@ -58,8 +58,8 @@ export class CompanyProfileComponent implements OnInit {
 
   successMessage: string;
   failMessage: string;
-  private _success = new Subject<string>();
-  private _fail = new Subject<string>();
+  _success = new Subject<string>();
+  _fail = new Subject<string>();
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, 
               private _CompanyService: CompanyService, private _UserService: UserService,
@@ -120,34 +120,15 @@ export class CompanyProfileComponent implements OnInit {
     this._fail.subscribe((message) => this.failMessage = message);
     debounceTime.call(this._success, 5000).subscribe(() => this.successMessage = null);
     debounceTime.call(this._fail, 5000).subscribe(() => this.failMessage = null);
-  }  
-
-
-  failedMessage($e){
-    this._fail.next($e);
   }
 
   succeedMessage($e){
+    console.log($e);
     this._success.next($e);
   }
 
-  openJobModal(companyId: number){
-    let job = new JobPostings();
-    job.companyId = companyId;
-
-    let options: NgbModalOptions = {size: 'lg'};
-    const modalRef = this.modalService.open(JobModalComponent, options);
-    modalRef.componentInstance.job = job;
-    modalRef.componentInstance.notify.subscribe(($e) => {
-      this._success.next($e);
-    })
-    modalRef.componentInstance.fail.subscribe(($e) => {
-      this._fail.next($e);
-    });
-  }
-
-  updateJobs($e){
-
+  failedMessage($e){
+    this._fail.next($e);
   }
 
 }

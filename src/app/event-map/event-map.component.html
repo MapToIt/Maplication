@@ -101,6 +101,10 @@
       <h5>Phone: {{mapInfo.event.coordinator.phoneNumber}}</h5>
     </span>
   </div>
+  <div class='d-flex flex-md-row flex-column justify-content-end align-items-start'>
+    <button class='btn btn-primary' *ngIf='userType && !isAttending' (click)='rsvp(this.mapInfo.eventId)'>RSVP</button>
+    <button class='btn btn-primary' *ngIf='globals.isCompany && isAttending' (click)='GoToAttendeeList(mapInfo.eventId)'>Attendee List</button>
+  </div>
 </div>
 <div class='col-4' id='companyInfo' *ngIf='activeCompany'>
   <h3>Company Info:</h3>

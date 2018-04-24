@@ -26,8 +26,7 @@ export class NoteModalComponent implements OnInit {
 
 
   constructor(public activeModal: NgbActiveModal, private _NotesService: NotesService,
-              private _RatingTypesService: RatingTypesService, private router: Router,
-              public globals: Globals) {
+              private _RatingTypesService: RatingTypesService) {
     
       this._RatingTypesService.getRatingTypes().subscribe((ratings) => {
         this.ratings = ratings;

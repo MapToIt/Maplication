@@ -1,0 +1,64 @@
+<div class="modal-header">
+    <h4 class="modal-title">Create New Job Posting</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body container">
+    <div class='form-row m-2'>
+      <div class="input-group col">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Job Title</label>
+        </div>
+        <input type='text' class='form-control' [(ngModel)]='job.jobTitle' name='event-title'>
+      </div>
+     
+    </div>
+    <div class='form-row m-2'>
+      <div class="input-group col-md-6">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Salary Type</label>
+        </div>
+        <select class="custom-select" [(ngModel)]='job.salaryTypeId' id="inputGroupSelect01">
+          <option selected>Choose Salary Type...</option>
+          <option *ngFor="let type of salaryTypes" [value]="type.typeId">{{type.salaryType}}</option>
+        </select>
+      </div>
+      <div class="input-group col-md-6">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Base Salary</label>
+          </div>
+          <input type='text' class='form-control' [(ngModel)]='job.baseSalary' name='event-title'>
+        </div>
+    </div>
+    <div class='form-row m-2'>
+      <div class='input-group col-md-6'>
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Application Window</label>
+        </div>
+        <input [(ngModel)]="selectedMoments" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" [selectMode]="'range'" class='form-control'>
+        <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+    </div>
+    <div class="input-group col-md-6">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect02">Employment Type</label>
+        </div>
+        <select class="custom-select" [(ngModel)]='job.employmentTypeId' id="inputGroupSelect02">
+          <option selected>Choose Employment Type...</option>
+          <option *ngFor="let employmentType of employmentTypes" [value]="employmentType.typeId">{{employmentType.employmentType}}</option>
+        </select>
+      </div>
+    </div>
+    <div class='form-row m-2'>
+      <div class="input-group col-md-12">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Job Description</label>
+        </div>
+        <textarea rows="5" [(ngModel)]='job.description' >Write you description here...</textarea>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="Submit()">Submit Job Posting</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Close</button>
+  </div>

@@ -17,7 +17,7 @@ export class JobService {
   }
 
   GetJobPostingsByCompanyId(id){
-    return this.http.get<JobPostings[]>(this.globals.apiUrl + `Jobs/${id}`);
+    return this.http.get<JobPostings[]>(this.globals.apiUrl + `Jobs/Company/${id}`);
   }
 
   AddJobPosting(newJob){

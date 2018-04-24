@@ -1,0 +1,52 @@
+<div class="p-2">  
+    <div class="d-flex flex-md-row flex-column justify-content-between p-2 align-content-center">
+        <h3>About Us:</h3>
+        <div  *ngIf="isProfileUser" align="center">
+            <button type="button" class="btn btn-primary" (click)="addJobPosting(profile.companyId)">Add Job Posting</button>
+        </div>
+      </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item" *ngFor="let job of jobs" (click)="updateJobPosting(job)">
+            <div [ngClass]="{updatePosting: isProfileUser}">
+                <div *ngIf="isProfileUser">
+                    <strong><u>{{job.jobTitle}}</u></strong>
+                </div> 
+                <div *ngIf="!isProfileUser">
+                    <strong><u>{{job.jobTitle}}</u></strong>
+                </div>
+                <div class="d-flex flex-md-row flex-column  align-content-center justify-content-between">
+                    <div class="d-flex flex-row  align-content-center justify-content-between col-6">
+                        <div class="d-flex flex-lg-row flex-column m-1 align-content-center">
+                            <span>Posted On:&nbsp;</span>
+                            <span>{{job.datePosted | date:'mediumDate'}}</span>
+                        </div>
+                        <div class="d-flex flex-lg-row flex-column m-1 align-content-center">
+                            <span>Valid Through:&nbsp;</span>
+                            <span>{{job.validThrough | date:'mediumDate'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-md-row flex-column  align-content-center justify-content-between">
+                    <div class="d-flex flex-row  align-content-center justify-content-between col-6">
+                        <div class="d-flex flex-lg-row flex-column m-1 align-content-center">
+                            <span>Base Salary:&nbsp;</span>
+                            <span> ${{job.baseSalary}} per {{ job.salaryType.salaryType }}</span>
+                        </div>
+                        <div class="d-flex flex-lg-row flex-column m-1 align-content-center">
+                            <span>Employment Type:&nbsp;</span>
+                            <span>{{job.employmentType.employmentType}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-md-row flex-column  align-content-center justify-content-between">
+                    <div class="d-flex flex-row  align-content-center justify-content-between col-6">
+                        <div class="d-flex flex-lg-row flex-column m-1 align-content-center">
+                            <span>Description:&nbsp;</span>
+                            <span> {{job.description }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

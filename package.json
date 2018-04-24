@@ -13,7 +13,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^5.2.8",
+    "@angular/animations": "^5.2.10",
     "@angular/common": "^5.2.8",
     "@angular/compiler": "^5.2.8",
     "@angular/core": "^5.2.8",
@@ -37,7 +37,7 @@
     "jquery": "^3.2.1",
     "material-design-icons": "^3.0.1",
     "moment": "^2.20.1",
-    "ng-pick-datetime": "^5.2.3",
+    "ng-pick-datetime": "^5.2.5",
     "ng2-auto-complete": "^0.12.0",
     "ng2-filter-pipe": "^0.1.10",
     "ng2-search-filter": "^0.4.7",

@@ -4,7 +4,6 @@ import { SalaryTypes } from './salary-types';
 
 export class JobPostings{
   jobId: number;
-  chips: string;
   companyId: number;
   jobTitle: string;
   description: string;

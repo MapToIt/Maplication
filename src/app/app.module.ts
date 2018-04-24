@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,7 +22,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularBasicModalModule } from 'angular-basic-modal';
 import { TextMaskModule } from 'angular2-text-mask';
 import { SharedModule } from './shared/shared.module';
-
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import {Ng2AutoCompleteModule} from 'ng2-auto-complete';
 import { StatesService } from './services/states-service/states.service';
 import { Globals } from './shared/globals';
@@ -94,6 +95,11 @@ import { SalaryTypeService } from './services/salary-type-service/salary-type.se
 import { JobService } from './services/job-service/job.service';
 import { RecruiterService } from './services/recruiter-service/recruiter.service';
 import { EmploymentTypeService } from './services/employment-type-service/employment-type.service';
+import { ProfileComponent } from './company-profile/profile/profile.component';
+import { FutureEventsComponent } from './company-profile/future-events/future-events.component';
+import { AllEventsComponent } from './company-profile/all-events/all-events.component';
+import { JobListComponent } from './company-profile/job-list/job-list.component';
+import { JobModalComponent } from './company-profile/job-modal/job-modal.component';
 
 @NgModule({
   declarations: [
@@ -113,13 +119,19 @@ import { EmploymentTypeService } from './services/employment-type-service/employ
     CreateMapPromptComponent,
     NoteModalComponent,
     NoteUpdateModalComponent,
+    ProfileComponent,
+    FutureEventsComponent,
+    AllEventsComponent,
+    JobListComponent,
+    JobModalComponent,
 
   ],
   entryComponents: [
     CreateMapPromptComponent,
     NoteModalComponent,
     NoteUpdateModalComponent,
-    LoginComponent
+    LoginComponent,
+    JobModalComponent
   ],
   imports: [
     BrowserModule,
@@ -139,7 +151,10 @@ import { EmploymentTypeService } from './services/employment-type-service/employ
     Ng2SearchPipeModule,
     SharedModule,
     NgxPaginationModule,
-    TextMaskModule
+    TextMaskModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    BrowserAnimationsModule
   ],
   providers: [
     Globals,

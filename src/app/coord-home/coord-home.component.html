@@ -1,6 +1,10 @@
 <h1 class="text-center"><strong>Welcome to the Coordinator Page</strong></h1>
+
+<ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
+        
 <div class="card-group d-flex justify-content-start flex-wrap">
-  <div>
+  <div class="card text-center px-2 m-1 wrapper align-items-stretch d-flex flex-column">
+
     <div>
       <div class="card text-center m-1">
         <h3><strong>Coordinator Info</strong></h3>
@@ -42,8 +46,9 @@
   <div class="card text-center px-2 m-1 wrapper align-items-stretch d-flex flex-column">
     <div>
       <h3><strong>Past Event</strong></h3>
-      <div>
-        <input class = "form-control" type="text" placeholder = "Enter Search Date"/>
+      <div class="input-group-prepend">
+        <input class = "form-control" type="text" datetime="yyyy-MM-ddTHH:mm:ss" placeholder = "Enter Search Date" #pastValue/>
+        <button class="btn btn-primary" (click) ="searchPast(pastValue.value)">Search</button>
       </div>
       <table class="table table-bordered table-sm table-hover" width="100%" *ngIf="pastEventsPage">
         <thead>
@@ -76,8 +81,9 @@
       <h3>
         <strong>Future Event</strong>
       </h3>
-      <div>
-        <input class = "form-control" type="text" placeholder = "Enter Search Date">
+      <div class="input-group-prepend">
+        <input class = "form-control" type="text" datetime="yyyy-MM-ddTHH:mm:ss" placeholder = "Enter Search Date" #futureValue>
+        <button class="btn btn-primary" (click)="searchFuture(futureValue.value)">Search</button>
       </div>
       <table class="table table-bordered table-sm table-hover" width="100%" *ngIf="futureEventsPage">
         <thead>

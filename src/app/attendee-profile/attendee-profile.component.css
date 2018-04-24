@@ -26,6 +26,13 @@ input[type="file"] {
     display: none;
 }
 
+.alert{
+    z-index: 999;
+    position: fixed;
+    top: 10vh;
+    right: 0;
+  }
+
 .autoFill{
     height: 45px;
     margin-bottom: 30px;

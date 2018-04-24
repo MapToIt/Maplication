@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
@@ -39,6 +39,7 @@ import { EventService } from './services/event-service/event.service';
 import { EventAttendanceService } from './services/event-attendance-service/event-attendance.service';
 import { NotesService } from './services/notes-service/notes.service';
 import { RatingTypesService } from './services/rating-types-service/rating-types.service';
+import { Ng2FlatpickrModule } from 'ng2-flatpickr';
 
 
 const facebookCustomConfig: AuthProviderWithCustomConfig = {
@@ -101,6 +102,7 @@ import { AllEventsComponent } from './company-profile/all-events/all-events.comp
 import { JobListComponent } from './company-profile/job-list/job-list.component';
 import { JobModalComponent } from './company-profile/job-modal/job-modal.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -152,6 +154,7 @@ import { JobModalComponent } from './company-profile/job-modal/job-modal.compone
     SharedModule,
     NgxPaginationModule,
     TextMaskModule,
+    Ng2FlatpickrModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     BrowserAnimationsModule

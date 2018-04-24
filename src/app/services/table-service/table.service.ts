@@ -26,17 +26,10 @@ export class TableService {
   }
 
   AddTable(table:Table){
-    var tempTable = {TableId: table.tableId, MapId: table.mapId, CompanyId: table.companyId,
+    var tempTable = {TableId: 0, MapId: table.mapId, CompanyId: table.companyId,
                      XCoordinate: table.xCoordinate, YCoordinate: table.yCoordinate,
                      Width: table.width, Height: table.height};
-    //var toSend = JSON.stringify(tempTable);
-    console.log(tempTable);
-    this.http.post(this.globals.apiUrl + `map/tables/add`, tempTable)
-      .catch(this.handleError)
-      .subscribe(
-        data => console.log('success', data),
-        error => console.log('oops', error)
-      );
+    return this.http.post<Table>(this.globals.apiUrl + `map/tables/add`, tempTable);
   }
 
   private handleError(error: HttpErrorResponse) {

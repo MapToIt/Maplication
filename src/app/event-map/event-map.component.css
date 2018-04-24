@@ -28,3 +28,17 @@
 button{
   justify-content: center;
 }
+
+.input-group{
+  margin-top:0px;
+  margin-bottom:0px;
+  padding-top:0px;
+  padding-bottom:0px;
+}
+
+.alert{
+  z-index: 999;
+  position: fixed;
+  top: 10vh;
+  right: 0;
+}
